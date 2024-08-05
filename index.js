@@ -146,6 +146,7 @@ app.post('/register_degree' , (req, res) => {
         [degree_name],
         function(err, results){
             res.json(results)
+            console.log('hello')
         }
     )
 })
