@@ -1,0 +1,495 @@
+const mysql = require('mysql2')
+const connection = mysql.createConnection ({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'deep_sea'
+})
+const express = require('express')
+
+const swaggerUi = require('swagger-ui-express')
+const fs = require('fs')
+const YAML = require('yaml')
+const file = fs.readFileSync('./swagger.yaml' , 'utf8')
+const swaggerDocument = YAML.parse(file)
+
+const app = express()
+const cors = require('cors')
+app.use(cors())
+app.use(express.json())
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+const port = 5000
+
+//-------------------------------------Status-------------------------------------//
+//Endpoint to get all status 
+app.get('/register_status' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_status',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new status 
+app.post('/register_status' , (req, res) => {
+    const {status_name} = req.body
+    connection.query(
+        'INSERT INTO register_status (status_name) VALUES (?)',
+        [status_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+/*/Endpoint to uddate a new status 
+app.put('/register_status' , (req, res) => {
+    const {id,status_name} = req.body
+    connection.query(
+        'UPDATE register_status SET status_name=? WHERE id =?',
+        [status_name, id],
+        function(err, results){
+            res.json(results)
+        }
+    )
+
+})*/
+
+//Endpoint to get status id 
+app.get('/register_status/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_status WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'status' : 'not found'})
+            }
+        }
+    )
+})
+
+/*/Endpoint to delete status id 
+app.delete('/register_status/:id' , (req, res) => {
+    const id = req.params.id
+    connection.query(
+        'DELETE FROM register_status WHERE id=?',
+        [id],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})*/
+
+//-------------------------------------Age-------------------------------------//
+//Endpoint to get all age 
+app.get('/register_age' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_age',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new age 
+app.post('/register_age' , (req, res) => {
+    const {age_name} = req.body
+    connection.query(
+        'INSERT INTO register_age (age_name) VALUES (?)',
+        [age_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+
+//Endpoint to get age id 
+app.get('/register_age/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_age WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'age' : 'not found'})
+            }
+        }
+    )
+})
+
+
+
+//-------------------------------------degree-------------------------------------//
+//Endpoint to get all degree 
+app.get('/register_degree' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_degree',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new degree 
+app.post('/register_degree' , (req, res) => {
+    const {degree_name} = req.body
+    connection.query(
+        'INSERT INTO register_degree (degree_name) VALUES (?)',
+        [degree_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get degree id 
+app.get('/register_degree/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_degree WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'degree' : 'not found'})
+            }
+        }
+    )
+})
+
+
+//-------------------------------------gender-------------------------------------//
+//Endpoint to get all gender 
+app.get('/register_gender' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_gender',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new gender
+app.post('/register_gender' , (req, res) => {
+    const {gender_name} = req.body
+    connection.query(
+        'INSERT INTO register_gender (gender_name) VALUES (?)',
+        [gender_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get gender id 
+app.get('/register_gender/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_gender WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'gender' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------degree_plan-------------------------------------//
+//Endpoint to get all degree_plan 
+app.get('/register_degree_plan' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_degree_plan',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new degree_plan 
+app.post('/register_degree_plan' , (req, res) => {
+    const {faculty} = req.body
+    connection.query(
+        'INSERT INTO register_degree_plan (faculty) VALUES (?)',
+        [faculty],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get degree_plan id 
+app.get('/register_degree_plan/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_degree_plan WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'degree_plan' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------province-------------------------------------//
+//Endpoint to get all register_province 
+app.get('/register_province' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_province',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new register_province
+app.post('/register_province' , (req, res) => {
+    const {province_name} = req.body
+    connection.query(
+        'INSERT INTO register_province (province_name) VALUES (?)',
+        [province_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get register_province id 
+app.get('/register_province/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_province WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'register_province' : 'not found'})
+            }
+        }
+    )
+})
+
+
+//-------------------------------------qa_program-------------------------------------//
+//Endpoint to get all qa_program 
+app.get('/qa_program' , (req, res) => {
+    connection.query(
+        'SELECT * FROM qa_program',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new qa_program
+app.post('/qa_program' , (req, res) => {
+    const {program_name} = req.body
+    connection.query(
+        'INSERT INTO qa_program (program_name) VALUES (?)',
+        [program_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get qa_program id 
+app.get('/qa_program/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM qa_program WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'qa_program' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------qa_question-------------------------------------//
+//Endpoint to get all qa_question 
+app.get('/qa_question' , (req, res) => {
+    connection.query(
+        'SELECT * FROM qa_question',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new qa_question
+app.post('/qa_question' , (req, res) => {
+    const {q_student , q_parent} = req.body
+    connection.query(
+        'INSERT INTO qa_question (q_student , q_parent) VALUES (?,?)',
+        [q_student , q_parent],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get qa_question id 
+app.get('/qa_question/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM qa_question WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'qa_question' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------qa_answers-------------------------------------//
+//Endpoint to get all qa_answers 
+app.get('/qa_answers' , (req, res) => {
+    connection.query(
+        'SELECT * FROM qa_answers',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new qa_answers
+app.post('/qa_answers' , (req, res) => {
+    const {q_id ,program_id , answer} = req.body
+    connection.query(
+        'INSERT INTO qa_answers (q_student , q_parent) VALUES (?,?,?)',
+        [q_id ,program_id , answer],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get qa_answers id 
+app.get('/qa_answers/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM qa_answers WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'qa_answers' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------satisfaction_q-------------------------------------//
+//Endpoint to get all satisfaction_q 
+app.get('/satisfaction_q' , (req, res) => {
+    connection.query(
+        'SELECT * FROM satisfaction_q',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new satisfaction_q
+app.post('/satisfaction_q' , (req, res) => {
+    const {q_text} = req.body
+    connection.query(
+        'INSERT INTO satisfaction_q (q_text) VALUES (?)',
+        [q_text],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get satisfaction_q id 
+app.get('/satisfaction_q/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM satisfaction_q WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'satisfaction_q' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------satisfaction_ans-------------------------------------//
+//Endpoint to get all satisfaction_ans
+app.get('/satisfaction_ans' , (req, res) => {
+    connection.query(
+        'SELECT * FROM satisfaction_ans',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new satisfaction_ans
+app.post('/satisfaction_ans' , (req, res) => {
+    const {ans_text} = req.body
+    connection.query(
+        'INSERT INTO satisfaction_ans (ans_text) VALUES (?)',
+        [ans_text],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get satisfaction_ans id 
+app.get('/satisfaction_ans/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM satisfaction_ans WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'satisfaction_ans' : 'not found'})
+            }
+        }
+    )
+})
+
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`)
+})
+

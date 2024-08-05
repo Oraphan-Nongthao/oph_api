@@ -1,0 +1,625 @@
+openapi: 3.0.0
+info:
+  title: Documentation API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+  - url: http://localhost:3000
+
+#-------------------------Status-------------------------#
+
+paths:
+  /register_status:
+    get:
+      tags: [Status]
+      summary: Returns a list of register_status.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an status.
+      tags: [Status]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+    #put:
+      #summary: Updates an status.
+      #tags: [Status]
+      #requestBody:
+        #required: true 
+        #content:
+          #application/json:
+            #schema:
+              #type: object
+              #properties:
+                #id:
+                  #type: integer
+                #status_name:
+                  #type: string
+      #responses: 
+        #'201':
+          #description: Updated
+
+  /register_status/{id}:
+    get:
+      summary: Returns a status by ID.
+      tags: [Status]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+    #delete:
+      #summary: Deletes an status by ID.
+      #tags: [Status]
+      #parameters:
+        #- name: id
+         # in: path
+          #required: true
+          #description: Parameter description in CommonMark or HTML.
+          #schema:
+          #type : integer
+          #format: int64
+          #minimum: 1
+      #responses: 
+        #'200':
+          #description: OK
+
+#-------------------------Age-------------------------#
+
+  /register_age:
+    get:
+      tags: [Age]
+      summary: Returns a list of register_age.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an age.
+      tags: [Age]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+
+  /register_age/{id}:
+    get:
+      summary: Returns a age by ID.
+      tags: [Age]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+
+#-------------------------degree-------------------------#
+
+  /register_degree:
+    get:
+      tags: [Degree]
+      summary: Returns a list of register_degree.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an degree.
+      tags: [Degree]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                degree_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+
+  /register_degree/{id}:
+    get:
+      summary: Returns a degree by ID.
+      tags: [Degree]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+
+
+#-------------------------gender-------------------------#
+
+  /register_gender:
+    get:
+      tags: [Gender]
+      summary: Returns a list of register_gender.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an gender.
+      tags: [Gender]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gender_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+
+  /register_gender/{id}:
+    get:
+      summary: Returns a gender by ID.
+      tags: [Gender]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+
+#-------------------------degree_plan-------------------------#
+
+  /register_degree_plan:
+    get:
+      tags: [Degree_Plan]
+      summary: Returns a list of register_degree_plan.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an degree_plan.
+      tags: [Degree_Plan]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                degree_plan_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+  /register_degree_plan/{id}:
+    get:
+      summary: Returns a degree_plan by ID.
+      tags: [Degree_Plan]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+          
+#-------------------------province-------------------------#
+
+  /register_province:
+    get:
+      tags: [Province]
+      summary: Returns a list of register_province.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an province.
+      tags: [Province]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                province_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+  /register_province/{id}:
+    get:
+      summary: Returns a province by ID.
+      tags: [Province]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------qa_program-------------------------#
+
+  /qa_program:
+    get:
+      tags: [Program]
+      summary: Returns a list of qa_program.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an qa_programe.
+      tags: [Program]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                program_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+  /qa_program/{id}:
+    get:
+      summary: Returns a qa_program by ID.
+      tags: [Program]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------qa_question-------------------------#
+
+  /qa_question:
+    get:
+      tags: [Question]
+      summary: Returns a list of qa_question.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an qa_question.
+      tags: [Question]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                q_student:
+                  type: string
+                q_parent:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+
+  /qa_question/{id}:
+    get:
+      summary: Returns a qa_question by ID.
+      tags: [Question]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------qa_answers-------------------------#
+
+  /qa_answers:
+    get:
+      tags: [Answers]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an qa_answers.
+      tags: [Answers]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                q_id:
+                  type: integer
+                program_id:
+                  type: integer
+                answer:
+                  type: string
+
+      responses: 
+        '201':
+          description: Created
+
+
+  /qa_answers/{id}:
+    get:
+      summary: Returns a qa_answers by ID.
+      tags: [Answers]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------satisfaction_q-------------------------#
+
+  /satisfaction_q:
+    get:
+      tags: [satisfaction_q]
+      summary: Returns a list of satisfaction_q.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an satisfaction_q.
+      tags: [satisfaction_q]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                q_text:
+                  type: string
+                
+
+      responses: 
+        '201':
+          description: Created
+
+
+  /satisfaction_q/{id}:
+    get:
+      summary: Returns a satisfaction_q by ID.
+      tags: [satisfaction_q]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------satisfaction_ans-------------------------#
+
+  /satisfaction_ans:
+    get:
+      tags: [satisfaction_ans]
+      summary: Returns a list of satisfaction_ans.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an satisfaction_ans.
+      tags: [satisfaction_ans]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ans_text:
+                  type: string
+                
+
+      responses: 
+        '201':
+          description: Created
+
+
+  /satisfaction_ans/{id}:
+    get:
+      summary: Returns a satisfaction_ans by ID.
+      tags: [satisfaction_ans]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
