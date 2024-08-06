@@ -6,6 +6,10 @@ const connection = mysql.createConnection ({
     database: 'deep_sea'
 })
 const express = require('express')
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 const swaggerUi = require('swagger-ui-express')
 const fs = require('fs')
@@ -15,6 +19,7 @@ const swaggerDocument = YAML.parse(file)
 
 const app = express()
 const cors = require('cors')
+const json = require('body-parser/lib/types/json')
 app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
@@ -580,8 +585,19 @@ app.get('/register_user' , (req, res) => {
     )
 })
 
+/*/Preview
+app.post('/register_user', urlencodedParser,function(req, res){
+    res.send('hi,' + req.body.age_id)
+})*/
+
+//Document
+app.post('/register_user', jsonParser, function (req,res){
+    console.log(req)
+})
+
 //Endpoint to add a new register_user
 app.post('/register_user' , (req, res) => {
+    console.log(req)
     const {age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     connection.query(
         'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
