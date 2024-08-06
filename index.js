@@ -588,12 +588,12 @@ app.get('/register_user' , (req, res) => {
 /*/Preview
 app.post('/register_user', urlencodedParser,function(req, res){
     res.send('hi,' + req.body.age_id)
-})*/
+})
 
 //Document
 app.post('/register_user', jsonParser, function (req,res){
     console.log(req)
-})
+})*/
 
 //Endpoint to add a new register_user
 app.post('/register_user' , (req, res) => {
