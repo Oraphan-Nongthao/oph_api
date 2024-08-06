@@ -716,7 +716,7 @@ paths:
                   type: integer
                 field_study_id :
                   type: integer
-                province : 
+                province_id : 
                   type: integer
                 register_date:
                   type: string
