@@ -713,11 +713,11 @@ paths:
                 status_id : 
                   type: integer
                 degree_id :
-                  type : interger
+                  type: integer
                 field_study_id :
-                  type : interger
+                  type: integer
                 province : 
-                  type: string
+                  type: integer
                 register_date:
                   type: string
 
