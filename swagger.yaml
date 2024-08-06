@@ -623,3 +623,120 @@ paths:
       responses: 
         '200':
           description: OK
+
+#-------------------------register_field_study-------------------------#
+
+  /register_field_study:
+    get:
+      tags: [register_field_study]
+      summary: Returns a list of register_field_study.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an register_field_study.
+      tags: [register_field_study]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                field_study_name:
+                  type: string
+                
+
+      responses: 
+        '201':
+          description: Created
+
+
+  /register_field_study/{id}:
+    get:
+      summary: Returns a register_field_study by ID.
+      tags: [register_field_study]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
+
+#-------------------------transition_register_user-------------------------#
+
+  /register_user:
+    get:
+      tags: [register_user]
+      summary: Returns a list of register_user.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+    post:
+      summary: Creates an register_user.
+      tags: [register_user]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age_id:
+                  type: integer
+                status_id : 
+                  type: integer
+                degree_id :
+                  type : interger
+                field_study_id :
+                  type : interger
+                province : 
+                  type: string
+                register_date:
+                  type: string
+                  
+      responses: 
+        '201':
+          description: Created
+
+
+  /register_user/{id}:
+    get:
+      summary: Returns a register_user by ID.
+      tags: [register_user]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK

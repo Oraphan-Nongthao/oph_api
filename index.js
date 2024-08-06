@@ -146,7 +146,6 @@ app.post('/register_degree' , (req, res) => {
         [degree_name],
         function(err, results){
             res.json(results)
-            console.log('hello')
         }
     )
 })
@@ -489,6 +488,127 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
         }
     )
 })
+
+//-------------------------------------satisfaction_q-------------------------------------//
+//Endpoint to get all satisfaction_q 
+app.get('/satisfaction_q' , (req, res) => {
+    connection.query(
+        'SELECT * FROM satisfaction_q',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new satisfaction_q
+app.post('/satisfaction_q' , (req, res) => {
+    const {q_text} = req.body
+    connection.query(
+        'INSERT INTO satisfaction_q (q_text) VALUES (?)',
+        [q_text],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get satisfaction_q id 
+app.get('/satisfaction_q/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM satisfaction_q WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'satisfaction_q' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------register_field_study-------------------------------------//
+//Endpoint to get all register_field_study 
+app.get('/register_field_study' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_field_study',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new register_field_study
+app.post('/register_field_study' , (req, res) => {
+    const {field_study_name} = req.body
+    connection.query(
+        'INSERT INTO register_field_study (field_study_name) VALUES (?)',
+        [field_study_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get register_field_study id 
+app.get('/register_field_study/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_field_study WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'register_field_study' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------register_user-------------------------------------//
+//Endpoint to get all register_user 
+app.get('/register_user' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_user',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new register_user
+app.post('/register_user' , (req, res) => {
+    const {age_id,status_id,degree_id,field_study_id,province,register_date} = req.body
+    connection.query(
+        'INSERT INTO register_user (age_id,status_id,degree_id,field_study_id,province,register_date) VALUES (?)',
+        [age_id,status_id,degree_id,field_study_id,province,register_date],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get register_user id 
+app.get('/register_user/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_user WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'register_user' : 'not found'})
+            }
+        }
+    )
+})
+
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
