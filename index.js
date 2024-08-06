@@ -648,6 +648,45 @@ app.get('/qa_transaction/:id' , (req, res) => {
     )
 })
 
+//-------------------------------------transaction_satisfaction-------------------------------------//
+//Endpoint to get all transaction_satisfaction 
+app.get('/satisfaction_transaction' , (req, res) => {
+    connection.query(
+        'SELECT * FROM satisfaction_transaction',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new transaction_satisfaction
+app.post('/satisfaction_transaction' , (req, res) => {
+    const {user_id,q_id,ans_id,q_text,date_time} = req.body
+    connection.query(
+        'INSERT INTO satisfaction_transaction (user_id,q_id,ans_id,q_text,date_time) VALUES (?,?,?,?,?)',
+        [user_id,q_id,ans_id,q_text,date_time],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get transaction_satisfaction id 
+app.get('/satisfaction_transaction/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM satisfaction_transaction WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'satisfaction_transaction' : 'not found'})
+            }
+        }
+    )
+})
+
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
