@@ -584,7 +584,7 @@ app.get('/register_user' , (req, res) => {
 app.post('/register_user' , (req, res) => {
     const {age_id,gender_id,status_id,degree_id,field_study_name,province} = req.body
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province) VALUES (?,?,?,?,?,?,?)',
+        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province) VALUES (?,?,?,?,?,?)',
         [age_id,gender_id,status_id,degree_id,field_study_name,province],
         function(err, results){
             res.json(results)
