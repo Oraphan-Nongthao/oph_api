@@ -682,7 +682,7 @@ paths:
 
   /register_user:
     get:
-      tags: [register_user]
+      tags: [transition_register_user]
       summary: Returns a list of register_user.
       description: Optional extended description in CommonMark or HTML.
       responses:
@@ -698,7 +698,7 @@ paths:
 
     post:
       summary: Creates an register_user.
-      tags: [register_user]
+      tags: [transition_register_user]
       requestBody:
         required: true 
         content:
@@ -707,6 +707,8 @@ paths:
               type: object
               properties:
                 age_id:
+                  type: integer
+                gender_id:
                   type: integer
                 status_id : 
                   type: integer
@@ -718,7 +720,7 @@ paths:
                   type: string
                 register_date:
                   type: string
-                  
+
       responses: 
         '201':
           description: Created
@@ -727,7 +729,7 @@ paths:
   /register_user/{id}:
     get:
       summary: Returns a register_user by ID.
-      tags: [register_user]
+      tags: [transition_register_user]
       parameters:
         - name: id
           in: path
