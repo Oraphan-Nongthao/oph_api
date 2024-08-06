@@ -609,6 +609,46 @@ app.get('/register_user/:id' , (req, res) => {
     )
 })
 
+//-------------------------------------transition_qa-------------------------------------//
+//Endpoint to get all register_user 
+app.get('/register_user' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_user',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new register_user
+app.post('/register_user' , (req, res) => {
+    const {age_id,gender_id,status_id,degree_id,field_study_id,province,register_date} = req.body
+    connection.query(
+        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_id,province,register_date) VALUES (?)',
+        [age_id,gender_id,status_id,degree_id,field_study_id,province,register_date],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get register_user id 
+app.get('/register_user/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_user WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'register_user' : 'not found'})
+            }
+        }
+    )
+})
+
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
