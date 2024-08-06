@@ -718,8 +718,6 @@ paths:
                   type: string
                 province_id : 
                   type: integer
-                register_date:
-                  type: string
 
       responses: 
         '201':
