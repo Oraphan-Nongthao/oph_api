@@ -584,7 +584,7 @@ app.get('/register_user' , (req, res) => {
 app.post('/register_user' , (req, res) => {
     const {age_id,gender_id,status_id,degree_id,field_study_name,province,register_date} = req.body
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province,register_date) VALUES (?)',
+        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province,register_date) VALUES (?,?,?,?,?,?,?)',
         [age_id,gender_id,status_id,degree_id,field_study_name,province,register_date],
         function(err, results){
             res.json(results)
@@ -609,41 +609,40 @@ app.get('/register_user/:id' , (req, res) => {
     )
 })
 
-//-------------------------------------transition_qa-------------------------------------//
-//Endpoint to get all register_user 
-app.get('/register_user' , (req, res) => {
+//-------------------------------------qa_transaction-------------------------------------//
+//Endpoint to get all qa_transaction 
+app.get('/qa_transaction' , (req, res) => {
     connection.query(
-        'SELECT * FROM register_user',
+        'SELECT * FROM qa_transaction',
         function(err, results){
             res.json(results)
         }
     )
 })
 
-//Endpoint to add a new register_user
-app.post('/register_user' , (req, res) => {
-    const {age_id,gender_id,status_id,degree_id,field_study_id,province,register_date} = req.body
+//Endpoint to add a new qa_transaction
+app.post('/qa_transaction' , (req, res) => {
+    const {user_id,is_student,qa_id,ans_id,score,time} = req.body
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_id,province,register_date) VALUES (?)',
-        [age_id,gender_id,status_id,degree_id,field_study_id,province,register_date],
+        'INSERT INTO qa_transaction (user_id,is_student,qa_id,ans_id,score,time) VALUES (?,?,?,?,?,?)',
+        [user_id,is_student,qa_id,ans_id,score,time],
         function(err, results){
             res.json(results)
         }
     )
 })
 
-
-//Endpoint to get register_user id 
-app.get('/register_user/:id' , (req, res) => {
+//Endpoint to get qa_transaction id 
+app.get('/qa_transaction/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_user WHERE id=?',
+        'SELECT * FROM qa_transaction WHERE id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
                 res.json(results[0])
             } else {
-            res.json({'register_user' : 'not found'})
+            res.json({'qa_transaction' : 'not found'})
             }
         }
     )
