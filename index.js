@@ -569,7 +569,7 @@ app.get('/register_field_study/:id' , (req, res) => {
     )
 })
 
-//-------------------------------------register_user-------------------------------------//
+//-------------------------------------transition_register_user-------------------------------------//
 //Endpoint to get all register_user 
 app.get('/register_user' , (req, res) => {
     connection.query(
@@ -582,10 +582,10 @@ app.get('/register_user' , (req, res) => {
 
 //Endpoint to add a new register_user
 app.post('/register_user' , (req, res) => {
-    const {age_id,gender_id,status_id,degree_id,field_study_id,province,register_date} = req.body
+    const {age_id,gender_id,status_id,degree_id,field_study_name,province,register_date} = req.body
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_id,province,register_date) VALUES (?)',
-        [age_id,gender_id,status_id,degree_id,field_study_id,province,register_date],
+        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province,register_date) VALUES (?)',
+        [age_id,gender_id,status_id,degree_id,field_study_name,province,register_date],
         function(err, results){
             res.json(results)
         }

@@ -714,8 +714,8 @@ paths:
                   type: integer
                 degree_id :
                   type: integer
-                field_study_id :
-                  type: integer
+                field_study_name :
+                  type: string
                 province_id : 
                   type: integer
                 register_date:
