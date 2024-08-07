@@ -599,17 +599,14 @@ app.post('/register_user', jsonParser, function (req,res){
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
     const {age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
-    var sql = `INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (${age_id},${gender_id},${status_id},${degree_id},${field_study_name},${province_id})`
-    console.log(sql)
     connection.query(
-        sql,
+        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
+        [age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             res.json(results)
         }
     )
 })
-
-
 
 //Endpoint to get register_user id 
 app.get('/register_user/:id' , (req, res) => {
