@@ -610,6 +610,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
 })
 
 
+
 //Endpoint to get register_user id 
 app.get('/register_user/:id' , (req, res) => {
     id = req.params.id
@@ -703,6 +704,12 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
         }
     )
 })
+
+//report_register
+
+//report_qa
+//report_satisfaction
+
 
 
 app.listen(port, () => {
