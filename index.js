@@ -586,7 +586,7 @@ app.get('/register_user' , (req, res) => {
 })
 
 /*/Preview
-app.post('/register_user', urlencodedParser,function(req, res){
+
     res.send('hi,' + req.body.age_id)
 })
 
@@ -596,12 +596,13 @@ app.post('/register_user', jsonParser, function (req,res){
 })*/
 
 //Endpoint to add a new register_user
-app.post('/register_user' , (req, res) => {
-    console.log(req)
+app.post('/register_user', urlencodedParser,function(req, res){
+    console.log(req.body)
     const {age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    var sql = `INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (${age_id},${gender_id},${status_id},${degree_id},${field_study_name},${province_id})`
+    console.log(sql)
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
-        [age_id,gender_id,status_id,degree_id,field_study_name,province_id],
+        sql,
         function(err, results){
             res.json(results)
         }
