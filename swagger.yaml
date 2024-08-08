@@ -770,8 +770,8 @@ paths:
             schema:
               type: object
               properties:
-              qa_question:
-                type: string
+              qa_id:
+                type: integer
               ans_id :
                 type: integer
 

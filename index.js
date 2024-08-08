@@ -666,12 +666,12 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 //Endpoint to add a new qa_transaction
-app.post('/qa_transaction' , urlencodedParser,function(req, res){
+app.post('/qa_transaction' , urlencodedParser,function (req, res){
     console.log(req.body)
-    const {qa_question,ans_id} = req.body
+    const {qa_id,ans_id} = req.body
     connection.query(
-        'INSERT INTO qa_transaction (qa_question,ans_id) VALUES (?)',
-        [qa_question,ans_id],
+        'INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)',
+        [qa_id,ans_id],
         function(err, results){
             res.json(results)
         }
