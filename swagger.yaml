@@ -643,10 +643,6 @@ paths:
             schema:
               type: object
               properties:
-                q_id:
-                  type: integer
-                program_id:
-                  type: integer
                 answer:
                   type: string
 
@@ -1002,13 +998,14 @@ paths:
             schema:
               type: object
               properties:
-              qa_id:
-                type: integer
-              ans_id :
-                type: integer
+                qa_id:
+                  type: integer
+                ans_id:
+                  type: integer
       responses: 
         '201':
           description: Created
+
 
 
   /qa_transaction/{id}:

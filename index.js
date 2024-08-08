@@ -490,22 +490,12 @@ app.get('/qa_answers' , (req, res) => {
     )
 })
 
-app.get('/qa_answers/ans_1' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers LIMIT 8`,
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
 //Endpoint to add a new qa_answers
 app.post('/qa_answers' , (req, res) => {
-    const {q_id ,program_id , answer} = req.body
+    const {answer} = req.body
     connection.query(
-        'INSERT INTO qa_answers (q_student , q_parent) VALUES (?,?,?)',
-        [q_id ,program_id , answer],
+        'INSERT INTO qa_answers (answer) VALUES (?)',
+        [answer],
         function(err, results){
             res.json(results)
         }
@@ -520,14 +510,11 @@ app.get('/qa_answers/:id' , (req, res) => {
         'SELECT * FROM qa_answers WHERE id=?',
         [id],
         function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'qa_answers' : 'not found'})
-            }
+            res.json({'answer' : 'not found'})
         }
     )
 })
+
 
 //-------------------------------------qa_answers_number-------------------------------------//
 
@@ -540,14 +527,18 @@ app.get('/qa_answers/ans_1' , (req, res) => {
     )
 })
 
+
+
 app.get('/qa_answers/ans_2' , (req, res) => {
     connection.query(
         `SELECT * FROM qa_answers WHERE ans_id IN (9, 10, 11, 12)`,
         function(err, results){
             res.json(results)
-        } 
+        }
     )
 })
+
+
 
 app.get('/qa_answers/ans_3' , (req, res) => {
     connection.query(
