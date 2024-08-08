@@ -419,9 +419,7 @@ paths:
             application/json:
               schema: 
                 type: array
-                q_id: 
-                  type: integer
-                q_student:
+                items: 
                   type: string
                 
 
@@ -436,10 +434,11 @@ paths:
             schema:
               type: object
               properties:
-                q_student:
+              q_id:
+                type: integer
+              q_student:
                   type: string
-                q_parent:
-                  type: string
+
       responses: 
         '201':
           description: Created
@@ -771,8 +770,10 @@ paths:
             schema:
               type: object
               properties:
-                ans_id :
-                  type: integer
+              qa_question:
+                type: string
+              ans_id :
+                type: integer
 
 
       responses: 

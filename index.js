@@ -348,7 +348,7 @@ app.get('/qa_question' , (req, res) => {
 //Endpoint to get all qa_question 
 app.get('/qa_question/qa_1/student' , (req, res) => {
     connection.query(
-        'SELECT q_id , q_student FROM `qa_question` WHERE qa_id=1;',
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=1;',
         function(err, results){
             res.json(results)
         }
@@ -357,10 +357,10 @@ app.get('/qa_question/qa_1/student' , (req, res) => {
 
 //Endpoint to add a new qa_question
 app.post('/qa_question' , (req, res) => {
-    const {q_student , q_parent} = req.body
+    const {qa_id , q_student} = req.body
     connection.query(
-        'INSERT INTO qa_question (q_student , q_parent) VALUES (?,?)',
-        [q_student , q_parent],
+        'INSERT INTO qa_question (qa_id , q_student) VALUES (?,?)',
+        [qa_id , q_student],
         function(err, results){
             res.json(results)
         }
@@ -668,10 +668,10 @@ app.get('/qa_transaction' , (req, res) => {
 //Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function(req, res){
     console.log(req.body)
-    const {ans_id} = req.body
+    const {qa_question,ans_id} = req.body
     connection.query(
-        'INSERT INTO qa_transaction (ans_id) VALUES (?)',
-        [ans_id],
+        'INSERT INTO qa_transaction (qa_question,ans_id) VALUES (?)',
+        [qa_question,ans_id],
         function(err, results){
             res.json(results)
         }
