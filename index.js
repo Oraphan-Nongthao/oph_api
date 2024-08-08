@@ -375,7 +375,7 @@ app.get('/qa_question/:id' , (req, res) => {
 })
 
 //-------------------------------------qa_answers-------------------------------------//
-//Endpoint to get all qa_answers 
+/*/Endpoint to get all qa_answers 
 app.get('/qa_answers' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_answers',
@@ -383,7 +383,18 @@ app.get('/qa_answers' , (req, res) => {
             res.json(results)
         }
     )
+})*/
+
+
+app.get('/qa_answers/ans_1' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers LIMIT 8`,
+        function(err, results){
+            res.json(results)
+        }
+    )
 })
+
 
 //Endpoint to add a new qa_answers
 app.post('/qa_answers' , (req, res) => {
@@ -636,7 +647,8 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 //Endpoint to add a new qa_transaction
-app.post('/qa_transaction' , (req, res) => {
+app.post('/qa_transaction' , urlencodedParser,function(req, res){
+    console.log(req.body)
     const {user_id,is_student,qa_id,ans_id,score,time} = req.body
     connection.query(
         'INSERT INTO qa_transaction (user_id,is_student,qa_id,ans_id,score,time) VALUES (?,?,?,?,?,?)',
@@ -646,6 +658,7 @@ app.post('/qa_transaction' , (req, res) => {
         }
     )
 })
+
 
 //Endpoint to get qa_transaction id 
 app.get('/qa_transaction/:id' , (req, res) => {
@@ -702,10 +715,13 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
     )
 })
 
-//report_register
+/*/report_register
+app.get('/register_user', (req, res) => {
+export const downloadResource = (res, transition_register,)
+})
 
 //report_qa
-//report_satisfaction
+//report_satisfaction*/
 
 
 

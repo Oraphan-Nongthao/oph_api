@@ -461,7 +461,7 @@ paths:
 
 #-------------------------qa_answers-------------------------#
 
-  /qa_answers:
+  /qa_answers/ans_1:
     get:
       tags: [Answers]
       summary: Returns a list of qa_answers.
@@ -476,7 +476,7 @@ paths:
                 items: 
                   type: string
 
-
+  /qa_answers:
     post:
       summary: Creates an qa_answers.
       tags: [Answers]
