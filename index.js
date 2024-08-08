@@ -490,33 +490,6 @@ app.get('/qa_answers' , (req, res) => {
     )
 })
 
-//Endpoint to add a new qa_answers
-app.post('/qa_answers' , (req, res) => {
-    const {answer} = req.body
-    connection.query(
-        'INSERT INTO qa_answers (answer) VALUES (?)',
-        [answer],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
-//Endpoint to get qa_answers id 
-app.get('/qa_answers/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM qa_answers WHERE id=?',
-        [id],
-        function(err, results){
-            res.json({'answer' : 'not found'})
-        }
-    )
-})
-
-
-//-------------------------------------qa_answers_number-------------------------------------//
 
 app.get('/qa_answers/ans_1' , (req, res) => {
     connection.query(
@@ -527,8 +500,6 @@ app.get('/qa_answers/ans_1' , (req, res) => {
     )
 })
 
-
-
 app.get('/qa_answers/ans_2' , (req, res) => {
     connection.query(
         `SELECT * FROM qa_answers WHERE ans_id IN (9, 10, 11, 12)`,
@@ -537,9 +508,6 @@ app.get('/qa_answers/ans_2' , (req, res) => {
         }
     )
 })
-
-
-
 app.get('/qa_answers/ans_3' , (req, res) => {
     connection.query(
         `SELECT * FROM qa_answers WHERE ans_id IN (13, 14, 15, 16)`,
@@ -566,6 +534,33 @@ app.get('/qa_answers/ans_5' , (req, res) => {
         }
     )
 })
+
+//Endpoint to add a new qa_answers
+app.post('/qa_answers' , (req, res) => {
+    const {answer} = req.body
+    connection.query(
+        'INSERT INTO qa_answers (answer) VALUES (?)',
+        [answer],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get qa_answers id 
+app.get('/qa_answers/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM qa_answers WHERE id=?',
+        [id],
+        function(err, results){
+            res.json({'answer' : 'not found'})
+        }
+    )
+})
+
+
 
 //-------------------------------------satisfaction_q-------------------------------------//
 //Endpoint to get all satisfaction_q 
