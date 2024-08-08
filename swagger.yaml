@@ -407,7 +407,7 @@ paths:
 
 #-------------------------qa_question-------------------------#
 
-  /qa_question/qa_1/student:
+  /qa_question: 
     get:
       tags: [Question]
       summary: Returns a list of qa_question.
@@ -421,9 +421,8 @@ paths:
                 type: array
                 items: 
                   type: string
-                
 
-    /qa_question:
+               
     post:
       summary: Creates an qa_question.
       tags: [Question]
@@ -460,6 +459,161 @@ paths:
       responses: 
         '200':
           description: OK
+
+#-------------------------qa_question_student-------------------------#
+
+  /qa_question/qa_1/student:
+    get:
+      tags: [Question_student]
+      summary: Returns a list of qa_question.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_question/qa_2/student:
+      get:
+        tags: [Question_student]
+        summary: Returns a list of qa_question.
+        description: Optional extended description in CommonMark or HTML.
+        responses:
+          '200':    # status code
+            description: A JSON array of user names
+            content:
+              application/json:
+                schema: 
+                  type: array
+                  items: 
+                    type: string
+
+  /qa_question/qa_3/student:
+        get:
+          tags: [Question_student]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+    
+  /qa_question/qa_4/student:
+        get:
+          tags: [Question_student]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+
+  /qa_question/qa_5/student:
+        get:
+          tags: [Question_student]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+
+#-------------------------qa_question_parent-------------------------#
+
+  /qa_question/qa_1/parent:
+    get:
+      tags: [Question_parent]
+      summary: Returns a list of qa_question.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_question/qa_2/parent:
+      get:
+        tags: [Question_parent]
+        summary: Returns a list of qa_question.
+        description: Optional extended description in CommonMark or HTML.
+        responses:
+          '200':    # status code
+            description: A JSON array of user names
+            content:
+              application/json:
+                schema: 
+                  type: array
+                  items: 
+                    type: string
+
+  /qa_question/qa_3/parent:
+        get:
+          tags: [Question_parent]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+    
+  /qa_question/qa_4/parent:
+        get:
+          tags: [Question_parent]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+
+  /qa_question/qa_5/parent:
+        get:
+          tags: [Question_parent]
+          summary: Returns a list of qa_question.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string
+
 
 #-------------------------qa_answers-------------------------#
 

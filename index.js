@@ -335,20 +335,10 @@ app.get('/qa_program/:id' , (req, res) => {
 })
 
 //-------------------------------------qa_question-------------------------------------//
-/*/Endpoint to get all qa_question 
+//Endpoint to get all qa_question 
 app.get('/qa_question' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_question',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})*/
-
-//Endpoint to get all qa_question 
-app.get('/qa_question/qa_1/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=1;',
         function(err, results){
             res.json(results)
         }
@@ -357,10 +347,10 @@ app.get('/qa_question/qa_1/student' , (req, res) => {
 
 //Endpoint to add a new qa_question
 app.post('/qa_question' , (req, res) => {
-    const {qa_id , q_student} = req.body
+    const {q_student,q_parent} = req.body
     connection.query(
-        'INSERT INTO qa_question (qa_id , q_student) VALUES (?,?)',
-        [qa_id , q_student],
+        'INSERT INTO qa_question (q_student,q_parent) VALUES (?,?)',
+        [q_student,q_parent],
         function(err, results){
             res.json(results)
         }
@@ -383,6 +373,110 @@ app.get('/qa_question/:id' , (req, res) => {
         }
     )
 })
+
+//-------------------------------------qa_question_student-------------------------------------//
+//Endpoint to get qa_question student 1 
+app.get('/qa_question/qa_1/student' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=1;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question student 2
+app.get('/qa_question/qa_2/student' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=2;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question student 3
+app.get('/qa_question/qa_3/student' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=3;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question student 4
+app.get('/qa_question/qa_4/student' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=4;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question student 5
+app.get('/qa_question/qa_5/student' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=5;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//-------------------------------------qa_question_parent-------------------------------------//
+
+//Endpoint to get qa_question parent 1 
+app.get('/qa_question/qa_1/parent' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=1;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question parent 2
+app.get('/qa_question/qa_2/parent' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=2;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question parent 3
+app.get('/qa_question/qa_3/parent' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=3;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question parent 4
+app.get('/qa_question/qa_4/parent' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=4;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to get qa_question parent 5
+app.get('/qa_question/qa_5/parent' , (req, res) => {
+    connection.query(
+        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=5;',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
 
 //-------------------------------------qa_answers-------------------------------------//
 /*/Endpoint to get all qa_answers 
@@ -443,6 +537,9 @@ app.get('/qa_answers/:id' , (req, res) => {
         }
     )
 })
+
+
+
 
 //-------------------------------------satisfaction_q-------------------------------------//
 //Endpoint to get all satisfaction_q 
