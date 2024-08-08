@@ -419,8 +419,11 @@ paths:
             application/json:
               schema: 
                 type: array
-                items: 
+                q_id: 
+                  type: integer
+                q_student:
                   type: string
+                
 
     /qa_question:
     post:

@@ -348,7 +348,7 @@ app.get('/qa_question' , (req, res) => {
 //Endpoint to get all qa_question 
 app.get('/qa_question/qa_1/student' , (req, res) => {
     connection.query(
-        'SELECT q_student FROM `qa_question` WHERE qa_id=1;',
+        'SELECT q_id , q_student FROM `qa_question` WHERE qa_id=1;',
         function(err, results){
             res.json(results)
         }
