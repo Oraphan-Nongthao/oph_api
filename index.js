@@ -362,20 +362,42 @@ app.post('/qa_question' , (req, res) => {
 //Endpoint to get qa_question id 
 app.get('/qa_question/:id' , (req, res) => {
     id = req.params.id
+    var question_list = [];
+    var answers_list = [];
     connection.query(
-        'SELECT * FROM qa_question WHERE id=?',
+        'SELECT * FROM qa_question WHERE qa_id=?',
         [id],
+
         function(err, results){
+            
             if (results.length > 0 ) {
+                question_list.push(results[0]);
                 res.json(results[0])
             } else {
             res.json({'qa_question' : 'not found'})
+            console.log(question_list);
             }
-        }
-    )
-})
+        }    
+    );
+    connection.query(
+        'SELECT * FROM qa_answers WHERE qa_id =?',
+        [id],
 
-//-------------------------------------qa_question_student-------------------------------------//
+        function(err, results){
+            
+            if (results.length > 0) {
+                answers_list.push(results);
+                res.json(results)
+            } else {
+                res.json({'qa_answer' : 'not found'})
+            }
+            console.log(answers_list);
+        }
+    );
+
+});
+
+/*/-------------------------------------qa_question_student-------------------------------------//
 //Endpoint to get qa_question student 1 
 app.get('/qa_question/qa_1/student' , (req, res) => {
     connection.query(
@@ -424,11 +446,11 @@ app.get('/qa_question/qa_5/student' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 //-------------------------------------qa_question_parent-------------------------------------//
 
-//Endpoint to get qa_question parent 1 
+/*/Endpoint to get qa_question parent 1 
 app.get('/qa_question/qa_1/parent' , (req, res) => {
     connection.query(
         'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=1;',
@@ -476,12 +498,12 @@ app.get('/qa_question/qa_5/parent' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 
 //-------------------------------------qa_answers-------------------------------------//
 //Endpoint to get all qa_answers 
-app.get('/qa_answers' , (req, res) => {
+/*app.get('/qa_answers' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_answers',
         function(err, results){
@@ -524,7 +546,7 @@ app.get('/qa_answers/ans_4' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 app.get('/qa_answers/ans_5' , (req, res) => {
     connection.query(
@@ -852,7 +874,7 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
     )
 })
 
-//report_register
+/*/report_register
 app.get('/register_user', (req, res) => {
    
 });
