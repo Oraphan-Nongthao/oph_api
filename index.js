@@ -479,7 +479,7 @@ app.get('/qa_question/qa_5/parent' , (req, res) => {
 
 
 //-------------------------------------qa_answers-------------------------------------//
-/*/Endpoint to get all qa_answers 
+//Endpoint to get all qa_answers 
 app.get('/qa_answers' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_answers',
@@ -487,19 +487,9 @@ app.get('/qa_answers' , (req, res) => {
             res.json(results)
         }
     )
-})*/
-
-
-app.get('/qa_answers/ans_1' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers LIMIT 8`,
-        function(err, results){
-            res.json(results)
-        }
-    )
 })
 
-app.get('/qa_answers/ans_2' , (req, res) => {
+app.get('/qa_answers/ans_1' , (req, res) => {
     connection.query(
         `SELECT * FROM qa_answers LIMIT 8`,
         function(err, results){
@@ -538,6 +528,52 @@ app.get('/qa_answers/:id' , (req, res) => {
     )
 })
 
+//-------------------------------------qa_answers_number-------------------------------------//
+
+app.get('/qa_answers/ans_1' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers LIMIT 8`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+app.get('/qa_answers/ans_2' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers WHERE ans_id IN (9, 10, 11, 12)`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+app.get('/qa_answers/ans_3' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers WHERE ans_id IN (13, 14, 15, 16)`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+app.get('/qa_answers/ans_4' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers WHERE ans_id IN (17, 18, 19, 20)`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+app.get('/qa_answers/ans_5' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers WHERE ans_id >= 21`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
 
 
 

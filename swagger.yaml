@@ -617,7 +617,7 @@ paths:
 
 #-------------------------qa_answers-------------------------#
 
-  /qa_answers/ans_1:
+  /qa_answers:
     get:
       tags: [Answers]
       summary: Returns a list of qa_answers.
@@ -632,7 +632,7 @@ paths:
                 items: 
                   type: string
 
-  /qa_answers:
+  
     post:
       summary: Creates an qa_answers.
       tags: [Answers]
@@ -671,6 +671,83 @@ paths:
       responses: 
         '200':
           description: OK
+
+#-------------------------qa_answers_number-------------------------#
+
+  /qa_answers/ans_1:
+    get:
+      tags: [Answers_Number]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_answers/ans_2:
+    get:
+      tags: [Answers_Number]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_answers/ans_3:
+    get:
+      tags: [Answers_Number]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_answers/ans_4:
+    get:
+      tags: [Answers_Number]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+  /qa_answers/ans_5:
+    get:
+      tags: [Answers_Number]
+      summary: Returns a list of qa_answers.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
 
 #-------------------------satisfaction_q-------------------------#
 
