@@ -407,7 +407,7 @@ paths:
 
 #-------------------------qa_question-------------------------#
 
-  /qa_question:
+  /qa_question/qa_1/student:
     get:
       tags: [Question]
       summary: Returns a list of qa_question.
@@ -422,7 +422,7 @@ paths:
                 items: 
                   type: string
 
-
+    /qa_question:
     post:
       summary: Creates an qa_question.
       tags: [Question]

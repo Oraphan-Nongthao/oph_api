@@ -335,10 +335,20 @@ app.get('/qa_program/:id' , (req, res) => {
 })
 
 //-------------------------------------qa_question-------------------------------------//
-//Endpoint to get all qa_question 
+/*/Endpoint to get all qa_question 
 app.get('/qa_question' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_question',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})*/
+
+//Endpoint to get all qa_question 
+app.get('/qa_question/qa_1/student' , (req, res) => {
+    connection.query(
+        'SELECT q_student FROM `qa_question` WHERE qa_id=1;',
         function(err, results){
             res.json(results)
         }
