@@ -9,6 +9,7 @@ const express = require('express')
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const { Parser } = require('json2csv');
 
 
 const swaggerUi = require('swagger-ui-express')
@@ -544,7 +545,7 @@ app.get('/qa_answers/ans_2' , (req, res) => {
         `SELECT * FROM qa_answers WHERE ans_id IN (9, 10, 11, 12)`,
         function(err, results){
             res.json(results)
-        }
+        } 
     )
 })
 
@@ -574,8 +575,6 @@ app.get('/qa_answers/ans_5' , (req, res) => {
         }
     )
 })
-
-
 
 //-------------------------------------satisfaction_q-------------------------------------//
 //Endpoint to get all satisfaction_q 
@@ -867,11 +866,10 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
     )
 })
 
-/*/report_register
+//report_register
 app.get('/register_user', (req, res) => {
-export const downloadResource = (res, transition_register,)
-})
-
+   
+});
 //report_qa
 //report_satisfaction*/
 
