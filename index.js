@@ -395,6 +395,15 @@ app.get('/qa_answers/ans_1' , (req, res) => {
     )
 })
 
+app.get('/qa_answers/ans_2' , (req, res) => {
+    connection.query(
+        `SELECT * FROM qa_answers LIMIT 8`,
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
 
 //Endpoint to add a new qa_answers
 app.post('/qa_answers' , (req, res) => {
@@ -649,10 +658,10 @@ app.get('/qa_transaction' , (req, res) => {
 //Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function(req, res){
     console.log(req.body)
-    const {user_id,is_student,qa_id,ans_id,score,time} = req.body
+    const {ans_id} = req.body
     connection.query(
-        'INSERT INTO qa_transaction (user_id,is_student,qa_id,ans_id,score,time) VALUES (?,?,?,?,?,?)',
-        [user_id,is_student,qa_id,ans_id,score,time],
+        'INSERT INTO qa_transaction (ans_id) VALUES (?)',
+        [ans_id],
         function(err, results){
             res.json(results)
         }
