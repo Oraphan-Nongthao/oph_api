@@ -21,6 +21,7 @@ const swaggerDocument = YAML.parse(file)
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
+const { error } = require('console')
 app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
@@ -367,34 +368,48 @@ app.get('/qa_question/:id' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_question WHERE qa_id=?',
         [id],
+        
+        function (err, questionResults) {
 
-        function(err, results){
-            
-            if (results.length > 0 ) {
-                question_list.push(results[0]);
-                res.json(results[0])
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+
+            if (questionResults.length > 0 ) {
+                question_list.push(questionResults[0]);
+                console.log(question_list)
             } else {
             res.json({'qa_question' : 'not found'})
-            console.log(question_list);
+            
             }
         }    
     );
+
     connection.query(
-        'SELECT * FROM qa_answers WHERE qa_id =?',
+        'SELECT * FROM qa_answers WHERE qa_id=?',
         [id],
+        
+        function(err, answerResults) {
 
-        function(err, results){
-            
-            if (results.length > 0) {
-                answers_list.push(results);
-                res.json(results)
-            } else {
-                res.json({'qa_answer' : 'not found'})
+            if(err){
+                return res.status(500).json({
+                    error: err.message});
             }
-            console.log(answers_list);
-        }
-    );
+            
+            if (answerResults.length > 0 ) {
+                answers_list.push(answerResults);
+                console.log(answers_list)
+            } else {
+            res.json({'qa_answers' : 'not found'})
+            
+            }
 
+            res.json({
+                questions: question_list,
+                answers: answers_list
+            })
+        }    
+    );
 });
 
 /*/-------------------------------------qa_question_student-------------------------------------//
