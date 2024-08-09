@@ -766,10 +766,10 @@ app.get('/satisfaction_transaction' , (req, res) => {
 
 //Endpoint to add a new transaction_satisfaction
 app.post('/satisfaction_transaction' , (req, res) => {
-    const {user_id,q_id,ans_id,q_text,date_time} = req.body
+    const {q_id,ans_id,date_time} = req.body
     connection.query(
-        'INSERT INTO satisfaction_transaction (user_id,q_id,ans_id,q_text,date_time) VALUES (?,?,?,?,?)',
-        [user_id,q_id,ans_id,q_text,date_time],
+        'INSERT INTO satisfaction_transaction (q_id,ans_id,date_time) VALUES (?,?,?,?,?)',
+        [q_id,ans_id,date_time],
         function(err, results){
             res.json(results)
         }
