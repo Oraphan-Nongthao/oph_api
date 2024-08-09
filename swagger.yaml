@@ -750,6 +750,8 @@ paths:
             schema:
               type: object
               properties:
+                email_name:
+                  type: string
                 age_id:
                   type: integer
                 gender_id:

@@ -147,9 +147,10 @@ app.get('/register_email' , (req, res) => {
 })
 
 //Endpoint to add a new status 
-app.post('/register_email' , (req, res) => {
+app.post('/register_email' ,urlencodedParser,function(req, res){
+    console.log(req.body)
     const {email_name} = req.body
-
+    
     // Check if email_name contains '@'
     if (!email_name.includes('@')) {
         return res.status(400).json({ error: 'error' });
