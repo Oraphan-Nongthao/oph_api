@@ -366,7 +366,7 @@ app.get('/qa_question/:id' , (req, res) => {
     var question_list = [];
     var answers_list = [];
     connection.query(
-        'SELECT * FROM qa_question WHERE qa_id=?',
+        'SELECT q_student, q_parent FROM qa_question WHERE qa_id=?',
         [id],
         
         function (err, questionResults) {
@@ -386,7 +386,7 @@ app.get('/qa_question/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM qa_answers WHERE qa_id=?',
+        'SELECT answer FROM qa_answers WHERE qa_id=?',
         [id],
         
         function(err, answerResults) {
@@ -405,8 +405,8 @@ app.get('/qa_question/:id' , (req, res) => {
             }
 
             res.json({
-                questions: question_list,
-                answers: answers_list
+                question_list,
+                answers_list
             })
         }    
     );
