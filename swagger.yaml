@@ -750,8 +750,6 @@ paths:
             schema:
               type: object
               properties:
-                email_name:
-                  type: string
                 age_id:
                   type: integer
                 gender_id:
@@ -764,6 +762,8 @@ paths:
                   type: string
                 province_id : 
                   type: integer
+                email_name:
+                  type: string
 
       responses: 
         '201':

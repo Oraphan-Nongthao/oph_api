@@ -688,7 +688,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
     const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
         [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             res.json(results)
