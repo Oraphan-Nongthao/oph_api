@@ -27,6 +27,7 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = 5000
 
+
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
 app.get('/register_status' , (req, res) => {
@@ -49,6 +50,8 @@ app.post('/register_status' , (req, res) => {
         }
     )
 })
+
+
 
 /*/Endpoint to uddate a new status 
 app.put('/register_status' , (req, res) => {
@@ -127,6 +130,47 @@ app.get('/register_age/:id' , (req, res) => {
                 res.json(results[0])
             } else {
             res.json({'age' : 'not found'})
+            }
+        }
+    )
+})
+
+//-------------------------------------email-------------------------------------//
+//Endpoint to get all status 
+app.get('/register_email' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_email',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new status 
+app.post('/register_email' , (req, res) => {
+    const {email_name} = req.body
+    connection.query(
+        'INSERT INTO register_email (email_name) VALUES (?)',
+        [email_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+app.get('/register_email/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM register_email WHERE email_id=?',
+        [id],
+        function(err, results){
+            if(err){
+                return res.json({'status' : 'not found'})
+            }
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'status' : 'not found'})
             }
         }
     )
@@ -367,7 +411,7 @@ app.get('/qa_question/:id' , (req, res) => {
     var answers_list = [];
 
     connection.query(
-        'SELECT * FROM qa_question WHERE qa_id=?',
+        'SELECT qa_id , q_student , q_parent FROM qa_question WHERE qa_id=?',
         [id],
         
         function (err, questionResults) {
@@ -386,7 +430,7 @@ app.get('/qa_question/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM qa_answers WHERE qa_id=?',
+        'SELECT ans_id, answer FROM qa_answers WHERE qa_id=?',
         [id],
         
         function(err, answerResults) {

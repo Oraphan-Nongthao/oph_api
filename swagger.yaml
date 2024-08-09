@@ -197,7 +197,55 @@ paths:
         '200':
           description: OK
 
+#-------------------------Email-------------------------#
 
+  /register_email:
+    get:
+      tags: [Email]
+      summary: Returns a list of register_email.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+    post:
+      summary: Creates an register_email.
+      tags: [Email]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_name:
+                  type: string
+      responses: 
+        '201':
+          description: Created
+
+  /register_email/{id}:
+    get:
+      summary: Returns a register_email by ID.
+      tags: [Email]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
 
 #-------------------------gender-------------------------#
 
