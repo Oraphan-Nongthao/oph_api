@@ -367,7 +367,7 @@ app.get('/qa_question/:id' , (req, res) => {
     var answers_list = [];
 
     connection.query(
-        'SELECT q_student, q_parent FROM qa_question WHERE qa_id=?',
+        'SELECT * FROM qa_question WHERE qa_id=?',
         [id],
         
         function (err, questionResults) {
@@ -375,7 +375,6 @@ app.get('/qa_question/:id' , (req, res) => {
             if(err){
                 return res.status(500).json({error: err.message});
             }
-
             if (questionResults.length > 0 ) {
                 question_list.push(questionResults[0]);
                 console.log(question_list)
@@ -387,7 +386,7 @@ app.get('/qa_question/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT answer FROM qa_answers WHERE qa_id=?',
+        'SELECT * FROM qa_answers WHERE qa_id=?',
         [id],
         
         function(err, answerResults) {
@@ -396,7 +395,6 @@ app.get('/qa_question/:id' , (req, res) => {
                 return res.status(500).json({
                     error: err.message});
             }
-            
             if (answerResults.length > 0 ) {
                 answers_list.push(answerResults);
                 console.log(answers_list)
