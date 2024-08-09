@@ -150,7 +150,7 @@ app.get('/register_email' , (req, res) => {
 app.post('/register_email' ,urlencodedParser,function(req, res){
     console.log(req.body)
     const {email_name} = req.body
-    
+
     // Check if email_name contains '@'
     if (!email_name.includes('@')) {
         return res.status(400).json({ error: 'error' });
@@ -686,10 +686,10 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     connection.query(
-        'INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
-        [age_id,gender_id,status_id,degree_id,field_study_name,province_id],
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?)',
+        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             res.json(results)
         }
