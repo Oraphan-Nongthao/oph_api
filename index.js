@@ -365,6 +365,7 @@ app.get('/qa_question/:id' , (req, res) => {
     id = req.params.id
     var question_list = [];
     var answers_list = [];
+
     connection.query(
         'SELECT q_student, q_parent FROM qa_question WHERE qa_id=?',
         [id],
@@ -412,160 +413,13 @@ app.get('/qa_question/:id' , (req, res) => {
     );
 });
 
-/*/-------------------------------------qa_question_student-------------------------------------//
-//Endpoint to get qa_question student 1 
-app.get('/qa_question/qa_1/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=1;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question student 2
-app.get('/qa_question/qa_2/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=2;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question student 3
-app.get('/qa_question/qa_3/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=3;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question student 4
-app.get('/qa_question/qa_4/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=4;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question student 5
-app.get('/qa_question/qa_5/student' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_student FROM `qa_question` WHERE qa_id=5;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})*/
-
-//-------------------------------------qa_question_parent-------------------------------------//
-
-/*/Endpoint to get qa_question parent 1 
-app.get('/qa_question/qa_1/parent' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=1;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question parent 2
-app.get('/qa_question/qa_2/parent' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=2;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question parent 3
-app.get('/qa_question/qa_3/parent' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=3;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question parent 4
-app.get('/qa_question/qa_4/parent' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=4;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to get qa_question parent 5
-app.get('/qa_question/qa_5/parent' , (req, res) => {
-    connection.query(
-        'SELECT qa_id , q_parent FROM `qa_question` WHERE qa_id=5;',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})*/
 
 
 //-------------------------------------qa_answers-------------------------------------//
 //Endpoint to get all qa_answers 
-/*app.get('/qa_answers' , (req, res) => {
+app.get('/qa_answers' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_answers',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
-app.get('/qa_answers/ans_1' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers LIMIT 8`,
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-app.get('/qa_answers/ans_2' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers WHERE ans_id IN (9, 10, 11, 12)`,
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-app.get('/qa_answers/ans_3' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers WHERE ans_id IN (13, 14, 15, 16)`,
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-app.get('/qa_answers/ans_4' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers WHERE ans_id IN (17, 18, 19, 20)`,
-        function(err, results){
-            res.json(results)
-        }
-    )
-})*/
-
-app.get('/qa_answers/ans_5' , (req, res) => {
-    connection.query(
-        `SELECT * FROM qa_answers WHERE ans_id >= 21`,
         function(err, results){
             res.json(results)
         }
