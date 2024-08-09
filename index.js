@@ -149,6 +149,12 @@ app.get('/register_email' , (req, res) => {
 //Endpoint to add a new status 
 app.post('/register_email' , (req, res) => {
     const {email_name} = req.body
+
+    // Check if email_name contains '@'
+    if (!email_name.includes('@')) {
+        return res.status(400).json({ error: 'error' });
+    }
+    
     connection.query(
         'INSERT INTO register_email (email_name) VALUES (?)',
         [email_name],
@@ -165,12 +171,12 @@ app.get('/register_email/:id' , (req, res) => {
         [id],
         function(err, results){
             if(err){
-                return res.json({'status' : 'not found'})
+                return res.json({'email' : 'not found'})
             }
             if (results.length > 0 ) {
                 res.json(results[0])
             } else {
-            res.json({'status' : 'not found'})
+            res.json({'email' : 'not found'})
             }
         }
     )
