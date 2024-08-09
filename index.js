@@ -360,7 +360,7 @@ app.post('/qa_question' , (req, res) => {
 
 
 //Endpoint to get qa_question id 
-app.get('/qa_question/:id' , (req, res) => {
+app.get('/qa_question/:id',(req, res) => {
     id = req.params.id
     var question_list = [];
     var answers_list = [];
@@ -369,32 +369,37 @@ app.get('/qa_question/:id' , (req, res) => {
         [id],
 
         function(err, results){
-            
+            if(err){
+                res.status(404).json({'qa_question' : 'not found'});
+                console.log(err);
+                return;
+            }
             if (results.length > 0 ) {
                 question_list.push(results[0]);
+                console.log(question_list);
                 res.json(results[0])
             } else {
             res.json({'qa_question' : 'not found'})
-            console.log(question_list);
-            }
-        }    
-    );
-    connection.query(
-        'SELECT * FROM qa_answers WHERE qa_id =?',
-        [id],
-
-        function(err, results){
             
-            if (results.length > 0) {
-                answers_list.push(results);
-                res.json(results)
-            } else {
-                res.json({'qa_answer' : 'not found'})
             }
-            console.log(answers_list);
-        }
-    );
 
+    connection.query(
+            'SELECT * FROM qa_answers WHERE qa_id =?',
+            [id],
+            function(err, results){
+                if(err){
+                    res.status(404).json({'qa_answer' : 'not found'})
+                    return;
+                }
+                if (results.length > 0) {
+                    answers_list =results;
+                    console.log(answers_list);
+                    res.json(results)
+                } else {
+                    res.json({'qa_answer' : 'not found'})
+                }
+            }
+        );});
 });
 
 /*/-------------------------------------qa_question_student-------------------------------------//
@@ -648,7 +653,7 @@ app.post('/satisfaction_ans' , (req, res) => {
 })
 
 
-//Endpoint to get satisfaction_ans id 
+/*/Endpoint to get satisfaction_ans id 
 app.get('/satisfaction_ans/:id' , (req, res) => {
     id = req.params.id
     connection.query(
@@ -662,7 +667,7 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 //-------------------------------------satisfaction_q-------------------------------------//
 //Endpoint to get all satisfaction_q 
