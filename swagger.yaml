@@ -874,8 +874,6 @@ paths:
                 ans_id :
                   type: integer
 
-
-
       responses: 
         '201':
           description: Created
