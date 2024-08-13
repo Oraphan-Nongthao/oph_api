@@ -27,6 +27,7 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = 5000
 
+var data_exposter = require('json2csv')
 
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
@@ -76,7 +77,7 @@ app.get('/register_status/:id' , (req, res) => {
             if (results.length > 0 ) {
                 res.json(results[0])
             } else {
-            res.json({'status' : 'not found'})
+            res.json({'status' : 'not found'}) 
             }
         }
     )
@@ -721,10 +722,10 @@ app.get('/qa_transaction' , (req, res) => {
 //Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
     console.log(req.body)
-    const {qa_id,ans_id} = req.body
+    const {qa_id,ans_id,user_id,score} = req.body
     connection.query(
-        'INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)',
-        [qa_id,ans_id],
+        'INSERT INTO qa_transaction (qa_id,ans_id,user_id,score) VALUES (?,?,?,?)',
+        [qa_id,ans_id,user_id,score],
         function(err, results){
             res.json(results)
         }
