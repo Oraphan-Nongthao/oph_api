@@ -550,7 +550,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM satisfaction_ans WHERE ans_id=?',
+        'SELECT ans_id, ans_text FROM satisfaction_ans LIMIT 4',
         [id],
         
         function(err, satisfaction_ans_results) {
@@ -574,7 +574,6 @@ app.get('/satisfaction_q/:id' , (req, res) => {
         }    
     );
 });
-
 
 
 //-------------------------------------satisfaction_ans-------------------------------------//
