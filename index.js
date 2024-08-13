@@ -645,7 +645,7 @@ app.post('/register_field_study' , (req, res) => {
 app.get('/register_field_study/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_field_study WHERE id=?',
+        'SELECT * FROM register_field_study WHERE field_study_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -789,10 +789,8 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 })
 
 
-
 /*/report_register
-app.get('/register_user', (req, res) => {
-   
+app.get('/register_user', (req, res) => {   
 });
 //report_qa
 //report_satisfaction*/
