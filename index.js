@@ -690,6 +690,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
         }
     )
 })
+//register_user
 
 //Endpoint to get register_user id 
 app.get('/register_user/:id' , (req, res) => {
