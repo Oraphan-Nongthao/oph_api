@@ -462,8 +462,6 @@ app.get('/qa_question/:id' , (req, res) => {
     );
 });
 
-
-
 //-------------------------------------qa_answers-------------------------------------//
 //Endpoint to get all qa_answers 
 app.get('/qa_answers' , (req, res) => {
@@ -526,21 +524,58 @@ app.post('/satisfaction_q' , (req, res) => {
 })
 
 
-//Endpoint to get satisfaction_q id 
-app.get('/satisfaction_q/:id' , (req, res) => {
+//Endpoint to get qa_question id 
+app.get('/satisfaction_transaction/:id' , (req, res) => {
     id = req.params.id
+    var satisfactionQ_list = [];
+    var satisfactionA_list = [];
+
     connection.query(
         'SELECT * FROM satisfaction_q WHERE id=?',
         [id],
-        function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
+        
+        function (err, satisfaction_q_results) {
+
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            if (satisfaction_q_results.length > 0 ) {
+                question_list.push(satisfaction_q_results[0]);
+                console.log(satisfactionQ_list)
             } else {
             res.json({'satisfaction_q' : 'not found'})
+            
             }
-        }
-    )
-})
+        }    
+    );
+
+    connection.query(
+        'SELECT * FROM satisfaction_ans WHERE qa_id=?',
+        [id],
+        
+        function(err, satisfaction_ans_results) {
+
+            if(err){
+                return res.status(500).json({
+                    error: err.message});
+            }
+            if (satisfaction_ans_results.length > 0 ) {
+                answers_list.push(satisfaction_ans_results);
+                console.log(satisfactionA_list)
+            } else {
+            res.json({'satisfaction_ans' : 'not found'})
+            
+            }
+
+            res.json({
+                satisfactionQ_list,
+                satisfactionA_list
+            })
+        }    
+    );
+});
+
+
 
 //-------------------------------------satisfaction_ans-------------------------------------//
 //Endpoint to get all satisfaction_ans
@@ -577,46 +612,6 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
                 res.json(results[0])
             } else {
             res.json({'satisfaction_ans' : 'not found'})
-            }
-        }
-    )
-})
-
-//-------------------------------------satisfaction_q-------------------------------------//
-//Endpoint to get all satisfaction_q 
-app.get('/satisfaction_q' , (req, res) => {
-    connection.query(
-        'SELECT * FROM satisfaction_q',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to add a new satisfaction_q
-app.post('/satisfaction_q' , (req, res) => {
-    const {q_text} = req.body
-    connection.query(
-        'INSERT INTO satisfaction_q (q_text) VALUES (?)',
-        [q_text],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
-//Endpoint to get satisfaction_q id 
-app.get('/satisfaction_q/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM satisfaction_q WHERE id=?',
-        [id],
-        function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'satisfaction_q' : 'not found'})
             }
         }
     )
@@ -791,6 +786,8 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
         }
     )
 })
+
+
 
 /*/report_register
 app.get('/register_user', (req, res) => {
