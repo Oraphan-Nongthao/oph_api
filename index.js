@@ -531,7 +531,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     var satisfactionA_list = [];
 
     connection.query(
-        'SELECT * FROM satisfaction_q WHERE id=?',
+        'SELECT * FROM satisfaction_q WHERE q_id=?',
         [id],
         
         function (err, satisfaction_q_results) {
@@ -550,7 +550,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM satisfaction_ans WHERE qa_id=?',
+        'SELECT * FROM satisfaction_ans WHERE ans_id=?',
         [id],
         
         function(err, satisfaction_ans_results) {
