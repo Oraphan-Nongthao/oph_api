@@ -760,7 +760,7 @@ app.get('/satisfaction_transaction' , (req, res) => {
 })
 
 //Endpoint to add a new transaction_satisfaction
-app.post('/satisfaction_transaction' , (req, res) => {
+app.post('/satisfaction_transaction', urlencodedParser,function (req, res) {
     const {q_id,ans_id} = req.body
     connection.query(
         'INSERT INTO satisfaction_transaction (q_id,ans_id) VALUES (?,?)',
