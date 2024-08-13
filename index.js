@@ -764,7 +764,7 @@ app.get('/satisfaction_transaction' , (req, res) => {
 app.post('/satisfaction_transaction' , (req, res) => {
     const {q_id,ans_id,date_time} = req.body
     connection.query(
-        'INSERT INTO satisfaction_transaction (q_id,ans_id,date_time) VALUES (?,?,?,?,?)',
+        'INSERT INTO satisfaction_transaction (q_id,ans_id,date_time) VALUES (?,?,?)',
         [q_id,ans_id,date_time],
         function(err, results){
             res.json(results)
