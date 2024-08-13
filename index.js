@@ -540,7 +540,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
                 return res.status(500).json({error: err.message});
             }
             if (satisfaction_q_results.length > 0 ) {
-                question_list.push(satisfaction_q_results[0]);
+                satisfactionQ_list.push(satisfaction_q_results[0]);
                 console.log(satisfactionQ_list)
             } else {
             res.json({'satisfaction_q' : 'not found'})
@@ -560,7 +560,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
                     error: err.message});
             }
             if (satisfaction_ans_results.length > 0 ) {
-                answers_list.push(satisfaction_ans_results);
+                satisfactionA_list.push(satisfaction_ans_results);
                 console.log(satisfactionA_list)
             } else {
             res.json({'satisfaction_ans' : 'not found'})
