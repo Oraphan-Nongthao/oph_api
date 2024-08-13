@@ -550,7 +550,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM satisfaction_ans WHERE ans_id=?',
+        'SELECT * FROM satisfaction_ans',
         [id],
         
         function(err, satisfaction_ans_results) {
