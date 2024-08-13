@@ -708,6 +708,47 @@ app.get('/register_user/:id' , (req, res) => {
     )
 })
 
+//-------------------------------------qa_transaction-------------------------------------//
+//Endpoint to get all qa_transaction 
+app.get('/qa_transaction' , (req, res) => {
+    connection.query(
+        'SELECT * FROM qa_transaction',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new qa_transaction
+app.post('/qa_transaction' , urlencodedParser,function (req, res){
+    console.log(req.body)
+    const {qa_id,ans_id} = req.body
+    connection.query(
+        'INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)',
+        [qa_id,ans_id],
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+
+//Endpoint to get qa_transaction id 
+app.get('/qa_transaction/:id' , (req, res) => {
+    id = req.params.id
+    connection.query(
+        'SELECT * FROM qa_transaction WHERE id=?',
+        [id],
+        function(err, results){
+            if (results.length > 0 ) {
+                res.json(results[0])
+            } else {
+            res.json({'qa_transaction' : 'not found'})
+            }
+        }
+    )
+})
+
 //-------------------------------------transaction_satisfaction-------------------------------------//
 //Endpoint to get all transaction_satisfaction 
 app.get('/satisfaction_transaction' , (req, res) => {
