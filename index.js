@@ -550,7 +550,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT ans_id, ans_text FROM satisfaction_ans LIMIT 4',
+        'SELECT * FROM satisfaction_ans',
         [id],
         
         function(err, satisfaction_ans_results) {
@@ -761,10 +761,10 @@ app.get('/satisfaction_transaction' , (req, res) => {
 
 //Endpoint to add a new transaction_satisfaction
 app.post('/satisfaction_transaction' , (req, res) => {
-    const {q_id,ans_id,date_time} = req.body
+    const {q_id,ans_id} = req.body
     connection.query(
-        'INSERT INTO satisfaction_transaction (q_id,ans_id,date_time) VALUES (?,?,?)',
-        [q_id,ans_id,date_time],
+        'INSERT INTO satisfaction_transaction (q_id,ans_id) VALUES (?,?,?)',
+        [q_id,ans_id],
         function(err, results){
             res.json(results)
         }

@@ -869,16 +869,12 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
-                  type: integer
                 q_id : 
                   type: integer
                 ans_id :
                   type: integer
-                q_text :
-                  type: string
-                date_time:
-                  type: string
+
+
 
       responses: 
         '201':
