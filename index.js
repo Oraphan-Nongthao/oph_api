@@ -71,7 +71,7 @@ app.put('/register_status' , (req, res) => {
 app.get('/register_status/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_status WHERE id=?',
+        'SELECT * FROM register_status WHERE status_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -124,7 +124,7 @@ app.post('/register_age' , (req, res) => {
 app.get('/register_age/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_age WHERE id=?',
+        'SELECT * FROM register_age WHERE age_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -214,7 +214,7 @@ app.post('/register_degree' , (req, res) => {
 app.get('/register_degree/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_degree WHERE id=?',
+        'SELECT * FROM register_degree WHERE degree_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -255,53 +255,13 @@ app.post('/register_gender' , (req, res) => {
 app.get('/register_gender/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_gender WHERE id=?',
+        'SELECT * FROM register_gender WHERE gender_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
                 res.json(results[0])
             } else {
             res.json({'gender' : 'not found'})
-            }
-        }
-    )
-})
-
-//-------------------------------------degree_plan-------------------------------------//
-//Endpoint to get all degree_plan 
-app.get('/register_degree_plan' , (req, res) => {
-    connection.query(
-        'SELECT * FROM register_degree_plan',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to add a new degree_plan 
-app.post('/register_degree_plan' , (req, res) => {
-    const {faculty} = req.body
-    connection.query(
-        'INSERT INTO register_degree_plan (faculty) VALUES (?)',
-        [faculty],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
-//Endpoint to get degree_plan id 
-app.get('/register_degree_plan/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM register_degree_plan WHERE id=?',
-        [id],
-        function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'degree_plan' : 'not found'})
             }
         }
     )
@@ -335,7 +295,7 @@ app.post('/register_province' , (req, res) => {
 app.get('/register_province/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_province WHERE id=?',
+        'SELECT * FROM register_province WHERE province_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -376,7 +336,7 @@ app.post('/qa_program' , (req, res) => {
 app.get('/qa_program/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM qa_program WHERE id=?',
+        'SELECT * FROM qa_program WHERE program_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -390,7 +350,7 @@ app.get('/qa_program/:id' , (req, res) => {
 
 //-------------------------------------qa_question-------------------------------------//
 //Endpoint to get all qa_question 
-app.get('/qa_question' , (req, res) => {
+app.get('/qa_questions' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_question',
         function(err, results){
@@ -491,7 +451,7 @@ app.post('/qa_answers' , (req, res) => {
 app.get('/qa_answers/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM qa_answers WHERE id=?',
+        'SELECT * FROM qa_answers WHERE ans_id=?',
         [id],
         function(err, results){
             res.json({'answer' : 'not found'})
@@ -551,7 +511,7 @@ app.get('/satisfaction_q/:id' , (req, res) => {
     );
 
     connection.query(
-        'SELECT * FROM satisfaction_ans',
+        'SELECT * FROM satisfaction_ans LIMIT 4',
         [id],
         
         function(err, satisfaction_ans_results) {
@@ -605,7 +565,7 @@ app.post('/satisfaction_ans' , (req, res) => {
 app.get('/satisfaction_ans/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM satisfaction_ans WHERE id=?',
+        'SELECT * FROM satisfaction_ans WHERE ans_id=?',
         [id],
         function(err, results){
             if (results.length > 0 ) {
@@ -696,10 +656,13 @@ app.post('/register_user', urlencodedParser,function(req, res){
 app.get('/register_user/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT * FROM register_user WHERE id=?',
+        'SELECT * FROM register_user WHERE register_id=?',
         [id],
         function(err, results){
-            if (results.length > 0 ) {
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            if(results.length > 0 ) {
                 res.json(results[0])
             } else {
             res.json({'register_user' : 'not found'})
@@ -717,7 +680,7 @@ app.get('/qa_transaction' , (req, res) => {
             res.json(results)
         }
     )
-})
+}) 
 
 //Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
