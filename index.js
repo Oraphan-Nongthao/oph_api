@@ -11,13 +11,13 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const { Parser } = require('json2csv');
 
-
 const swaggerUi = require('swagger-ui-express')
 const fs = require('fs')
 const YAML = require('yaml')
 const file = fs.readFileSync('./swagger.yaml' , 'utf8')
 const swaggerDocument = YAML.parse(file)
 
+var qa = require('./QA.json')
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
@@ -674,6 +674,14 @@ app.get('/register_user/:id' , (req, res) => {
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction 
 app.get('/qa_transaction' , (req, res) => {
+    
+    console.log(qa);
+    const numbers = [4, 9, 16, 25];
+    const result = numbers.map((number) => {
+        console.log(number*2)
+        return number*2
+        
+      })
     connection.query(
         'SELECT * FROM qa_transaction',
         function(err, results){
@@ -682,7 +690,12 @@ app.get('/qa_transaction' , (req, res) => {
     )
 }) 
 
-//Endpoint to add a new qa_transaction
+
+app.get('/qa_transaction' , (req, res) => {
+    
+})
+
+/*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
     console.log(req.body)
     const {qa_id,ans_id,user_id,score} = req.body
@@ -693,24 +706,8 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
             res.json(results)
         }
     )
-})
+})*/
 
-
-//Endpoint to get qa_transaction id 
-app.get('/qa_transaction/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM qa_transaction WHERE id=?',
-        [id],
-        function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'qa_transaction' : 'not found'})
-            }
-        }
-    )
-})
 
 //-------------------------------------transaction_satisfaction-------------------------------------//
 //Endpoint to get all transaction_satisfaction 
@@ -750,6 +747,10 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
         }
     )
 })
+
+
+
+
 
 
 /*/report_register
