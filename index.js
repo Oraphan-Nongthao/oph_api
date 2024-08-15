@@ -691,7 +691,7 @@ app.get('/qa_transaction' , (req, res) => {
 }) 
 
 
-app.get('/qa_transaction' , (req, res) => {
+app.post('/qa_transaction' , (req, res) => {
     
 })
 
