@@ -18,6 +18,8 @@ const file = fs.readFileSync('./swagger.yaml' , 'utf8')
 const swaggerDocument = YAML.parse(file)
 
 var qa = require('./QA.json')
+var sat = require('./Satisfaction.json')
+
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
@@ -688,10 +690,9 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,function  (req, res){
-    console.log(req.body)
-    const {qa_id,ans_id} = req.body
+    console.log(req.body) //แสดงค่า qa_id , ans_id ที่รับค่าเข้ามา
+    const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(qa.ans_list)
-    
     var qaLengths = qa.ans_list.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
@@ -719,9 +720,7 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
             
         })
     }
-
-
-);
+    );
     connection.query(
         `INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)`,
         [qa_id,ans_id],
@@ -731,11 +730,10 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
             }
             if (results.length > 1) {
                 res.json(results);  // Return all answers json
-            } 
+            }
             else {
                 res.json({ message: 'No answers found for this question' });
             }
-            //console.log(qaLengths)
         }
     );
 
@@ -766,19 +764,34 @@ app.get('/satisfaction_transaction' , (req, res) => {
     )
 })
 
-//Endpoint to add a new transaction_satisfaction
+/*/Endpoint to add a new transaction_satisfaction
 app.post('/satisfaction_transaction', urlencodedParser,function (req, res) {
     const {q_id,ans_id} = req.body
-    connection.query(
-        'INSERT INTO satisfaction_transaction (q_id,ans_id) VALUES (?,?)',
-        [q_id,ans_id],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
+    console.log(req.body)
+    console.table(sat.satisfaction_list)
+    var arr = sat.satisfaction_list.map((item) => {
+        console.table(item.ans_id)
+    })
 
-//Endpoint to get transaction_satisfaction id 
+    connection.query(
+        `INSERT INTO satisfaction_transaction (q_id,ans_id) VALUES (?,?)`,
+        [q_id,ans_id],
+        function(err,results){
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            if (results.length > 1) {
+                res.json(results);  // Return all answers json
+            } 
+            else {
+                res.json({ message: 'No answers found for this question' });
+            }
+            //console.log(qaLengths)
+        }
+    );
+})*/
+
+/*//Endpoint to get transaction_satisfaction id 
 app.get('/satisfaction_transaction/:id' , (req, res) => {
     id = req.params.id
     connection.query(
@@ -792,11 +805,7 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
             }
         }
     )
-})
-
-
-
-
+})*/
 
 
 /*/report_register

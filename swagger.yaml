@@ -752,34 +752,35 @@ paths:
       #summary: Creates an satisfaction_transaction.
       #tags: [transaction_satisfaction]
       #requestBody:
-        #required: true 
+       # required: true 
         #content:
           #application/json:
-            #schema:
-              #type: object
-              #properties:
-                #q_id : 
-                  #type: integer
+           # schema:
+             # type: object
+             # properties:
+               # q_id : 
+                #  type: integer
                 #ans_id :
-                  #type: integer
-     # responses: 
+                 # type: integer
+
+     #responses: 
         #'201':
           #description: Created
 
 
-  /satisfaction_transaction/{id}:
-    get:
-      summary: Returns a satisfaction_transaction by ID.
-      tags: [transaction_satisfaction]
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Parameter description in CommonMark or HTML.
-          schema:
-            type : integer
-            format: int64
-            minimum: 1
-      responses: 
-        '200':
-          description: OK
+  #/satisfaction_transaction/{id}:
+    #get:
+      #summary: Returns a satisfaction_transaction by ID.
+      #tags: [transaction_satisfaction]
+      #parameters:
+        #- name: id
+          #in: path
+          #required: true
+          #description: Parameter description in CommonMark or HTML.
+          #schema:
+            #type : integer
+            #format: int64
+            #minimum: 1
+      #responses: 
+        #'200':
+          #description: OK
