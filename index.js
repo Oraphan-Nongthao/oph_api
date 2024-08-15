@@ -674,26 +674,44 @@ app.get('/register_user/:id' , (req, res) => {
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction 
 app.get('/qa_transaction' , (req, res) => {
-    
-    console.log(qa);
-    const numbers = [4, 9, 16, 25];
+    /*console.log(qa);
+    const numbers = [3, 2, 1,];
     const result = numbers.map((number) => {
         console.log(number*2)
-        return number*2
-        
-      })
+        return number*2*/
     connection.query(
         'SELECT * FROM qa_transaction',
         function(err, results){
             res.json(results)
         }
-    )
-}) 
-
-
-app.post('/qa_transaction' , (req, res) => {
-    
+)
 })
+
+app.post('/qa_transaction' , urlencodedParser,function  (req, res){
+    console.log(req.body)
+    const {qa_id,ans_id} = req.body
+    var qaLengths = qa.ans_list.map(item => ({
+        qa_id: item.qa_id,
+        ans_id: item.ans_id,
+        length: item.ans_id.length
+    }));
+    connection.query(
+        `INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)`,
+        [qa_id,ans_id],
+        function(err,results){
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            if (results.length > 1) {
+                res.json(results);  // Return all answers json
+            } 
+            else {
+                res.json({ message: 'No answers found for this question' });
+            }
+            console.log(qaLengths)
+        }
+    );
+});
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){

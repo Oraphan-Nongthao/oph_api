@@ -692,24 +692,21 @@ paths:
                 items: 
                   type: string
                   
-    #post:
-      #summary: Creates an qa_transaction.
-      #tags: [transaction_qa]
-      #requestBody:
-        #required: true 
-       # content:
-          #application/json:
-            #schema:
-              #type: object
-              #properties:
-               # qa_id:
-                  #type: integer
-               # ans_id:
-                  #type: integer
-                #user_id:
-                  #type: integer
-                #score:
-                  #type: integer
+    post:
+      summary: Creates an qa_transaction.
+      tags: [transaction_qa]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qa_id:
+                  type: integer
+                ans_id:
+                  type: integer
+
 
       #responses: 
         #'201':
@@ -717,22 +714,22 @@ paths:
 
 
 
-  /qa_transaction/{id}:
-    get:
-      summary: Returns a qa_transaction by ID.
-      tags: [transaction_qa]
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Parameter description in CommonMark or HTML.
-          schema:
-            type : integer
-            format: int64
-            minimum: 1
-      responses: 
-        '200':
-          description: OK
+  #/qa_transaction/{id}:
+    #get:
+      #summary: Returns a qa_transaction by ID.
+      #tags: [transaction_qa]
+      #parameters:
+        #- name: id
+          #in: path
+          #required: true
+          #description: Parameter description in CommonMark or HTML.
+          #schema:
+            #type : integer
+            #format: int64
+            #minimum: 1
+      #responses: 
+        #'200':
+          #description: OK
 
 
 #-------------------------transaction_satisfaction-------------------------#
