@@ -690,11 +690,38 @@ app.get('/qa_transaction' , (req, res) => {
 app.post('/qa_transaction' , urlencodedParser,function  (req, res){
     console.log(req.body)
     const {qa_id,ans_id} = req.body
-    var qaLengths = qa.ans_list.map(item => ({
-        qa_id: item.qa_id,
-        ans_id: item.ans_id,
-        length: item.ans_id.length
-    }));
+    console.table(qa.ans_list)
+    
+    var qaLengths = qa.ans_list.map((item) => {
+        //qa_id: item.qa_id,
+        //ans_id: item.ans_id,
+        //length: item.ans_id.length
+        //console.log(item.ans_id.length)
+        console.table(item.ans_id)
+        var arr = item.ans_id.map((a_id, index) => {
+            var score = 0
+            
+            if(item.ans_id.length === 1){
+                score = 1
+            }
+            else if (index === 0 ){
+                score = 3 
+            } 
+            else if (index === 1){
+                score = 2
+            }
+            else if(index === 2){
+                score = 1
+            }
+            
+            //console.log(item.ans_id.length) 
+            console.log(qa.user_id,item.qa_id,a_id,score)
+            
+        })
+    }
+
+
+);
     connection.query(
         `INSERT INTO qa_transaction (qa_id,ans_id) VALUES (?,?)`,
         [qa_id,ans_id],
@@ -708,9 +735,10 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
             else {
                 res.json({ message: 'No answers found for this question' });
             }
-            console.log(qaLengths)
+            //console.log(qaLengths)
         }
     );
+
 });
 
 /*/Endpoint to add a new qa_transaction
