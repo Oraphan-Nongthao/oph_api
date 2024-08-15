@@ -718,20 +718,26 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
             //console.log(item.ans_id.length) 
             console.log(qa.user_id,item.qa_id,a_id,score)
             
+            
+        })
+    }
+    )
+    var ansIds = req.body.ans_id; // รับค่าเข้ามา
+    console.log('Received ansIds:',ansIds); 
+    if (ansIds.length > 0 ) {
+        ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
             connection.query(
-                `INSERT INTO qa_transaction (qa_id, ans_id, score) VALUES (?, ?, ?)`,
-                [item.qa_id, a_id, score],
+                `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
+                [qa_id, Answer.ans_id],
                 function(err, results) {
                     if (err) {
-                        console.error(err);
-                        return res.status(500).json({ error: err.message });
+                        return res.status(500).json({ error: err.message })
                     }
                 }
             );
         })
     }
-    );
-});
+})
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
