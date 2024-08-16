@@ -724,13 +724,37 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
         })
     }
     )
-    var qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
+    var qa_id = req.body.qa_id; //รับค่าเข้ามา
+    var ansIds =[req.body.ans_id];
+    
+    console.log('Received qa_id:', qa_id);
+    console.log('Received ansIds:', ansIds);
+
+    for (var Answer of ansIds) {
+        ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
+            connection.query(
+                `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
+                [qa_id, Answer],
+                function(err, results) {
+                    if (err) {
+                        return res.status(500).json({ error: err.message });
+                    }
+                    return results
+                }
+            );
+        })
+    }});
+    
+     
+    
+    /*var qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
     var ansIds = req.body.ans_id; // รับค่า ans_id เข้ามาจาก body ของ request 
 
     console.log('Received qa_id:', qa_id); // แสดงค่า qa_id ที่รับมาจาก request
     console.log('Received ansIds:', ansIds); // แสดงค่า ans_id ที่รับมาจาก request  
 
-    if (!ansIds || ansIds.length === 0 ) { // ตรวจสอบว่า ถ้าไม่มีค่า ans_id หรือ ans_id มีความยาว = 0
+    if (!ansIds || ansIds.length === 0 ) { // ตรว
+    จสอบว่า ถ้าไม่มีค่า ans_id หรือ ans_id มีความยาว = 0
         return res.status(400).json({error: 'ans_id not found'}) // ให้ส่งข้อความผิดพลาดกลับไป 
     }
 
@@ -749,17 +773,18 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                         if(err){
                             return reject(err); // ถ้ามีข้อ+ผิดพลาดให้ reject Promise
                         }
-                        resolve(results); // ถ้าไม่มีข้อผิดพลาดให้ resolve Promise
+                        resolve(results); // ถ้าไม่มีข้อผิดพลาดให้ resolve Promise   
+                        console.log(Answer.length)
                     }
                 )
             })
         }
-    
+
     } catch (err) {
         res.status(500).json({error: err.message}); // ส่งข้อความผิดพลาดกลับไปในกรณีที่มีข้อผิดพลาด
     }
 
-})
+});*/
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
