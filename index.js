@@ -30,6 +30,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = 5000
 
 var data_exposter = require('json2csv')
+const { resolve } = require('path')
+const { rejects } = require('assert')
 
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
@@ -689,7 +691,7 @@ app.get('/qa_transaction' , (req, res) => {
 )
 })
 
-app.post('/qa_transaction' , urlencodedParser,function  (req, res){
+app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
     console.log(req.body) //แสดงค่า qa_id , ans_id ที่รับค่าเข้ามา
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(qa.ans_list);
@@ -722,33 +724,75 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
         })
     }
     )
-    const qa_id = req.body.qa_id; //รับค่าเข้ามา
-    const ansIds =[req.body.ans_id];
+    const qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
+    const ansIds = req.body.ans_id; // รับค่า ans_id เข้ามาจาก body ของ request 
 
-    console.log('Received qa_id:', qa_id);
-    console.log('Received ansIds:', ansIds);
+    console.log('Received qa_id:', qa_id); // แสดงค่า qa_id ที่รับมาจาก request
+    console.log('Received ansIds:', ansIds); // แสดงค่า ans_id ที่รับมาจาก request  
 
-    if (ansIds.length > 0 ) {
-        ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
-            connection.query(
-                `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
-                [qa_id, Answer],
-                function(err, results) {
-                    if (err) {
-                        return res.status(500).json({ error: err.message });
-                    }
-                }
-            );
-            //console.log(Answer)
-        });
-    
-        res.status(200).json({ message: 'All answers inserted successfully' });
-    } else {
-        res.status(400).json({ error: 'No ansIds provided' });
+    if (!ansIds || ansIds.length === 0 ) { // ตรวจสอบว่า ans_id มีค่าหรือไม่ และมีข้อมูลอยู่หรือไม่ 
+        return res.status(400).json({error: 'ans_id not found'}) // ถ้าไม่พบ ans_id ให้ส่งข้อความผิดพลาดกลับไป 
+    }
+
+    if(!qa_id){ // ตรวจสอบว่า qa_id มีค่าหรือไม่ 
+        return res.status(400).json({error: 'qa_id not found'}) // ถ้าไม่พบ qa_id ให้ส่งข้อความผิดพลาดกลับไป 
     }
     
-    
+    try{
+        for (const Answer of ansIds){ // วนลูปผ่าน ans_id ทั้งหมด
+            await new Promise((resolve, reject) => { // สร้าง Promise สำหรับการ query ข้อมูล 
+                connection.query(
+                    'INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)', // คำสั่ง SQL สำหรับการแทรกข้อมูล
+                    [qa_id, Answer], // ข้อมูลที่จะนำไปแทรก
+                    function (err, results) { // callback function สำหรับตรวจสอบผลลัพธ์ 
+                        if(err){
+                            return reject(err); // ถ้ามีข้อผิดพลาดให้ reject Promise
+                        }
+                        resolve(results); // ถ้าไม่มีข้อผิดพลาดให้ resolve Promise
+                    }
+                )
+            })
+        }
+        res.status(200).json({message: 'Data intserted successfully'}); // ส่งข้อความยืนยันว่าแทรกข้อมูลสำเร็จ        
+    } catch (err) {
+        res.status(500).json({error: err.message}); // ส่งข้อความผิดพลาดกลับไปในกรณีที่มีข้อผิดพลาด
+    }
 })
+                
+
+    /*const ansIds = req.body.ans_id; // รับค่า ans_id
+    const qa_id = req.body.qa_id;   // รับค่า qa_id (คุณต้องส่ง qa_id ด้วยใน body ของ request)
+    
+    console.log('Received ansIds:', ansIds);
+    console.log('Received qa_id:', qa_id);
+
+    if (!ansIds || ansIds.length === 0) {
+        return res.status(400).json({ error: 'ans_id is required and cannot be empty' });
+    }
+
+    if (!qa_id) {
+        return res.status(400).json({ error: 'qa_id is required' });
+    }
+
+    try {
+        for (const Answer of ansIds) {
+            await new Promise((resolve, reject) => {
+                connection.query(
+                    'INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?,?)',
+                    [qa_id, Answer],
+                    (err, results) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        resolve(results);
+                    }
+                );
+            });
+        }
+        res.status(200).json({ message: 'Data inserted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }*/
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
