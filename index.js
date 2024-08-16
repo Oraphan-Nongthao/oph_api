@@ -739,6 +739,7 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
                     }
                 }
             );
+            //console.log(Answer)
         });
     
         res.status(200).json({ message: 'All answers inserted successfully' });
