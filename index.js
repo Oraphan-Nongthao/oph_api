@@ -722,21 +722,31 @@ app.post('/qa_transaction' , urlencodedParser,function  (req, res){
         })
     }
     )
-    var ansIds = req.body.ans_id; // รับค่าเข้ามา
-    console.log('Received ansIds:',ansIds); 
+    const qa_id = req.body.qa_id; //รับค่าเข้ามา
+    const ansIds =[req.body.ans_id];
+
+    console.log('Received qa_id:', qa_id);
+    console.log('Received ansIds:', ansIds);
+
     if (ansIds.length > 0 ) {
         ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
             connection.query(
                 `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
-                [qa_id, Answer.ans_id],
+                [qa_id, Answer],
                 function(err, results) {
                     if (err) {
-                        return res.status(500).json({ error: err.message })
+                        return res.status(500).json({ error: err.message });
                     }
                 }
             );
-        })
+        });
+    
+        res.status(200).json({ message: 'All answers inserted successfully' });
+    } else {
+        res.status(400).json({ error: 'No ansIds provided' });
     }
+    
+    
 })
 
 /*/Endpoint to add a new qa_transaction
