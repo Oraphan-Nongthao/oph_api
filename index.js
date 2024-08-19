@@ -692,15 +692,16 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    console.log(req.body) //แสดงค่า qa_id , ans_id ที่รับค่าเข้ามา
+    console.log(qa) //แสดงค่า qa_id , ans_id ที่รับค่าเข้ามา
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(qa.ans_list);
+    
     qa.ans_list.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
         //length: item.ans_id.length
         //console.log(item.ans_id.length)
-        console.table(item.ans_id)
+        //console.table(item.ans_id)
         item.ans_id.map((a_id, index) => {
             var score = 0
             
@@ -717,20 +718,27 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            //console.log(item.ans_id.length) 
-            console.log(qa.user_id,item.qa_id,a_id,score)
-            
-            
-        })
-    }
-    )
-    var qa_id = req.body.qa_id; //รับค่าเข้ามา
+            console.log(`user_id: ${qa.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            connection.query(
+                'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
+                [qa.user_id, item.qa_id, a_id, score],
+                function(err, results) {
+                    if (err) {
+                        return res.status(500).json({ error: err.message });
+                    }
+                    return results;
+                }
+            );
+        });
+    });
+    res.status(200).json({ message: 'QA transactions processed successfully' });
+});
+     /*var qa_id = req.body.qa_id; //รับค่าเข้ามา
     var ansIds =[req.body.ans_id];
     
     console.log('Received qa_id:', qa_id);
     console.log('Received ansIds:', ansIds);
 
-    for (var Answer of ansIds) {
         ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
             connection.query(
                 `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
@@ -743,18 +751,17 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 }
             );
         })
-    }});
+    });*/
     
      
     
-    /*var qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
+   /*var qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
     var ansIds = req.body.ans_id; // รับค่า ans_id เข้ามาจาก body ของ request 
 
     console.log('Received qa_id:', qa_id); // แสดงค่า qa_id ที่รับมาจาก request
     console.log('Received ansIds:', ansIds); // แสดงค่า ans_id ที่รับมาจาก request  
 
-    if (!ansIds || ansIds.length === 0 ) { // ตรว
-    จสอบว่า ถ้าไม่มีค่า ans_id หรือ ans_id มีความยาว = 0
+    if (!ansIds || ansIds.length === 0 ) { // ตรวจสอบว่า ถ้าไม่มีค่า ans_id หรือ ans_id มีความยาว = 0
         return res.status(400).json({error: 'ans_id not found'}) // ให้ส่งข้อความผิดพลาดกลับไป 
     }
 
@@ -784,7 +791,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
         res.status(500).json({error: err.message}); // ส่งข้อความผิดพลาดกลับไปในกรณีที่มีข้อผิดพลาด
     }
 
-});*/
+*/
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
