@@ -17,7 +17,7 @@ services:
       - /mnt/api/oph_api:/usr/src/app
     command: sh -c "npm install && npm run start"
     ports:
-      - "5000:5555"
+      - "5000:5000"
     environment:
       - NODE_ENV=development
     depends_on:
@@ -26,10 +26,10 @@ services:
   mariadb:
     image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: buopen@am1n2024
+      MYSQL_ROOT_PASSWORD: buopen@dm1n2024
       MYSQL_DATABASE: oph
       MYSQL_USER: oph
-      MYSQL_PASSWORD: buopen@am1n2024
+      MYSQL_PASSWORD: buopen@dm1n2024
     volumes:
       - mariadb_data:/var/lib/mysql
 
@@ -40,7 +40,7 @@ services:
     environment:
       PMA_HOST: mariadb
       PMA_USER: root
-      PMA_PASSWORD: buopen@am1n2024
+      PMA_PASSWORD: buopen@dm1n2024
     depends_on:
       - mariadb
 volumes:
