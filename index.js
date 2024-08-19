@@ -1,18 +1,18 @@
 const mysql = require('mysql2')
-/*const connection = mysql.createConnection ({
+const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'deep_sea'
-})*/
+})
 
 //up to server
-const connection = mysql.createConnection ({
+/*const connection = mysql.createConnection ({
     host: 'mariadb',
     user: 'oph',
     password: 'buopen@dm1n2024',
     database: 'oph'
-})
+})*/
 
 
 connection.connect((err) => {
@@ -712,8 +712,10 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    var qa = req.body
-    console.log(Answers.ans_list) 
+    var Answers = req.body
+    console.log(Answers);
+    var User = req.body.user_id
+    console.log(User)
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(Answers);
     qa.ans_list.map((item) => {
@@ -738,7 +740,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            console.log(`user_id: ${User}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
                 [Answers.user_id, item.qa_id, a_id, score],
