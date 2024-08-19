@@ -5,6 +5,14 @@ const connection = mysql.createConnection ({
     password: '',
     database: 'deep_sea'
 })
+
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        return;
+    }
+    console.log('Connected to the database successfully!');
+});
 const express = require('express')
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
@@ -692,11 +700,9 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    
     console.log(qa) //แสดงค่า qa_id , ans_id ที่รับค่าเข้ามา
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(qa.ans_list);
-    
     qa.ans_list.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,

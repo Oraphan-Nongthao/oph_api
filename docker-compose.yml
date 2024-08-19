@@ -10,6 +10,7 @@ services:
     depends_on:
       - api
       - mariadb
+
   api:
     image: node:14
     working_dir: /usr/src/app
@@ -22,6 +23,8 @@ services:
       - NODE_ENV=development
     depends_on:
       - mariadb
+    networks:
+      - oph_network
 
   mariadb:
     image: mariadb:latest
@@ -32,6 +35,13 @@ services:
       MYSQL_PASSWORD: buopen@dm1n2024
     volumes:
       - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - oph_network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -43,10 +53,12 @@ services:
       PMA_PASSWORD: buopen@dm1n2024
     depends_on:
       - mariadb
+    networks:
+      - oph_network
+
 volumes:
   mariadb_data:
 
 networks:
-  default:
-    external:
-      name: oph_network
+  oph_network:
+    driver: bridge
