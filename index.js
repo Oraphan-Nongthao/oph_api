@@ -1,11 +1,11 @@
 const mysql = require('mysql2')
 const connection = mysql.createConnection ({
-    host: 'localhost',
+    host: process.env.HOST|'localhost',
     user: 'root',
-    password: '',
-    database: 'deep_sea'
+    password: process.env.PASSWORD|'',
+    database: process.env.DATABASE|'deep_sea'
 })
- 
+console.log(process.env.USER)
 //up to server
 /*const connection = mysql.createConnection ({
     host: 'mariadb',
@@ -13,7 +13,6 @@ const connection = mysql.createConnection ({
     password: 'buopen@dm1n2024',
     database: 'oph'
 })*/
-
 
 connection.connect((err) => {
     if (err) {
@@ -43,11 +42,11 @@ const { error } = require('console')
 app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-const port = 5000
+const port = process.env.PORT|5000
 
 var data_exposter = require('json2csv')
-const { resolve } = require('path')
-const { rejects } = require('assert')
+/*const { resolve } = require('path')
+const { rejects } = require('assert')*/
 
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
@@ -710,10 +709,8 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    var Answers = req.body
+    var Answers = [req.body]
     console.log(Answers);
-    //var User = req.body.user_id
-    //console.log(User)
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     //console.table(qa);
     Answers.map((item) => {
@@ -741,7 +738,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
             console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                [qa.user_id, item.qa_id, a_id, score],
+                [Answers.user_id, item.qa_id, a_id, score],
                 function(err, results) {
                     if (err) {
                         return res.status(500).json({ error: err.message });
@@ -832,7 +829,18 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 
 //-------------------------------------result-------------------------------------//
 
-
+/*app.get('/qa_transaction/result' ,(req, res) => {
+    connection.query(
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id;',
+        [],
+        function(err, results) {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            return results;
+        }
+    );
+})*/
 
 
 

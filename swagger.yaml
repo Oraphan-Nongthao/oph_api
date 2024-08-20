@@ -704,7 +704,7 @@ paths:
               type: object
               properties:
                 user_id:
-                 type: integer
+                  type: integer
                 qa_id:
                   type: integer
                 ans_id:
