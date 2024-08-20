@@ -709,10 +709,10 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    console.log(qa);
+    console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     //console.table(Answers);
-    qa.ans_list.map((item) => {
+    Answers.ans_list.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
         //length: item.ans_id.length
@@ -734,10 +734,10 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            console.log(`user_id: ${qa.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                [qa.user_id, item.qa_id, a_id, score],
+                [Answers.user_id, item.qa_id, a_id, score],
                 function(err, results) {
                     if (err) {
                         return res.status(500).json({ error: err.message });
