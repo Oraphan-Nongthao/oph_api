@@ -711,7 +711,6 @@ paths:
                   type: integer
                 score:
                   type: integer
-
       responses: 
         '201':
           description: Created

@@ -709,9 +709,7 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    console.log(qa)
-    //var Answers = [req.body]
-    //console.log(Answers);
+    console.log(qa);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     //console.table(Answers);
     qa.ans_list.map((item) => {
@@ -720,7 +718,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
         //length: item.ans_id.length
         //console.log(item.ans_id.length)
         //console.table(item.ans_id)
-        item.ans_id?.map((a_id, index) => {
+        item.ans_id.map((a_id, index) => {
             var score = 0
             
             if(item.ans_id.length === 1){
