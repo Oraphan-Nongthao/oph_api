@@ -5,7 +5,7 @@ const connection = mysql.createConnection ({
     password: '',
     database: 'deep_sea'
 })
-
+ 
 //up to server
 /*const connection = mysql.createConnection ({
     host: 'mariadb',
@@ -710,13 +710,13 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    
-    console.log(qa);
+    var Answers = req.body
+    console.log(Answers);
     //var User = req.body.user_id
     //console.log(User)
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     //console.table(qa);
-    qa.ans_list.map((item) => {
+    Answers.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
         //length: item.ans_id.length
@@ -738,7 +738,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            console.log(`user_id: ${qa.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
                 [qa.user_id, item.qa_id, a_id, score],
@@ -756,11 +756,10 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
      /*var qa_id = req.body.qa_id; //รับค่าเข้ามา
     var ansIds =[req.body.ans_id];
     
-    SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE program_id=1;
     SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id;
     
     SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1;
-    
+
     console.log('Received qa_id:', qa_id);
     console.log('Received ansIds:', ansIds);
 
@@ -830,6 +829,19 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
         }
     )
 })*/
+
+//-------------------------------------result-------------------------------------//
+
+
+
+
+
+
+
+
+
+
+
 
 
 //-------------------------------------transaction_satisfaction-------------------------------------//
