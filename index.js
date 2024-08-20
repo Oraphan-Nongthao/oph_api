@@ -713,7 +713,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
     console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     console.table(Answers);
-    Answers.ans_list.map((item) => {
+    Answers.ans_list?.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
         //length: item.ans_id.length
