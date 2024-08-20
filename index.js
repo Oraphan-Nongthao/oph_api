@@ -709,11 +709,12 @@ app.get('/qa_transaction' , (req, res) => {
 })
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    var Answers = [req.body]
-    console.log(Answers);
+    console.log(qa)
+    //var Answers = [req.body]
+    //console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
-    console.table(Answers);
-    Answers.map((item) => {
+    //console.table(Answers);
+    qa.ans_list.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
         //length: item.ans_id.length
@@ -735,10 +736,10 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            console.log(`user_id: ${qa.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                [Answers.user_id, item.qa_id, a_id, score],
+                [qa.user_id, item.qa_id, a_id, score],
                 function(err, results) {
                     if (err) {
                         return res.status(500).json({ error: err.message });
@@ -831,8 +832,8 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 
 app.get('/qa_transaction/result' ,(req, res) => {
     connection.query(
-        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id;',
-        [],
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id',
+        [SUM(score),program_id],
         function(err, results) {
             if (err) {
                 return res.status(500).json({ error: err.message });
@@ -841,6 +842,20 @@ app.get('/qa_transaction/result' ,(req, res) => {
         }
     );
 })
+
+app.get('/qa_transaction/result' ,(req, res) => {
+    connection.query(
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1',
+        [SUM(score),program_id],
+        function(err, results) {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            return results;
+        }
+    );
+})
+
 
 
 
