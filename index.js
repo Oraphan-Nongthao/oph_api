@@ -712,7 +712,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
     var Answers = [req.body]
     console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
-    //console.table(qa);
+    console.table(Answers);
     Answers.map((item) => {
         //qa_id: item.qa_id,
         //ans_id: item.ans_id,
@@ -829,7 +829,7 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 
 //-------------------------------------result-------------------------------------//
 
-/*app.get('/qa_transaction/result' ,(req, res) => {
+app.get('/qa_transaction/result' ,(req, res) => {
     connection.query(
         'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id;',
         [],
@@ -840,7 +840,7 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
             return results;
         }
     );
-})*/
+})
 
 
 
