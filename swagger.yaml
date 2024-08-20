@@ -4,9 +4,9 @@ info:
   description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
   version: 1.0.0
 servers:
-  - url: http://10.119.16.43/api
   - url: http://localhost:5000
-  - url: http://localhost:3000
+  - url: http://10.119.16.43/api
+
 
 #-------------------------Status-------------------------#
 
@@ -711,11 +711,9 @@ paths:
                   type: integer
                 score:
                   type: integer
-
-
-      #responses: 
-        #'201':
-          #description: Created
+      responses: 
+        '201':
+          description: Created
 
 
 
@@ -753,24 +751,24 @@ paths:
                 type: array
                 items: 
                   type: string
-    #post:
-      #summary: Creates an satisfaction_transaction.
-      #tags: [transaction_satisfaction]
-      #requestBody:
-       # required: true 
-        #content:
-          #application/json:
-           # schema:
-             # type: object
-             # properties:
-               # q_id : 
-                #  type: integer
-                #ans_id :
-                 # type: integer
+    post:
+      summary: Creates an satisfaction_transaction.
+      tags: [transaction_satisfaction]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                q_id: 
+                  type: integer
+                a_id:
+                  type: integer
 
-     #responses: 
-        #'201':
-          #description: Created
+      responses: 
+        '201':
+          description: Created
 
 
   #/satisfaction_transaction/{id}:
