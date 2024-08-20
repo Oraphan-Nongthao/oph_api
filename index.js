@@ -828,32 +828,29 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 
 //-------------------------------------result-------------------------------------//
 
-app.get('/qa_transaction/result' ,(req, res) => {
+//score data 4 program
+app.get('/results/:id' , (req, res) => {
+    id = req.params.id
     connection.query(
-        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id',
-        [SUM(score),program_id],
-        function(err, results) {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            return results;
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id   ',
+        [id],
+        function(err, results){
+            res.json(results)
         }
-    );
+    )
 })
 
-app.get('/qa_transaction/result' ,(req, res) => {
+//program score max 
+app.get('/result_max/:id' , (req, res) => {
+    id = req.params.id
     connection.query(
-        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1',
-        [SUM(score),program_id],
-        function(err, results) {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            return results;
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1;',
+        [id],
+        function(err, results){
+            res.json(results)
         }
-    );
+    )
 })
-
 
 
 
