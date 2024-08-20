@@ -1,11 +1,11 @@
 const mysql = require('mysql2')
 const connection = mysql.createConnection ({
-    host: process.env.HOST|'localhost',
+    host: 'localhost',
     user: 'root',
-    password: process.env.PASSWORD|'',
-    database: process.env.DATABASE|'deep_sea'
+    password: '',
+    database: 'deep_sea'
 })
-console.log(process.env.USER)
+//console.log(process.env.USER)
 //up to server
 /*const connection = mysql.createConnection ({
     host: 'mariadb',
@@ -719,7 +719,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
         //length: item.ans_id.length
         //console.log(item.ans_id.length)
         //console.table(item.ans_id)
-        item.ans_id.map((a_id, index) => {
+        item.ans_id?.map((ans_id, index) => {
             var score = 0
             
             if(item.ans_id.length === 1){
@@ -735,10 +735,10 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 score = 1
             }
             
-            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${ans_id}, score: ${score}`);
             connection.query(
                 'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                [Answers.user_id, item.qa_id, a_id, score],
+                [Answers.user_id, item.qa_id, ans_id, score],
                 function(err, results) {
                     if (err) {
                         return res.status(500).json({ error: err.message });

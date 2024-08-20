@@ -703,14 +703,13 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
-                  type: integer
                 qa_id:
                   type: integer
                 ans_id:
                   type: integer
                 score:
                   type: integer
+
       responses: 
         '201':
           description: Created
