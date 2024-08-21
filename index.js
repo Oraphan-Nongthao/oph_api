@@ -610,10 +610,10 @@ app.get('/register_field_study' , (req, res) => {
 
 //Endpoint to add a new register_field_study
 app.post('/register_field_study' , (req, res) => {
-    const {field_study_name} = req.body
+    const {field_study_id} = req.body
     connection.query(
-        'INSERT INTO register_field_study (field_study_name) VALUES (?)',
-        [field_study_name],
+        'INSERT INTO register_field_study (field_study_id) VALUES (?)',
+        [field_study_id],
         function(err, results){
             res.json(results)
         }
@@ -665,10 +665,10 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    const {email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id} = req.body
     connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
-        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id) VALUES (?,?,?,?,?,?,?)',
+        [email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id],
         function(err, results){
             res.json(results)
         }
@@ -943,6 +943,8 @@ app.get('/report' , (req, res) => {
 })
 
 //report_qa
+
+
 //report_satisfaction
 
 
