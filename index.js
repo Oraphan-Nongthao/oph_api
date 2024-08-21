@@ -903,11 +903,18 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 })*/
 
 
-/*/report_register
-app.get('/register_user', (req, res) => {   
-});
+//report_register
+app.get('/report' , (req, res) => {
+    connection.query(
+        'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
 //report_qa
-//report_satisfaction*/
+//report_satisfaction
 
 
 
