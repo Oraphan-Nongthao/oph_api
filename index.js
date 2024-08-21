@@ -35,6 +35,9 @@ const swaggerDocument = YAML.parse(file)
 
 var qa = require('./QA.json')
 
+const fastcsv=require("fast-csv")
+const ws=fs.createWriteStream("transactionRegister.csv");
+
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
@@ -44,9 +47,10 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
 
-var data_exposter = require('json2csv')
-/*const { resolve } = require('path')
+/*var data_exposter = require('json2csv')
+const { resolve } = require('path')
 const { rejects } = require('assert')*/
+
 
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
@@ -870,7 +874,7 @@ app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     var sat = req.body
     console.log(sat);
     sat.satisfaction_list?.map(() => {
-    //const {q_id,a_id} = req.body
+        console.log(`user_id: ${sat.user_id}, question: ${q_id}, answers: ${a_id}`);
         connection.query(
             'INSERT INTO satisfaction_transaction (q_id,a_id) VALUES (?,?)',
             [q_id,a_id],
@@ -904,11 +908,24 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-app.get('/report' , (req, res) => {
+app.get('/report_RegisterUser' , urlencodedParser,async function (req, res) {
     connection.query(
         'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
         function(err, results){
-            res.json(results)
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
+
+            //CSV
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transactionRegister.csv successfully!");
+            })
+            .pipe(ws);
+            
         }
     )
 })
