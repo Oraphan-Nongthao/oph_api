@@ -854,15 +854,6 @@ app.get('/result_max/:id' , (req, res) => {
 })
 
 
-
-
-
-
-
-
-
-
-
 //-------------------------------------transaction_satisfaction-------------------------------------//
 //Endpoint to get all transaction_satisfaction 
 app.get('/satisfaction_transaction' , (req, res) => {
@@ -876,19 +867,23 @@ app.get('/satisfaction_transaction' , (req, res) => {
 
 //Endpoint to add a new satisfaction_transaction
 app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
-    console.log(req.body)
-    const {q_id,a_id} = req.body
-    connection.query(
-        'INSERT INTO satisfaction_transaction (q_id,a_id) VALUES (?,?)',
-        [q_id,a_id],
-        function(err, results){
-            if(err){
-                return res.status(500).json({error: err.message});
+    var sat = req.body
+    console.log(sat);
+    sat.satisfaction_list?.map(() => {
+    //const {q_id,a_id} = req.body
+        connection.query(
+            'INSERT INTO satisfaction_transaction (q_id,a_id) VALUES (?,?)',
+            [q_id,a_id],
+            function(err, results){
+                if(err){
+                    return res.status(500).json({error: err.message});
+                }
+                return res.json(results)    
             }
-             return res.json(results)    
-        }
-    )
-})
+        )
+    });
+    res.status(200).json({ message: 'Satisfaction transactions processed successfully' });   
+});
 
 
 /*//Endpoint to get transaction_satisfaction id 
