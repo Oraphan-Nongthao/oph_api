@@ -792,7 +792,7 @@ paths:
                 q_id: 
                   type: integer
                 a_id:
-                  type: integer
+                  type: string
 
       responses: 
         '201':

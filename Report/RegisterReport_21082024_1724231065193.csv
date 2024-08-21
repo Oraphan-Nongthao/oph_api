@@ -1,0 +1,6 @@
+register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date
+1,tomato@jhotdog.com,21-30,หญืง/Female,นักเรียน,ม.ปลาย,3,กรุงเทพมหานคร,2024-08-13T09:07:38.000Z
+2,your@,10-20,หญืง/Female,นักเรียน,ม.ต้น,3,กรุงเทพมหานคร,2024-08-13T09:40:35.000Z
+3,papaya@gmail.com,10-20,LGBTQIA,นักเรียน,ม.ปลาย,1,กรุงเทพมหานคร,2024-08-21T07:55:33.000Z
+4,happy269@gmail.com,10-20,ชาย/Male,นักเรียน,ม.ปลาย,3,นครราชสีมา,2024-08-21T08:35:38.000Z
+5,jay_123@gmail.com,10-20,ชาย/Male,นักเรียน,ปวช/ปวส,คอมพิวเตอร์ธุรกิจ,บุรีรัมย์,2024-08-21T08:37:02.000Z

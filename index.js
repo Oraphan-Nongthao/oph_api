@@ -36,7 +36,6 @@ const swaggerDocument = YAML.parse(file)
 var qa = require('./QA.json')
 
 const fastcsv=require("fast-csv")
-const ws=fs.createWriteStream("transactionRegister.csv");
 
 const app = express()
 const cors = require('cors')
@@ -873,16 +872,16 @@ app.get('/satisfaction_transaction' , (req, res) => {
 app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     var sat = req.body
     console.log(sat);
-    sat.satisfaction_list?.map(() => {
-        console.log(`user_id: ${sat.user_id}, question: ${q_id}, answers: ${a_id}`);
+    sat.satisfaction_list?.map((item) => {
+        console.log('q_id: ' + item.q_id + 'a_id: ' + item.a_id[0])
         connection.query(
             'INSERT INTO satisfaction_transaction (q_id,a_id) VALUES (?,?)',
-            [q_id,a_id],
+            [item.q_id,item.a_id],
             function(err, results){
                 if(err){
-                    return res.status(500).json({error: err.message});
+                    res.status(500).json({error: err.message});
                 }
-                return res.json(results)    
+                return results   
             }
         )
     });
@@ -908,7 +907,18 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-app.get('/report_RegisterUser' , urlencodedParser,async function (req, res) {
+app.get('/report' , (req, res) => {
+    let date_time = new Date();
+    console.log(date_time)
+
+    let date = ("0" + date_time.getDate()).slice(-2);
+
+    // get current month
+    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+
+    // get current year
+    let year = date_time.getFullYear();
+
     connection.query(
         'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
         function(err, results){
@@ -919,7 +929,9 @@ app.get('/report_RegisterUser' , urlencodedParser,async function (req, res) {
             const jsonResults = JSON.parse(JSON.stringify(results));
             console.log("JsonResults", jsonResults);
 
+
             //CSV
+            const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
             fastcsv.write(jsonResults,{ headers : true})
             .on("finish", function(){
                 console.log("Write to transactionRegister.csv successfully!");
