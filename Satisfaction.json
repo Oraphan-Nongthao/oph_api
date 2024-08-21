@@ -2,49 +2,49 @@
     "satisfaction_list":[
         {
             "q_id":1,
-            "ans_id":[
+            "a_id":[
                 1
             ]
         },
 
         {
             "q_id":2,
-            "ans_id":[
+            "a_id":[
                 2
             ]
         },
 
         {
             "q_id":3,
-            "ans_id":[
+            "a_id":[
                 3
             ]
         },
 
         {
             "q_id":4,
-            "ans_id":[
+            "a_id":[
                 4
             ]
         },
 
         {
             "q_id":5,
-            "ans_id":[
+            "a_id":[
                 2
             ]
         },
 
         {
             "q_id":6,
-            "ans_id":[
+            "a_id":[
                 4
             ]
         },
 
         {
             "q_id":7,
-            "ans_id":"string"
+            "a_id":"string"
         }
     ]
 }
