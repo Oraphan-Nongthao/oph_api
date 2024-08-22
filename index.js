@@ -26,15 +26,15 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
 
-/*const connection = mysql.createConnection ({
+const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'deep_sea'
 })
-//console.log(process.env.USER)*/
+//console.log(process.env.USER)
 //up to server
-const pool = mysql.createPool({
+/*const pool = mysql.createPool({
     host: 'mariadb',
     user: 'oph',
     password: 'buopen@dm1n2024',
@@ -42,15 +42,15 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10, // กำหนดจำนวนการเชื่อมต่อสูงสุดใน pool
     queueLimit: 0        // ไม่จำกัดจำนวนคิวที่รอการเชื่อมต่อ
-});
+});*/
 
-/*connection.connect((err) => {
+connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
     }
     console.log('Connected to the database successfully!');
-});*/
+});
 
 
 //-------------------------------------Status-------------------------------------//
@@ -959,7 +959,7 @@ app.get('/report_register' , (req, res) => {
 
             //Export data to excel
             // Set headers to prompt a file download
-            res.setHeader('Content-Type', 'text/csv charset=UTF-8');
+            res.setHeader('Content-Type', 'text/csv ');
             res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
 
             // Create a writable stream that pipes directly to the response
@@ -992,7 +992,7 @@ app.get('/report_qa' , (req, res) => {
     let year = date_time.getFullYear();
 
     connection.query(
-        '',
+        'SELECT user_id, email_name,q_student,q_parent,answer,score,time FROM qa_transaction LEFT JOIN register_user ON qa_transaction.user_id = register_user.register_id LEFT JOIN qa_question ON qa_transaction.qa_id = qa_question.qa_id LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id',
         function(err, results){
             if(err){
                 return res.status(500).json({error: err.message});
@@ -1017,7 +1017,7 @@ app.get('/report_qa' , (req, res) => {
 
             //Export data to excel
             // Set headers to prompt a file download
-            res.setHeader('Content-Type', 'text/csv charset=UTF-8');
+            res.setHeader('Content-Type', 'text/csv ');
             res.setHeader('Content-Disposition', 'attachment; filename="QAReport_' + date + month + year + '_' + Date.now() + '.csv"');
 
             // Create a writable stream that pipes directly to the response
@@ -1036,7 +1036,62 @@ app.get('/report_qa' , (req, res) => {
 });
 
 //report_satisfaction
+app.get('/report_satisfaction' , (req, res) => {
+    let date_time = new Date();
+    console.log(date_time)
 
+    // get current date
+    let date = ("0" + date_time.getDate()).slice(-2);
+
+    // get current month
+    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+
+    // get current year
+    let year = date_time.getFullYear();
+
+    connection.query(
+        'SELECT id,q_text,a_text,date_time FROM satisfaction_transaction LEFT JOIN satisfaction_q ON satisfaction_transaction.q_id = satisfaction_q.q_id LEFT JOIN satisfaction_ans ON satisfaction_transaction.a_id = satisfaction_ans.a_id',
+        function(err, results){
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
+
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
+
+            //CSV
+            //Write data in folder Report 
+            const ws=fs.createWriteStream("./Report/SatisfactionReport_"+date+month+year+"_"+Date.now()+".csv");
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transaction_Satisfaction.csv successfully!");
+            })
+            .pipe(ws);
+
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv ');
+            res.setHeader('Content-Disposition', 'attachment; filename="SatisfactionReport_' + date + month + year + '_' + Date.now() + '.csv"');
+
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
+        }
+    );
+});
 
 
 app.listen(port, () => {
