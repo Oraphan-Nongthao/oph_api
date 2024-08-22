@@ -17,8 +17,6 @@ var qa = require('./QA.json')
 const fastcsv=require("fast-csv")
 const { Writable } = require('stream');
 
-const { Sequelize } = require('sequelize');
-
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
@@ -28,9 +26,7 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
 
-
-/*//Connect Database
-const connection = mysql.createConnection ({
+/*const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -38,36 +34,33 @@ const connection = mysql.createConnection ({
 })*/
 //console.log(process.env.USER)
 //up to server
-const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
+const connection = mysql.createConnection ({
     host: 'mariadb',
-    dialect: 'mysql',
-    pool: {
-        max: 10,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-});
+    user: 'oph',
+    password: 'buopen@dm1n2024',
+    database: 'oph'
+})
 
-/*connection.connect((err) => {
+
+connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
     }
     console.log('Connected to the database successfully!');
-});*/
+});
+
 
 //-------------------------------------Status-------------------------------------//
 //Endpoint to get all status 
-app.get('/register_status' , async (req, res) => {
-    try{
-        const results = await sequelize.query('SELECT * FROM register_status');
-        res.json(results);
-        } catch (err) {
-            res.status(500).json({error: err.message});
-        }    
-    }
-);
+app.get('/register_status' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_status',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
 
 //Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
@@ -1030,6 +1023,8 @@ app.get('/report_qa' , (req, res) => {
 });
 
 //report_satisfaction
+
+
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
