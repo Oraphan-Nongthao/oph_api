@@ -36,6 +36,7 @@ const swaggerDocument = YAML.parse(file)
 var qa = require('./QA.json')
 
 const fastcsv=require("fast-csv")
+const { Writable } = require('stream');
 
 const app = express()
 const cors = require('cors')
@@ -907,10 +908,11 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-app.get('/report' , (req, res) => {
+app.get('/report_register' , (req, res) => {
     let date_time = new Date();
     console.log(date_time)
 
+    // get current date
     let date = ("0" + date_time.getDate()).slice(-2);
 
     // get current month
@@ -920,7 +922,7 @@ app.get('/report' , (req, res) => {
     let year = date_time.getFullYear();
 
     connection.query(
-        'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
+        'SELECT email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_field_study ON register_user.field_study_id = register_field_study.field_study_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
         function(err, results){
             if(err){
                 return res.status(500).json({error: err.message});
@@ -929,18 +931,39 @@ app.get('/report' , (req, res) => {
             const jsonResults = JSON.parse(JSON.stringify(results));
             console.log("JsonResults", jsonResults);
 
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
 
             //CSV
+            //Write data in folder Report 
             const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
             fastcsv.write(jsonResults,{ headers : true})
             .on("finish", function(){
                 console.log("Write to transactionRegister.csv successfully!");
             })
             .pipe(ws);
-            
+
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv charset=UTF-8');
+            res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
+
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
         }
-    )
-})
+    );
+});
 
 //report_qa
 
