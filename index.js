@@ -598,7 +598,7 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
     )
 })
 
-//-------------------------------------register_field_study-------------------------------------//
+/*/-------------------------------------register_field_study-------------------------------------//
 //Endpoint to get all register_field_study 
 app.get('/register_field_study' , (req, res) => {
     connection.query(
@@ -636,7 +636,7 @@ app.get('/register_field_study/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 app.get('/test' , (req, res) => {
     res.send('Api is working');
@@ -666,10 +666,10 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id} = req.body
+    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id) VALUES (?,?,?,?,?,?,?)',
-        [email_name,age_id,gender_id,status_id,degree_id,field_study_id,province_id],
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
+        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             res.json(results)
         }
@@ -966,7 +966,62 @@ app.get('/report_register' , (req, res) => {
 });
 
 //report_qa
+app.get('/report_qa' , (req, res) => {
+    let date_time = new Date();
+    console.log(date_time)
 
+    // get current date
+    let date = ("0" + date_time.getDate()).slice(-2);
+
+    // get current month
+    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+
+    // get current year
+    let year = date_time.getFullYear();
+
+    connection.query(
+        '',
+        function(err, results){
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
+
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
+
+            //CSV
+            //Write data in folder Report 
+            const ws=fs.createWriteStream("./Report/QAReport_"+date+month+year+"_"+Date.now()+".csv");
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transactionQA.csv successfully!");
+            })
+            .pipe(ws);
+
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv charset=UTF-8');
+            res.setHeader('Content-Disposition', 'attachment; filename="QAReport_' + date + month + year + '_' + Date.now() + '.csv"');
+
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
+        }
+    );
+});
 
 //report_satisfaction
 
