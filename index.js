@@ -31,10 +31,9 @@ const port = process.env.PORT|5000
     user: 'root',
     password: '',
     database: 'deep_sea'
-})*/
-//console.log(process.env.USER)
+})
+//console.log(process.env.USER)*/
 //up to server
-// create connection pool
 const pool = mysql.createPool({
     host: 'mariadb',
     user: 'oph',
@@ -44,7 +43,6 @@ const pool = mysql.createPool({
     connectionLimit: 10, // กำหนดจำนวนการเชื่อมต่อสูงสุดใน pool
     queueLimit: 0        // ไม่จำกัดจำนวนคิวที่รอการเชื่อมต่อ
 });
-
 
 /*connection.connect((err) => {
     if (err) {
@@ -56,9 +54,9 @@ const pool = mysql.createPool({
 
 
 //-------------------------------------Status-------------------------------------//
-//Endpoint to get all status 
-app.get('/register_status' , (req, res) => {
-    pool.query('SELECT * FROM register_status',(err, results) => {
+//test
+app.get('/api/register_status', (req, res) => {
+    pool.query('SELECT * FROM register_status', (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -66,7 +64,18 @@ app.get('/register_status' , (req, res) => {
     });
 });
 
-/*/Endpoint to add a new status 
+
+//Endpoint to get all status 
+app.get('/register_status' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_status',
+        function(err, results){
+            res.json(results)
+        }
+    )
+})
+
+//Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
     const {status_name} = req.body
     connection.query(
@@ -76,7 +85,7 @@ app.post('/register_status' , (req, res) => {
             res.json(results)
         }
     )
-})*/
+})
 
 /*/Endpoint to uddate a new status 
 app.put('/register_status' , (req, res) => {
@@ -91,7 +100,7 @@ app.put('/register_status' , (req, res) => {
 
 })*/
 
-/*/Endpoint to get status id 
+//Endpoint to get status id 
 app.get('/register_status/:id' , (req, res) => {
     id = req.params.id
     connection.query(
@@ -105,7 +114,7 @@ app.get('/register_status/:id' , (req, res) => {
             }
         }
     )
-})*/
+})
 
 /*/Endpoint to delete status id 
 app.delete('/register_status/:id' , (req, res) => {
@@ -120,7 +129,7 @@ app.delete('/register_status/:id' , (req, res) => {
 })*/
 
 //-------------------------------------Age-------------------------------------//
-/*/Endpoint to get all age 
+//Endpoint to get all age 
 app.get('/register_age' , (req, res) => {
     connection.query(
         'SELECT * FROM register_age',
@@ -599,7 +608,7 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
             }
         }
     )
-})*/
+})
 
 /*/-------------------------------------register_field_study-------------------------------------//
 //Endpoint to get all register_field_study 
@@ -640,9 +649,9 @@ app.get('/register_field_study/:id' , (req, res) => {
         }
     )
 })*/
-/*
+
 app.get('/test' , (req, res) => {
-    res.send('start api');
+    res.send('Api is working');
 })
 
 //-------------------------------------transition_register_user-------------------------------------//
@@ -655,7 +664,7 @@ app.get('/register_user' , (req, res) => {
         }
     )
 })
-*/
+
 /*/Preview
 
     res.send('hi,' + req.body.age_id)
@@ -665,7 +674,7 @@ app.get('/register_user' , (req, res) => {
 app.post('/register_user', jsonParser, function (req,res){
     console.log(req)
 })*/
-/*
+
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
@@ -698,16 +707,16 @@ app.get('/register_user/:id' , (req, res) => {
         }
     )
 })
-*/
+
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction 
-/*app.get('/qa_transaction' , (req, res) => {
+app.get('/qa_transaction' , (req, res) => {
     /*console.log(qa);
     const numbers = [3, 2, 1,];
     const result = numbers.map((number) => {
         console.log(number*2)
         return number*2*/
-    /*connection.query(
+    connection.query(
         'SELECT * FROM qa_transaction',
         function(err, results){
             res.json(results)
@@ -756,7 +765,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
         });
     });
     res.status(200).json({ message: 'QA transactions processed successfully' });
-});*/
+});
      /*var qa_id = req.body.qa_id; //รับค่าเข้ามา
     var ansIds =[req.body.ans_id];
     
@@ -836,7 +845,7 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 
 //-------------------------------------result-------------------------------------//
 
-/*/score data 4 program
+//score data 4 program
 app.get('/results/:id' , (req, res) => {
     id = req.params.id
     connection.query(
@@ -892,7 +901,7 @@ app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     res.status(200).json({ message: 'Satisfaction transactions processed successfully' });   
 });
 
-*/
+
 /*//Endpoint to get transaction_satisfaction id 
 app.get('/satisfaction_transaction/:id' , (req, res) => {
     id = req.params.id
@@ -910,7 +919,7 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 })*/
 
 
-/*/report_register
+//report_register
 app.get('/report_register' , (req, res) => {
     let date_time = new Date();
     console.log(date_time)
@@ -1025,7 +1034,7 @@ app.get('/report_qa' , (req, res) => {
         }
     );
 });
-*/
+
 //report_satisfaction
 
 
