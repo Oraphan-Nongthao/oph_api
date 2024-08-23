@@ -26,6 +26,8 @@ app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
 
+const { Sequelize } = require('sequelize');
+
 const connection = mysql.createConnection ({
     host: 'mariadb',
     user: 'oph',
@@ -34,14 +36,15 @@ const connection = mysql.createConnection ({
 })
 //console.log(process.env.USER)
 //up to server
-const pool = mysql.createPool({
+const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     host: 'mariadb',
-    user: 'oph',
-    password: 'buopen@dm1n2024',
-    database: 'oph',
-    waitForConnections: true,
-    connectionLimit: 10, // กำหนดจำนวนการเชื่อมต่อสูงสุดใน pool
-    queueLimit: 0        // ไม่จำกัดจำนวนคิวที่รอการเชื่อมต่อ
+    dialect: 'mysql',
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 });
 
 connection.connect((err) => {
@@ -56,15 +59,14 @@ connection.connect((err) => {
 
 //-------------------------------------Status-------------------------------------//
 //test
-app.get('/api/register_status', (req, res) => {
-    pool.query('SELECT * FROM register_status', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+app.get('/api/register_status', async (req, res) => {
+    try {
+        const results = await sequelize.query('SELECT * FROM register_status');
         res.json(results);
-    });
-});
-
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+})
 
 //Endpoint to get all status 
 app.get('/register_status' , (req, res) => {
