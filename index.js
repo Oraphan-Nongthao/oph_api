@@ -936,7 +936,7 @@ app.get('/report_register' , (req, res) => {
     let year = date_time.getFullYear();
 
     connection.query(
-        'SELECT email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_field_study ON register_user.field_study_id = register_field_study.field_study_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
+        'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
         function(err, results){
             if(err){
                 return res.status(500).json({error: err.message});
