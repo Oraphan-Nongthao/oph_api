@@ -789,8 +789,6 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
-                  type: integer
                 q_id: 
                   type: integer
                 a_id:
