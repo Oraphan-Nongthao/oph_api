@@ -629,33 +629,33 @@ paths:
                   type: string
 
 
-    #post:
-      #summary: Creates an register_user.
-      #tags: [transition_register_user]
-      #requestBody:
-        #required: true 
-        #content:
-          #application/json:
-            #schema:
-              #type: object
-              #properties:
-                #email_name:
-                  #type: string
-                #age_id:
-                  #type: integer
-                #gender_id:
-                  #type: integer
-                #status_id : 
-                  #type: integer
-                #degree_id :
-                  #type: integer
-                #field_study_name :
-                  #type: string
-                #province_id : 
-                  #type: integer
-      #responses: 
-        #'201':
-          #description: Created
+    post:
+      summary: Creates an register_user.
+      tags: [transition_register_user]
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_name:
+                  type: string
+                age_id:
+                  type: integer
+                gender_id:
+                  type: integer
+                status_id : 
+                  type: integer
+                degree_id :
+                  type: integer
+                field_study_name :
+                  type: string
+                province_id : 
+                  type: integer
+      responses: 
+        '201':
+          description: Created
 
 
   #/register_user/{id}:
@@ -789,6 +789,8 @@ paths:
             schema:
               type: object
               properties:
+                user_id:
+                  type: integer
                 q_id: 
                   type: integer
                 a_id:
