@@ -1050,7 +1050,7 @@ app.get('/report_satisfaction' , (req, res) => {
     let year = date_time.getFullYear();
 
     connection.query(
-        'SELECT id,q_text,a_text,date_time FROM satisfaction_transaction LEFT JOIN satisfaction_q ON satisfaction_transaction.q_id = satisfaction_q.q_id LEFT JOIN satisfaction_ans ON satisfaction_transaction.a_id = satisfaction_ans.a_id',
+        'SELECT id,register_id,email_name, q_text,a_text,date_time FROM satisfaction_transaction LEFT JOIN satisfaction_q ON satisfaction_transaction.q_id = satisfaction_q.q_id LEFT JOIN satisfaction_ans ON satisfaction_transaction.a_id = satisfaction_ans.a_id LEFT JOIN register_user ON satisfaction_transaction.id = register_user.register_id',
         function(err, results){
             if(err){
                 return res.status(500).json({error: err.message});
