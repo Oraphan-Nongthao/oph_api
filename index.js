@@ -27,10 +27,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
 
 const connection = mysql.createConnection ({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'deep_sea'
+    host: 'mariadb',
+    user: 'oph',
+    password: 'buopen@dm1n2024',
+    database: 'oph'
 })
 //console.log(process.env.USER)
 //up to server
