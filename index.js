@@ -25,8 +25,8 @@ app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
-/*
-const connection = mysql.createConnection ({
+
+/*const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -862,7 +862,7 @@ app.get('/results/:id' , (req, res) => {
 app.get('/result_max/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1;',
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1',
         [id],
         function(err, results){
             res.json(results)
