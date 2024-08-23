@@ -652,7 +652,7 @@ app.get('/register_field_study/:id' , (req, res) => {
 })*/
 
 app.get('/test' , (req, res) => {
-    res.send('Api is working');
+    res.send('Api start ');
 })
 
 //-------------------------------------transition_register_user-------------------------------------//
