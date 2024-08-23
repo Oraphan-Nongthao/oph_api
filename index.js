@@ -25,16 +25,16 @@ app.use(cors())
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
-
+/*
 const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'deep_sea'
-})
+})*/
 //console.log(process.env.USER)
 //up to server
-/*const pool = mysql.createPool({
+const pool = mysql.createPool({
     host: 'mariadb',
     user: 'oph',
     password: 'buopen@dm1n2024',
@@ -42,15 +42,16 @@ const connection = mysql.createConnection ({
     waitForConnections: true,
     connectionLimit: 10, // กำหนดจำนวนการเชื่อมต่อสูงสุดใน pool
     queueLimit: 0        // ไม่จำกัดจำนวนคิวที่รอการเชื่อมต่อ
-});*/
+});
 
-connection.connect((err) => {
+/*connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
     }
     console.log('Connected to the database successfully!');
 });
+*/
 
 
 //-------------------------------------Status-------------------------------------//
@@ -886,7 +887,8 @@ app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     var sat = req.body
     console.log(sat);
     sat.satisfaction_list?.map((item) => {
-        console.log(`q_id: ${item.q_id}, a_id: ${a_id[0]}`);
+        //console.log(`q_id: ${item.q_id}, a_id: ${a_id[0]}`);
+        console.log(' q_id: ' + item.q_id + ' a_id: ' + item.a_id[0])
         connection.query(
             'INSERT INTO satisfaction_transaction (q_id,a_id) VALUES (?,?)',
             [item.q_id,item.a_id],
