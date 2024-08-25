@@ -29,14 +29,14 @@ const port = process.env.PORT|5000
 const { Sequelize } = require('sequelize');
 
 const connection = mysql.createConnection ({
-    host: 'mariadb',
-    user: 'oph',
-    password: 'buopen@dm1n2024',
-    database: 'oph'
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'deep_sea'
 })
 //console.log(process.env.USER)
 //up to server
-const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
+/*const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     host: 'mariadb',
     dialect: 'mysql',
     dialectOptions: {
@@ -64,17 +64,17 @@ const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
         max: 5  // ลองเชื่อมต่อใหม่สูงสุด 5 ครั้ง
     }
     
-});
+});*/
 
-/*connection.connect((err) => {
+connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
     }
     console.log('Connected to the database successfully!');
-});*/
+});
 
-const checkConnection = async () => {
+/*const checkConnection = async () => {
     try {
         await sequelize.authenticate();
         console.log('Database connection is alive.');
@@ -82,8 +82,7 @@ const checkConnection = async () => {
         console.error('Unable to connect to the database:', error);
     }
 };
-
-setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วินาที อันนี้ run ไว้ข้างนอก
+setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วินาที อันนี้ run ไว้ข้างนอก*/
 
 
 
@@ -713,10 +712,10 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id} = req.body
+    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id) VALUES (?,?,?,?,?,?,?,?)',
-        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id],
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
+        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             res.json(results)
         }
