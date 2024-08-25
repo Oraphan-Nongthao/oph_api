@@ -713,10 +713,10 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id} = req.body
     connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
-        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
+        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id) VALUES (?,?,?,?,?,?,?,?)',
+        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id,result_id],
         function(err, results){
             res.json(results)
         }
