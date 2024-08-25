@@ -100,7 +100,7 @@ app.get('/api/register_status', async (req, res) => {
 });
 
 
-/*/Endpoint to get all status 
+//Endpoint to get all status 
 app.get('/register_status' , (req, res) => {
     connection.query(
         'SELECT * FROM register_status',
@@ -108,7 +108,7 @@ app.get('/register_status' , (req, res) => {
             res.json(results)
         }
     )
-})*/
+})
 
 //Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
