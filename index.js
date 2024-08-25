@@ -29,14 +29,14 @@ const port = process.env.PORT|5000
 const { Sequelize } = require('sequelize');
 
 const connection = mysql.createConnection ({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'deep_sea'
+    host: 'mariadb',
+    user: 'oph',
+    password: 'buopen@dm1n2024',
+    database: 'oph'
 })
 //console.log(process.env.USER)
 //up to server
-/*const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
+const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     host: 'mariadb',
     dialect: 'mysql',
     dialectOptions: {
@@ -64,7 +64,7 @@ const connection = mysql.createConnection ({
         max: 5  // ลองเชื่อมต่อใหม่สูงสุด 5 ครั้ง
     }
     
-});*/
+});
 
 connection.connect((err) => {
     if (err) {
@@ -74,7 +74,7 @@ connection.connect((err) => {
     console.log('Connected to the database successfully!');
 });
 
-/*const checkConnection = async () => {
+const checkConnection = async () => {
     try {
         await sequelize.authenticate();
         console.log('Database connection is alive.');
@@ -82,6 +82,7 @@ connection.connect((err) => {
         console.error('Unable to connect to the database:', error);
     }
 };
+
 setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วินาที อันนี้ run ไว้ข้างนอก*/
 
 
@@ -91,7 +92,7 @@ setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วิ
 app.get('/api/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const results = await sequelize.query('SELECT * FROM register_status');
+        const results = await Sequelize.query('SELECT * FROM register_status');
         res.json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
