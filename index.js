@@ -40,7 +40,11 @@ const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     host: 'mariadb',
     dialect: 'mysql',
     dialectOptions: {
-        connectTimeout: 60000  // เพิ่ม timeout สำหรับการเชื่อมต่อ (ms)
+        connectTimeout: 60000,
+        options: {
+            enableArithAbort: true,
+            keepAlive: true,
+        },
     },
     pool: {
         max: 10,
@@ -59,15 +63,27 @@ const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
         ],
         max: 5  // ลองเชื่อมต่อใหม่สูงสุด 5 ครั้ง
     }
+    
 });
 
-connection.connect((err) => {
+/*connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
     }
     console.log('Connected to the database successfully!');
-});
+});*/
+
+const checkConnection = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connection is alive.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+};
+
+setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วินาที อันนี้ run ไว้ข้างนอก
 
 
 
@@ -75,20 +91,16 @@ connection.connect((err) => {
 //test
 app.get('/api/register_status', async (req, res) => {
     try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const results = await sequelize.query('SELECT * FROM register_status');
         res.json(results);
     } catch (err) {
-        console.error('Query error:', err);
-        if (err.name === 'SequelizeConnectionError') {
-            console.error('Attempting to reconnect...');
-            await sequelize.authenticate();  // ลองเชื่อมต่อใหม่
-        }
         res.status(500).json({ error: err.message });
     }
 });
 
 
-//Endpoint to get all status 
+/*/Endpoint to get all status 
 app.get('/register_status' , (req, res) => {
     connection.query(
         'SELECT * FROM register_status',
@@ -96,7 +108,7 @@ app.get('/register_status' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
