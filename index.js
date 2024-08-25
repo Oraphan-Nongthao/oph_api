@@ -92,7 +92,7 @@ setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วิ
 app.get('/api/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const results = await Sequelize.query('SELECT * FROM register_status');
+        const results = await sequelize.query('SELECT * FROM register_status');
         res.json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
