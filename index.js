@@ -29,14 +29,14 @@ const port = process.env.PORT|5000
 const { Sequelize } = require('sequelize');
 
 const connection = mysql.createConnection ({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: 'mariadb',
+    user: 'oph',
+    password: 'buopen@dm1n2024',
     database: 'oph'
 })
 //console.log(process.env.USER)
 //up to server
-/*const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
+const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     host: 'mariadb',
     dialect: 'mysql',
     dialectOptions: {
@@ -60,7 +60,7 @@ const connection = mysql.createConnection ({
         max: 5  // ลองเชื่อมต่อใหม่สูงสุด 5 ครั้ง
     }
     
-});*/
+});
 
 connection.connect((err) => {
     if (err) {
@@ -70,7 +70,7 @@ connection.connect((err) => {
     console.log('Connected to the database successfully!');
 });
 
-/*const checkConnection = async () => {
+const checkConnection = async () => {
     try {
         await sequelize.authenticate();
         console.log('Database connection is alive.');
