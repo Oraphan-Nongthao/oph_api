@@ -794,7 +794,8 @@ paths:
                   type: integer
                 a_id:
                   type: string
-
+                user_id:
+                  type: integer  
       responses: 
         '201':
           description: Created
