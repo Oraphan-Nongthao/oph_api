@@ -709,7 +709,22 @@ app.post('/register_user', jsonParser, function (req,res){
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
     console.log(req.body)
-    const {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+    if(!age_id){
+        age_id = 0
+    }
+    if(!gender_id){
+        gender_id = 0
+    }
+    if(!status_id){
+        status_id = 0
+    }
+    if(!degree_id){
+        degree_id = 0
+    }
+    if(!province_id){
+        province_id = 0
+    }
     connection.query(
         'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
         [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
