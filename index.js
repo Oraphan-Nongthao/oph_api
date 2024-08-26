@@ -932,10 +932,10 @@ app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     var sat = req.body
     console.log(sat);
     sat.satisfaction_list?.map((item) => {
-        console.log('user_id: '+sat.user_id +' q_id: ' + item.q_id + ' a_id: ' + item.a_id[0])
+        console.log('user_id: '+item.user_id +' q_id: ' + item.q_id + ' a_id: ' + item.a_id[0])
         connection.query(
             'INSERT INTO satisfaction_transaction (user_id,q_id,a_id) VALUES (?,?,?)',
-            [sat.user_id,item.q_id,item.a_id],
+            [item.user_id,item.q_id,item.a_id],
             function(err, results){
                 if(err){
                     res.status(500).json({error: err.message});
