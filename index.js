@@ -41,10 +41,6 @@ const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     dialect: 'mysql',
     dialectOptions: {
         connectTimeout: 60000,
-        options: {
-            enableArithAbort: true,
-            keepAlive: true,
-        },
     },
     pool: {
         max: 10,
