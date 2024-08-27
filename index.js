@@ -80,8 +80,8 @@ setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วิ
 app.get('/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const results = await sequelize.query('SELECT * FROM register_status');
-        return res.json(results)
+        const [results] = await sequelize.query('SELECT * FROM register_status');
+        res.json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
