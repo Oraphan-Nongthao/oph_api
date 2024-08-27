@@ -81,7 +81,7 @@ app.get('/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const results = await sequelize.query('SELECT * FROM register_status');
-        res.json(results);
+        res.json(results)
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -186,55 +186,6 @@ app.get('/register_age/:id' , (req, res) => {
         }
     )
 })
-
-//-------------------------------------email-------------------------------------//
-//Endpoint to get all status 
-app.get('/register_email' , (req, res) => {
-    connection.query(
-        'SELECT * FROM register_email',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to add a new status 
-app.post('/register_email' ,urlencodedParser,function(req, res){
-    console.log(req.body)
-    const {email_name} = req.body
-
-    // Check if email_name contains '@'
-    if (!email_name.includes('@')) {
-        return res.status(400).json({ error: 'error' });
-    }
-    
-    connection.query(
-        'INSERT INTO register_email (email_name) VALUES (?)',
-        [email_name],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-app.get('/register_email/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM register_email WHERE email_id=?',
-        [id],
-        function(err, results){
-            if(err){
-                return res.json({'email' : 'not found'})
-            }
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'email' : 'not found'})
-            }
-        }
-    )
-})
-
 
 
 //-------------------------------------degree-------------------------------------//
@@ -805,69 +756,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
     });
     res.status(200).json({ message: 'QA transactions processed successfully' });
 });
-     /*var qa_id = req.body.qa_id; //รับค่าเข้ามา
-    var ansIds =[req.body.ans_id];
-    
-    SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id;
-    
-    SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1;
 
-    console.log('Received qa_id:', qa_id);
-    console.log('Received ansIds:', ansIds);
-
-        ansIds.forEach((Answer) => { //ใช้ forEach เพื่อวนลูปผ่านสมาชิกทุกตัวในอาเรย์ ansIds
-            connection.query(
-                `INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)`,
-                [qa_id, Answer],
-                function(err, results) {
-                    if (err) {
-                        return res.status(500).json({ error: err.message });
-                    }
-                    return results
-                }
-            );
-        })
-    });*/
-    
-     
-    
-   /*var qa_id = req.body.qa_id; // รับค่า qa_id เข้ามาจาก body ของ request
-    var ansIds = req.body.ans_id; // รับค่า ans_id เข้ามาจาก body ของ request 
-
-    console.log('Received qa_id:', qa_id); // แสดงค่า qa_id ที่รับมาจาก request
-    console.log('Received ansIds:', ansIds); // แสดงค่า ans_id ที่รับมาจาก request  
-
-    if (!ansIds || ansIds.length === 0 ) { // ตรวจสอบว่า ถ้าไม่มีค่า ans_id หรือ ans_id มีความยาว = 0
-        return res.status(400).json({error: 'ans_id not found'}) // ให้ส่งข้อความผิดพลาดกลับไป 
-    }
-
-    if(!qa_id){ // ตรวจสอบว่า qa_id มีค่าหรือไม่ 
-        return res.status(400).json({error: 'qa_id not found'}) // ถ้าไม่พบ qa_id ให้ส่งข้อความผิดพลาดกลับไป 
-    }
-
-    try{
-        for (var Answer of ansIds){ // วนลูปผ่าน ans_id ทั้งหมด
-            await new Promise((resolve, reject) => { 
-                //ใช้ await เพื่อรอจนกว่าคำสั่งนั่นจะเสร็จถึงค่อยไปทำงานอันต่อไปเเละ สร้าง Promise สำหรับการ query ข้อมูล 
-                connection.query(
-                    'INSERT INTO qa_transaction (qa_id, ans_id) VALUES (?, ?)', // คำสั่ง SQL สำหรับการแทรกข้อมูล
-                    [qa_id, Answer], // ข้อมูลที่จะนำไปแทรก
-                    function (err, results) { // callback function สำหรับตรวจสอบผลลัพธ์ 
-                        if(err){
-                            return reject(err); // ถ้ามีข้อ+ผิดพลาดให้ reject Promise
-                        }
-                        resolve(results); // ถ้าไม่มีข้อผิดพลาดให้ resolve Promise   
-                        console.log(Answer.length)
-                    }
-                )
-            })
-        }
-
-    } catch (err) {
-        res.status(500).json({error: err.message}); // ส่งข้อความผิดพลาดกลับไปในกรณีที่มีข้อผิดพลาด
-    }
-
-*/
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
