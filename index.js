@@ -721,11 +721,16 @@ app.post('/register_user', urlencodedParser,function(req, res){
         'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
         [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
-            res.json(results)
+            if (err) {
+                // ถ้ามีข้อผิดพลาดให้ส่งข้อผิดพลาดกลับไป
+                res.status(500).json({ error: err.message });
+            } else {
+                // ถ้าไม่มีข้อผิดพลาดให้ส่ง user_id กลับไป
+                res.json({ user_id: results.insertId });
+            }
         }
-    )
-})
-
+    );
+});
 //register_user
 //Endpoint to get register_user id 
 app.get('/register_user/:id' , (req, res) => {
