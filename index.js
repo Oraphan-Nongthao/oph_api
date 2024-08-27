@@ -17,11 +17,14 @@ var qa = require('./QA.json')
 const fastcsv=require("fast-csv")
 const { Writable } = require('stream');
 
+const cookieParser = require("cookie-parser");
+
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
 const { error } = require('console')
 app.use(cors())
+app.use(cookieParser());
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
@@ -103,6 +106,8 @@ app.post('/register_status' , (req, res) => {
         }
     )
 })
+
+
 
 
 /*/Endpoint to uddate a new status 
@@ -578,50 +583,6 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
     )
 })
 
-/*/-------------------------------------register_field_study-------------------------------------//
-//Endpoint to get all register_field_study 
-app.get('/register_field_study' , (req, res) => {
-    connection.query(
-        'SELECT * FROM register_field_study',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-//Endpoint to add a new register_field_study
-app.post('/register_field_study' , (req, res) => {
-    const {field_study_id} = req.body
-    connection.query(
-        'INSERT INTO register_field_study (field_study_id) VALUES (?)',
-        [field_study_id],
-        function(err, results){
-            res.json(results)
-        }
-    )
-})
-
-
-//Endpoint to get register_field_study id 
-app.get('/register_field_study/:id' , (req, res) => {
-    id = req.params.id
-    connection.query(
-        'SELECT * FROM register_field_study WHERE field_study_id=?',
-        [id],
-        function(err, results){
-            if (results.length > 0 ) {
-                res.json(results[0])
-            } else {
-            res.json({'register_field_study' : 'not found'})
-            }
-        }
-    )
-})*/
-
-app.get('/test' , (req, res) => {
-    res.send('Api start ');
-})
-
 //-------------------------------------transition_register_user-------------------------------------//
 //Endpoint to get all register_user 
 app.get('/register_user' , (req, res) => {
@@ -671,7 +632,9 @@ app.post('/register_user', urlencodedParser,function(req, res){
                 res.status(500).json({ error: err.message });
             } else {
                 // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
+                res.cookie('user_id', results.insertId )
                 res.json({user_id : results.insertId });  
+                
             }
         }
     );
