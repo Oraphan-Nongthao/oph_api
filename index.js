@@ -724,7 +724,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
             if (err) {
                 res.status(500).json({ error: err.message });
             } else {
-                res.json({user_id : register_id});
+                res.json({user_id : register_id + 'user_id :' });
             }
         }
     );
