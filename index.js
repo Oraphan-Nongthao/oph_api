@@ -87,17 +87,6 @@ app.get('/register_status', async (req, res) => {
     }
 });
 
-
-/*/Endpoint to get all status 
-app.get('/register_status' , (req, res) => {
-    connection.query(
-        'SELECT * FROM register_status',
-        function(err, results){
-            res.json(results)
-        }
-    )
-})*/
-
 //Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
     const {status_name} = req.body
@@ -105,7 +94,12 @@ app.post('/register_status' , (req, res) => {
         'INSERT INTO register_status (status_name) VALUES (?)',
         [status_name],
         function(err, results){
-            res.json(results)
+            if(err){
+                return res.json({'status_name' : 'not found'})
+            }else {
+                res.json(results)
+            }
+
         }
     )
 })
