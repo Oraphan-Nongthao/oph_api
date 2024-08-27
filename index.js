@@ -81,7 +81,7 @@ app.get('/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const results = await sequelize.query('SELECT * FROM register_status');
-        res.send(results)
+        return results
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
