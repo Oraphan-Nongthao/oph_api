@@ -747,7 +747,7 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                     if (err) {
                         res.status(500).json({ error: err.message });
                     } else {
-                        res.json(results);  
+                        res.json({user_id : results.insertId });  
                     }
                 }
             );
