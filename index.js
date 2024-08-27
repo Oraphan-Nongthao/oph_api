@@ -103,8 +103,7 @@ app.post('/api/register_status' , async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const status_name = await sequelize.query('INSERT INTO register_status (status_name) VALUES (?)');
-        [status_name],
-        res.json(results);
+        [status_name]
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
