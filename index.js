@@ -90,6 +90,15 @@ app.get('/register_status', async (req, res) => {
     }
 });*/
 
+app.get('/register_status' , (req, res) => {
+    connection.query(
+        'SELECT * FROM register_status',
+        function(err, results){
+            res.json(results) 
+        }
+    )
+})
+
 //Endpoint to add a new status 
 app.post('/register_status' , (req, res) => {
     const {status_name} = req.body
