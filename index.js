@@ -35,7 +35,7 @@ const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'deep_sea'
+    database: 'oph'
 })
 //console.log(process.env.USER)
 //up to server
