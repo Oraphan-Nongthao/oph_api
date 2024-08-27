@@ -99,15 +99,18 @@ app.get('/register_status' , (req, res) => {
 })*/
 
 //Endpoint to add a new status 
-app.post('/api/register_status' , async (req, res) => {
-    try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const status_name = await sequelize.query('INSERT INTO register_status (status_name) VALUES (?)');
-        [status_name]
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+//Endpoint to add a new age 
+app.post('/register_status' , (req, res) => {
+    const {status_name} = req.body
+    connection.query(
+        'INSERT INTO register_age (status_name) VALUES (?)',
+        [status_name],
+        function(err, results){
+            res.json(results)
+        }
+    )
 })
+
 
 
 /*/Endpoint to uddate a new status 
