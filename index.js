@@ -722,11 +722,9 @@ app.post('/register_user', urlencodedParser,function(req, res){
         [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
         function(err, results){
             if (err) {
-                // ถ้ามีข้อผิดพลาดให้ส่งข้อผิดพลาดกลับไป
                 res.status(500).json({ error: err.message });
             } else {
-                // ถ้าไม่มีข้อผิดพลาดให้ส่ง user_id กลับไป
-                res.json({ user_id: results.insertId });
+                res.json({user_id : register_id});
             }
         }
     );
