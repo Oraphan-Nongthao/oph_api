@@ -725,7 +725,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
                 res.status(500).json({ error: err.message });
             } else {
                 // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
-                res.json({message:'user_id',user_id : results.insertId });  
+                res.json({user_id : results.insertId });  
             }
         }
     );
@@ -799,9 +799,11 @@ app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
                 [Answers.user_id, item.qa_id, a_id, score],
                 function(err, results) {
                     if (err) {
-                        return res.status(500).json({ error: err.message });
+                        res.status(500).json({ error: err.message });
+                    } else {
+                        // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
+                        res.json({user_id : results.insertId });  
                     }
-                    return results;
                 }
             );
         });
