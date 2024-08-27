@@ -724,7 +724,8 @@ app.post('/register_user', urlencodedParser,function(req, res){
             if (err) {
                 res.status(500).json({ error: err.message });
             } else {
-                res.json({user_id : results.register_id , message:'user_id'});
+                // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
+                res.json({message:'user_id',user_id : results.insertId });  
             }
         }
     );
