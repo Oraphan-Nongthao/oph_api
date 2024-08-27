@@ -28,12 +28,12 @@ const port = process.env.PORT|5000
 
 const { Sequelize } = require('sequelize');
 
-const connection = mysql.createConnection ({
+/*const connection = mysql.createConnection ({
     host: 'mariadb',
     user: 'oph',
     password: 'buopen@dm1n2024',
     database: 'oph'
-})
+})*/
 //console.log(process.env.USER)
 //up to server
 const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
@@ -62,14 +62,6 @@ const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
     
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the database successfully!');
-});
-
 const checkConnection = async () => {
     try {
         await sequelize.authenticate();
@@ -84,7 +76,7 @@ setInterval(checkConnection, 60000); // ตรวจสอบทุก 60 วิ
 
 
 //-------------------------------------Status-------------------------------------//
-/*/test
+//test
 app.get('/api/register_status', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
@@ -93,10 +85,10 @@ app.get('/api/register_status', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});*/
+});
 
 
-//Endpoint to get all status 
+/*/Endpoint to get all status 
 app.get('/register_status' , (req, res) => {
     connection.query(
         'SELECT * FROM register_status',
@@ -104,19 +96,20 @@ app.get('/register_status' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new status 
-app.post('/register_status' , (req, res) => {
-    const {status_name} = req.body
-    connection.query(
-        'INSERT INTO register_status (status_name) VALUES (?)',
+app.post('/api/register_status' , async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const status_name = await sequelize.query('INSERT INTO register_status (status_name) VALUES (?)');
         [status_name],
-        function(err, results){
-            res.json(results)
-        }
-    )
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 })
+
 
 /*/Endpoint to uddate a new status 
 app.put('/register_status' , (req, res) => {
