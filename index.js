@@ -34,7 +34,7 @@ const { Sequelize } = require('sequelize');
 const connection = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: 'buopen@dm1n2024',
+    password: '',
     database: 'deep_sea'
 })
 //console.log(process.env.USER)
@@ -606,6 +606,7 @@ app.post('/register_user', jsonParser, function (req,res){
 
 //Endpoint to add a new register_user
 app.post('/register_user', urlencodedParser,function(req, res){
+    var cookie = cookie(req);
     console.log(req.body)
     let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     //datatype ที่ทำให้ database เข้าใจ ถ้าค่าว่างเรากำหนดให้มันเป็น 0 
