@@ -551,7 +551,7 @@ app.get('/qa_question/:id', async (req, res) => {
 
         if (questionResults.length > 0) {
             question_list.push(questionResults[0]);
-                console.log(question_list)
+            console.log(question_list)
         } else {
             return res.json({ 'qa_question': 'not found' });
         }
