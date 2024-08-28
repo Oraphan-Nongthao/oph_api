@@ -138,7 +138,7 @@ app.get('/register_status/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_status WHERE status_id = ?', {
-            replacements: [id], // Pass the id as a parameter to the query
+            replacements: [id], 
             type: sequelize.QueryTypes.SELECT
         });
         res.json(results);
@@ -209,9 +209,22 @@ app.post('/register_age' , (req, res) => {
 })
 
 
-
 //Endpoint to get age id 
-app.get('/register_age/:id' , (req, res) => {
+app.get('/register_age/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_age WHERE age_id = ?', {
+            replacements: [id], 
+            type: sequelize.QueryTypes.SELECT
+        });
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/register_age/:id' , (req, res) => {
     id = req.params.id
     connection.query(
         'SELECT * FROM register_age WHERE age_id=?',
@@ -224,7 +237,7 @@ app.get('/register_age/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 
 //-------------------------------------degree-------------------------------------//
