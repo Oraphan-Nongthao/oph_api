@@ -940,87 +940,66 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-app.get('/report_register', async (req, res) => {
+app.get('/report_register' , async (req, res) => {
     let date_time = new Date();
-    console.log(date_time);
+    console.log(date_time)
 
-    // Get current date
+    // get current date
     let date = ("0" + date_time.getDate()).slice(-2);
 
-    // Get current month
+    // get current month
     let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
-    // Get current year
+    // get current year
     let year = date_time.getFullYear();
 
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
 
-        // Fetch data from the database
-        const [results] = await sequelize.query(`
-            SELECT register_id, email_name, age_name, gender_name, status_name, degree_name, 
-                   field_study_name, province_name, registered_date, 
-                   (SELECT program_id FROM qa_transaction 
-                    LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id 
-                    WHERE user_id=register_id 
-                    GROUP BY program_id 
-                    ORDER BY SUM(score) DESC 
-                    LIMIT 1) AS result 
-            FROM register_user 
-            LEFT JOIN register_age ON register_user.age_id = register_age.age_id 
-            LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id 
-            LEFT JOIN register_status ON register_user.status_id= register_status.status_id 
-            LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id 
-            LEFT JOIN register_province ON register_user.province_id = register_province.province_id
-        `);
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
 
-        // Check if any results were returned
-        if (results.length === 0) {
-            console.log("No data retrieved from the database.");
-            return res.status(404).send("No data found.");
-        }
-
-        // Convert results to JSON
-        const jsonResults = JSON.parse(JSON.stringify(results));
-        console.log("JsonResults", jsonResults);
-
-        // Define the CSV file name
-        const fileName = `RegisterReport_${date}${month}${year}_${Date.now()}.csv`;
-        const filePath = path.join(__dirname, 'Report', fileName);
-
-        // Write the CSV file to the server
-        const ws = fs.createWriteStream(filePath);
-        fastcsv
-            .write(jsonResults, { headers: true })
-            .on('finish', function () {
-                console.log("Write to RegisterReport.csv successfully!");
-
-                // After writing to the file, send it to the client
-                res.download(filePath, fileName, (err) => {
-                    if (err) {
-                        console.error("Error sending the file:", err);
-                        res.status(500).send("Error sending the file.");
-                    }
-
-                    // Optionally, delete the file after sending it
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.error("Error deleting the file:", err);
-                        }
-                    });
-                });
-            })
-            .on('error', function (err) {
-                console.error("Error writing CSV file:", err);
-                res.status(500).send("Error writing CSV file.");
+            //CSV
+            //Write data in folder Report 
+            const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transactionRegister.csv successfully!");
             })
             .pipe(ws);
 
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv ');
+            res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
+
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
+            
     } catch (err) {
-        console.error("Error fetching data:", err);
         res.status(500).json({ error: err.message });
     }
-});
+    
+        
+});    
 
 //report_qa
 app.get('/report_qa' , (req, res) => {
