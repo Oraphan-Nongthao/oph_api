@@ -987,49 +987,51 @@ app.get('/qa_transaction', async (req, res) => {
 )
 })*/
 
-app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
-    var Answers = req.body
+app.post('/qa_transaction', urlencodedParser, async function(req, res) {
+    const Answers = req.body;
     console.log(Answers);
-    //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
-    //console.table(Answers);
-    Answers.ans_list?.map((item) => {
-        //qa_id: item.qa_id,
-        //ans_id: item.ans_id,
-        //length: item.ans_id.length
-        //console.log(item.ans_id.length)
-        //console.table(item.ans_id)
-        item.ans_id.map((a_id, index) => {
-            var score = 0
-            
-            if(item.ans_id.length === 1){
-                score = 1
-            }
-            else if (index === 0 ){
-                score = 3 
-            } 
-            else if (index === 1){
-                score = 2
-            }
-            else if(index === 2){
-                score = 1
-            }
-            
-            console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-            connection.query(
-                'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                [Answers.user_id, item.qa_id, a_id, score],
-                function(err, results) {
-                    if (err) {
-                        res.status(500).json({ error: err.message });
-                    } else {
-                        res.json({user_id : results.insertId });  
-                    }
+
+    try {
+        await checkConnection(); // Ensure the database connection is established
+
+        // Iterate over each item in the answer list
+        for (const item of Answers.ans_list || []) {
+            const ans_id_list = item.ans_id;
+
+            // Iterate over each answer ID
+            for (let index = 0; index < ans_id_list.length; index++) {
+                let score = 0;
+
+                // Assign score based on the index
+                if (ans_id_list.length === 1) {
+                    score = 1;
+                } else if (index === 0) {
+                    score = 3;
+                } else if (index === 1) {
+                    score = 2;
+                } else if (index === 2) {
+                    score = 1;
                 }
-            );
-        });
-    });
-    res.status(200).json({ message: 'QA transactions processed successfully' });
+
+                console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${ans_id_list[index]}, score: ${score}`);
+
+                // Insert the data into the database
+                await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
+                    replacements: [Answers.user_id, item.qa_id, ans_id_list[index], score],  // Replace variables
+                });
+            }
+        }
+
+        // Send a success response after all insertions are complete
+        res.json({ message: "All transactions have been processed successfully." });
+
+    } catch (err) {
+        // Handle any errors that occurred during processing
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
 });
+
 
 
 /*/Endpoint to add a new qa_transaction
@@ -1177,9 +1179,7 @@ app.get('/report_register' , async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
-            if(err){
-                return res.status(500).json({error: err.message});
-            }
+            
             //JSON
             const jsonResults = JSON.parse(JSON.stringify(results));
             console.log("JsonResults", jsonResults);
