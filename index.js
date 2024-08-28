@@ -913,13 +913,12 @@ app.post('/register_user', urlencodedParser,async function(req, res){
         if(!province_id){
             province_id = 0
         }
-
         await sequelize.query(
             'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?,?,?,?,?,?,?)', 
             {
                 replacements: [email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id]
             }
-        )
+        );
 
         // Send a successful response back to the client
         res.status(200).json({ message: 'User registered successfully' });
@@ -967,7 +966,7 @@ app.get('/register_user/:id', async (req, res) => {
 
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction
-/*app.get('/qa_transaction', async (req, res) => {
+app.get('/qa_transaction', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM qa_transaction');
@@ -989,66 +988,9 @@ app.get('/register_user/:id', async (req, res) => {
             res.json(results)
         }
 )
-})
+})*/
 app.post('/qa_transaction', urlencodedParser, async function (req, res) {
     var Answers = req.body;
-    console.log(Answers);
-    //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
-    //console.table(Answers);
-    try {
-        await checkConnection(); 
-        Answers.ans_list?.map((item) => {
-            //qa_id: item.qa_id,
-            //ans_id: item.ans_id,
-            //length: item.ans_id.length
-            //console.log(item.ans_id.length)
-            //console.table(item.ans_id)
-            item.ans_id.map(async (a_id, index) => {
-                var score = 0
-                
-                if(item.ans_id.length === 1){
-                    score = 1
-                }
-                else if (index === 0 ){
-                    score = 3 
-                } 
-                else if (index === 1){
-                    score = 2
-                }
-                else if(index === 2){
-                    score = 1
-                }
-
-                console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                await sequelize.query(
-                    'INSERT INTO register_user (user_id, q_id, a_id, score) VALUES (?,?,?,?)',
-                    {
-                        replacements: [Answers.user_id, item.qa_id, a_id, score]
-                    }
-                )
-            })
-        })
-        res.status(200).json({ message: 'Transaction recorded successfully' });
-
-    } catch (err) {
-        // Handle any errors that occurred during processing
-        console.error('Error processing transaction:', err);
-        res.status(500).json({ error: 'An error occurred while processing the transaction' });
-    }
-});*/
-
-app.get('/qa_transaction', async (req, res) => {
-    try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT * FROM qa_transaction');
-        res.json(results);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-app.post('/qa_transaction', urlencodedParser, async function (req, res) {
-    const Answers = req.body;
     console.log(Answers);
 
     try {
@@ -1095,7 +1037,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 
 
