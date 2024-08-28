@@ -986,7 +986,6 @@ app.get('/qa_transaction', async (req, res) => {
         }
 )
 })*/
-
 app.post('/qa_transaction', urlencodedParser, async function(req, res) {
     const Answers = req.body;
     console.log(Answers);
@@ -1014,14 +1013,12 @@ app.post('/qa_transaction', urlencodedParser, async function(req, res) {
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${ans_id_list[index]}, score: ${score}`);
-
                 // Insert the data into the database
                 await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
                     replacements: [Answers.user_id, item.qa_id, ans_id_list[index], score],  // Replace variables
                 });
             }
         }
-
         // Send a success response after all insertions are complete
         res.json({ message: "All transactions have been processed successfully." });
 
@@ -1031,6 +1028,51 @@ app.post('/qa_transaction', urlencodedParser, async function(req, res) {
         res.status(500).json({ error: err.message });
     }
 });
+
+/*app.post('/qa_transaction', urlencodedParser, async function(req, res) {
+    var Answers = req.body;
+    console.log(Answers);
+    //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
+    //console.table(Answers);
+    try {
+        await checkConnection(); 
+        Answers.ans_list?.map((item) => {
+            //qa_id: item.qa_id,
+            //ans_id: item.ans_id,
+            //length: item.ans_id.length
+            //console.log(item.ans_id.length)
+            //console.table(item.ans_id)
+            item.ans_id.map((a_id, index) => {
+                var score = 0
+                
+                if(item.ans_id.length === 1){
+                    score = 1
+                }
+                else if (index === 0 ){
+                    score = 3 
+                } 
+                else if (index === 1){
+                    score = 2
+                }
+                else if(index === 2){
+                    score = 1
+                }
+
+                console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+                const [results] = await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
+                    replacements: [Answers.user_id, item.qa_id, a_id, score],  // Replace variables
+                });
+            }
+        )});
+        // Send a success response after all insertions are complete
+        res.json({ message: "All transactions have been processed successfully." });
+        
+    } catch (err) {
+        // Handle any errors that occurred during processing
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+});*/
 
 
 
@@ -1162,64 +1204,77 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-//ยังไม่ connect
-app.get('/report_register' , async (req, res) => {
+app.get('/report_register', async (req, res) => {
     let date_time = new Date();
-    console.log(date_time)
+    console.log(date_time);
 
-    // get current date
+    // Get current date components
     let date = ("0" + date_time.getDate()).slice(-2);
-
-    // get current month
     let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
-
-    // get current year
     let year = date_time.getFullYear();
 
     try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
-            
-            //JSON
-            const jsonResults = JSON.parse(JSON.stringify(results));
-            console.log("JsonResults", jsonResults);
+        await checkConnection(); // Ensure database connection is established
 
-            if (jsonResults.length === 0) {
-                console.log("No data retrieved from the database.");
-                return res.status(404).send("No data found.");
-            }
+        // Fetch data from the database
+        const [results] = await sequelize.query(`
+            SELECT 
+                register_id,
+                email_name,
+                age_name,
+                gender_name,
+                status_name,
+                degree_name,
+                field_study_name,
+                province_name,
+                registered_date,
+                (SELECT program_id 
+                 FROM qa_transaction 
+                 LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id 
+                 WHERE user_id=register_id 
+                 GROUP BY program_id 
+                 ORDER BY SUM(score) DESC 
+                 LIMIT 1) AS result 
+            FROM 
+                register_user 
+            LEFT JOIN register_age ON register_user.age_id = register_age.age_id 
+            LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id 
+            LEFT JOIN register_status ON register_user.status_id = register_status.status_id 
+            LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id 
+            LEFT JOIN register_province ON register_user.province_id = register_province.province_id
+        `);
 
-            //CSV
-            //Write data in folder Report 
-            const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
-            fastcsv.write(jsonResults,{ headers : true})
-            .on("finish", function(){
-                console.log("Write to transactionRegister.csv successfully!");
-            })
-            .pipe(ws);
+        // Parse results to JSON
+        const jsonResults = JSON.parse(JSON.stringify(results));
+        console.log("JsonResults", jsonResults);
 
-            //Export data to excel
-            // Set headers to prompt a file download
-            res.setHeader('Content-Type', 'text/csv ');
-            res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
+        if (jsonResults.length === 0) {
+            console.log("No data retrieved from the database.");
+            return res.status(404).send("No data found.");
+        }
 
-            // Create a writable stream that pipes directly to the response
-            const csvStream = fastcsv.format({ headers: true });
-            csvStream.pipe(res);
+        // Set headers to prompt a file download
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
 
-            // Write the rows to the CSV stream
-            jsonResults.forEach(row => csvStream.write(row));
+        // Create a writable stream that pipes directly to the response
+        const csvStream = fastcsv.format({ headers: true });
+        csvStream.pipe(res);
 
-            // End the CSV stream
-            csvStream.end();
+        // Write the rows to the CSV stream
+        jsonResults.forEach(row => csvStream.write(row));
 
-            console.log("CSV file sent to client.");
+        // End the CSV stream
+        csvStream.end();
+
+        console.log("CSV file sent to client.");
 
     } catch (err) {
+        console.error("Error while generating report:", err.message);
         res.status(500).json({ error: err.message });
     }
-    
-});    
+});
+
 
 //report_qa
 app.get('/report_qa' , (req, res) => {
