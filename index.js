@@ -546,7 +546,7 @@ app.get('/qa_question/:id', async (req, res) => {
             'SELECT qa_id, q_student, q_parent FROM qa_question WHERE qa_id=?',
             {
                 replacements: [id],
-                type: sequelize.QueryTypes.SELECT
+                //type: sequelize.QueryTypes.SELECT
             }
         )
 
@@ -561,7 +561,7 @@ app.get('/qa_question/:id', async (req, res) => {
             'SELECT ans_id, answer FROM qa_answers WHERE qa_id=?',
             {
                 replacements: [id],
-                type: sequelize.QueryTypes.SELECT
+                //type: sequelize.QueryTypes.SELECT
             }
         )
 
@@ -1097,7 +1097,6 @@ app.get('/result_max/:id', async (req, res) => {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         var [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1',{
         replacements: [id],
-        //type: sequelize.QueryTypes.SELECT
         })
         res.json(results)
     } catch (err) {
