@@ -891,41 +891,39 @@ app.post('/register_user', jsonParser, function (req,res){
 })*/
 
 //Endpoint to add a new register_user
-app.post('/register_user', urlencodedParser,function(req, res){
+/*app.post('/register_user', urlencodedParser,function(req, res){
     //var cookie = cookie(req);
     console.log(req.body)
     let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
-    //datatype ที่ทำให้ database เข้าใจ ถ้าค่าว่างเรากำหนดให้มันเป็น 0 
-    if(!age_id){
-        age_id = 0
-    }
-    if(!gender_id){
-        gender_id = 0
-    }
-    if(!status_id){
-        status_id = 0
-    }
-    if(!degree_id){
-        degree_id = 0
-    }
-    if(!province_id){
-        province_id = 0
-    }
-    connection.query(
-        'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)',
-        [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id],
-        function(err, results){
-            if (err) {
-                res.status(500).json({ error: err.message });
-            } else {
-                // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
-                //res.cookie('user_id: ', results.insertId )
-                res.json({user_id : results.insertId });  
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        //datatype ที่ทำให้ database เข้าใจ ถ้าค่าว่างเรากำหนดให้มันเป็น 0 
+        if(!age_id){
+            age_id = 0
+        }
+        if(!gender_id){
+            gender_id = 0
+        }
+        if(!status_id){
+            status_id = 0
+        }
+        if(!degree_id){
+            degree_id = 0
+        }
+        if(!province_id){
+            province_id = 0
+        }
+        await sequelize.query(
+            'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)', {
+                replacements: [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id], 
                 
             }
-        }
-    );
-});
+            if {
+                res.json({user_id : results.insertId })
+            } 
+        )
+    }
+});*/
 //register_user
 //Endpoint to get register_user id 
 app.get('/register_user/:id', async (req, res) => {
@@ -986,50 +984,7 @@ app.get('/qa_transaction', async (req, res) => {
         }
 )
 })*/
-app.post('/qa_transaction', urlencodedParser, async function(req, res) {
-    const Answers = req.body;
-    console.log(Answers);
-
-    try {
-        await checkConnection(); // Ensure the database connection is established
-
-        // Iterate over each item in the answer list
-        for (const item of Answers.ans_list || []) {
-            const ans_id_list = item.ans_id;
-
-            // Iterate over each answer ID
-            for (let index = 0; index < ans_id_list.length; index++) {
-                let score = 0;
-
-                // Assign score based on the index
-                if (ans_id_list.length === 1) {
-                    score = 1;
-                } else if (index === 0) {
-                    score = 3;
-                } else if (index === 1) {
-                    score = 2;
-                } else if (index === 2) {
-                    score = 1;
-                }
-
-                console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${ans_id_list[index]}, score: ${score}`);
-                // Insert the data into the database
-                await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
-                    replacements: [Answers.user_id, item.qa_id, ans_id_list[index], score],  // Replace variables
-                });
-            }
-        }
-        // Send a success response after all insertions are complete
-        res.json({ message: "All transactions have been processed successfully." });
-
-    } catch (err) {
-        // Handle any errors that occurred during processing
-        console.error(err);
-        res.status(500).json({ error: err.message });
-    }
-});
-
-/*app.post('/qa_transaction', urlencodedParser, async function(req, res) {
+app.post('/qa_transaction', urlencodedParser, async function (req, res) {
     var Answers = req.body;
     console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
@@ -1059,8 +1014,9 @@ app.post('/qa_transaction', urlencodedParser, async function(req, res) {
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                const [results] = await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
+                const [results] = sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
                     replacements: [Answers.user_id, item.qa_id, a_id, score],  // Replace variables
+                    type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
                 });
             }
         )});
@@ -1072,7 +1028,7 @@ app.post('/qa_transaction', urlencodedParser, async function(req, res) {
         console.error(err);
         res.status(500).json({ error: err.message });
     }
-});*/
+});
 
 
 
