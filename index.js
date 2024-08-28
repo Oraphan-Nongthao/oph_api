@@ -966,7 +966,7 @@ app.get('/register_user/:id', async (req, res) => {
 
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction
-app.get('/qa_transaction', async (req, res) => {
+/*app.get('/qa_transaction', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM qa_transaction');
@@ -988,7 +988,7 @@ app.get('/qa_transaction', async (req, res) => {
             res.json(results)
         }
 )
-})*/
+})
 app.post('/qa_transaction', urlencodedParser, async function (req, res) {
     var Answers = req.body;
     console.log(Answers);
@@ -1036,7 +1036,68 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         console.error(err);
         res.status(500).json({ error: err.message });
     }
+});*/
+
+app.get('/qa_transaction', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_transaction');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
+
+app.post('/qa_transaction', urlencodedParser, async function (req, res) {
+    const Answers = req.body;
+    console.log(Answers);
+
+    try {
+        await checkConnection(); 
+
+        // Process each answer
+        const insertions = Answers.ans_list?.map(async (item) => {
+            // Iterate over each answer ID in the list
+            return Promise.all(item.ans_id.map(async (a_id, index) => {
+                let score = 0;
+                
+                // Determine the score based on the position in the list
+                if(item.ans_id.length === 1) {
+                    score = 1;
+                } else if (index === 0) {
+                    score = 3;
+                } else if (index === 1) {
+                    score = 2;
+                } else if (index === 2) {
+                    score = 1;
+                }
+
+                console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
+
+                // Assuming you are storing this in the database, you might do something like:
+                await sequelize.query(
+                    'INSERT INTO qa_transactions (user_id, qa_id, ans_id, score) VALUES (?,?,?,?)', 
+                    {
+                        replacements: [Answers.user_id, item.qa_id, a_id, score]
+                    }
+                );
+            }));
+        });
+
+        // Wait for all asynchronous operations to complete
+        await Promise.all(insertions);
+
+        // Send a success response after all insertions are complete
+        res.json({ message: "All transactions have been processed successfully." });
+        
+    } catch (err) {
+        // Handle any errors that occurred during processing
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 
 
 
