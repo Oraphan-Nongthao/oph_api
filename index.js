@@ -134,15 +134,19 @@ app.put('/register_status' , (req, res) => {
 
 //Endpoint to get status id
 app.get('/register_status/:id', async (req, res) => {
-    id = req.params.id
+    const id = req.params.id; // Get the id from the request parameters
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT * FROM register_status WHERE status_id=?')[id];
+        const [results] = await sequelize.query('SELECT * FROM register_status WHERE status_id = ?', {
+            replacements: [id], // Pass the id as a parameter to the query
+            type: sequelize.QueryTypes.SELECT
+        });
         res.json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 /*app.get('/register_status/:id' , (req, res) => {
     id = req.params.id
