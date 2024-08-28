@@ -548,7 +548,7 @@ app.get('/qa_question/:id', async (req, res) => {
                 replacements: [id],
                 type: sequelize.QueryTypes.SELECT
             }
-        );
+        )
 
         if (questionResults.length > 0) {
             question_list.push(questionResults[0]);
@@ -563,7 +563,7 @@ app.get('/qa_question/:id', async (req, res) => {
                 replacements: [id],
                 type: sequelize.QueryTypes.SELECT
             }
-        );
+        )
 
         if (answerResults.length > 0) {
             answers_list.push(answerResults);
@@ -576,7 +576,7 @@ app.get('/qa_question/:id', async (req, res) => {
         res.json({
             question_list,
             answers_list
-        });
+        })
 
     } catch (err) {
         res.status(500).json({ error: err.message });
