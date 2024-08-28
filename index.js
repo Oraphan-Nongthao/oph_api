@@ -533,10 +533,9 @@ app.post('/qa_question' , (req, res) => {
     )
 })
 
-
 //Endpoint to get qa_question id 
 app.get('/qa_question/:id', async (req, res) => {
-    const id = req.params.id;
+    id = req.params.id;
     let question_list = [];
     let answers_list = [];
 
@@ -582,8 +581,6 @@ app.get('/qa_question/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
-
 
 /*app.get('/qa_question/:id' , (req, res) => {
     id = req.params.id
