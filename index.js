@@ -1017,7 +1017,7 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
 
                 // Assuming you are storing this in the database, you might do something like:
                 await sequelize.query(
-                    'INSERT INTO qa_transaction (user_id, qa_id, a_id, score) VALUES (?,?,?,?)',
+                    'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?,?,?,?)',
                     {
                         replacements: [Answers.user_id, item.qa_id, a_id, score]
                     }
