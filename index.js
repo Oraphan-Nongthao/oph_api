@@ -830,6 +830,19 @@ app.get('/satisfaction_ans/:id', async (req, res) => {
     }
 });
 
+app.get('/satisfaction_ans/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM satisfaction_ans WHERE ans_id = ?', {
+            replacements: [id], 
+            type: sequelize.QueryTypes.SELECT
+        });
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 /*app.get('/satisfaction_ans/:id' , (req, res) => {
     id = req.params.id
