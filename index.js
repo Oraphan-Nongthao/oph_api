@@ -697,7 +697,7 @@ app.get('/qa_answers/:id', async (req, res) => {
 
 
 //-------------------------------------satisfaction_q-------------------------------------//
-//Endpoint to get all satisfaction_q
+/*/Endpoint to get all satisfaction_q
 app.get('/satisfaction_q', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
@@ -717,7 +717,7 @@ app.get('/satisfaction_q', async (req, res) => {
     )
 })*/
 
-//Endpoint to add a new satisfaction_q
+/*/Endpoint to add a new satisfaction_q
 app.post('/satisfaction_q' , (req, res) => {
     const {q_text} = req.body
     connection.query(
@@ -727,10 +727,10 @@ app.post('/satisfaction_q' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 
-//Endpoint to get qa_question id 
+/*/Endpoint to get qa_question id 
 app.get('/satisfaction_q/:id' , (req, res) => {
     id = req.params.id
     var satisfactionQ_list = [];
@@ -778,11 +778,11 @@ app.get('/satisfaction_q/:id' , (req, res) => {
             })
         }    
     );
-});
+});*/
 
 
 //-------------------------------------satisfaction_ans-------------------------------------//
-//Endpoint to get all satisfaction_ans
+/*/Endpoint to get all satisfaction_ans
 app.get('/satisfaction_ans', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
@@ -791,7 +791,7 @@ app.get('/satisfaction_ans', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
 /*app.get('/satisfaction_ans' , (req, res) => {
     connection.query(
@@ -802,7 +802,7 @@ app.get('/satisfaction_ans', async (req, res) => {
     )
 })*/
 
-//Endpoint to add a new satisfaction_ans
+/*/Endpoint to add a new satisfaction_ans
 app.post('/satisfaction_ans' , (req, res) => {
     const {ans_text} = req.body
     connection.query(
@@ -812,10 +812,10 @@ app.post('/satisfaction_ans' , (req, res) => {
             res.json(results)
         }
     )
-})
+})*/
 
 
-//Endpoint to get satisfaction_ans id 
+/*/Endpoint to get satisfaction_ans id 
 app.get('/satisfaction_ans/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
@@ -828,9 +828,9 @@ app.get('/satisfaction_ans/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
-app.get('/satisfaction_ans/:id', async (req, res) => {
+/*app.get('/satisfaction_ans/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
@@ -842,7 +842,7 @@ app.get('/satisfaction_ans/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
 /*app.get('/satisfaction_ans/:id' , (req, res) => {
     id = req.params.id
@@ -1048,14 +1048,13 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 //-------------------------------------result-------------------------------------//
 
 //score data 4 program
-//ไม่ขึ้น data
 app.get('/results/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id', {
             replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
-            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
+            //type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -1075,22 +1074,6 @@ app.get('/results/:id', async (req, res) => {
 })*/
 
 //program score max
-/*
-app.get('/register_user/:id', async (req, res) => {
-    const id = req.params.id; // Get the id from the request parameters
-    try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT * FROM register_user WHERE register_id = ?', {
-            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
-            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
-        });
-        res.json(results);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-*/
-
 app.get('/result_max/:id', async (req, res) => {
     var id = req.params.id;
     try {
@@ -1104,19 +1087,6 @@ app.get('/result_max/:id', async (req, res) => {
     }
 });
 
-/*app.get('/result_max/:id', async (req, res) => {
-    const id = req.params.id; // Get the id from the request parameters
-    try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1', {
-            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
-            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
-        });
-        res.json(results);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});*/
 
 /*app.get('/result_max/:id' , (req, res) => {
     id = req.params.id
@@ -1132,7 +1102,7 @@ app.get('/result_max/:id', async (req, res) => {
 
 //-------------------------------------transaction_satisfaction-------------------------------------//
 //Endpoint to get all transaction_satisfaction 
-app.get('/satisfaction_transaction', async (req, res) => {
+/*app.get('/satisfaction_transaction', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM satisfaction_transaction');
@@ -1140,7 +1110,7 @@ app.get('/satisfaction_transaction', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
 /*app.get('/satisfaction_transaction' , (req, res) => {
     connection.query(
@@ -1152,7 +1122,7 @@ app.get('/satisfaction_transaction', async (req, res) => {
 })*/
 
 //Endpoint to add a new satisfaction_transaction
-app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
+/*app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
     var sat = req.body
     console.log(sat);
     sat.satisfaction_list?.map((item) => {
@@ -1169,7 +1139,7 @@ app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
         )
     });
     res.status(200).json({ message: 'Satisfaction transactions processed successfully' });   
-});
+});*/
 
 
 /*//Endpoint to get transaction_satisfaction id 
@@ -1309,7 +1279,7 @@ app.get('/report_qa' , (req, res) => {
     );
 });
 
-//report_satisfaction
+/*/report_satisfaction
 app.get('/report_satisfaction' , (req, res) => {
     let date_time = new Date();
     console.log(date_time)
@@ -1365,7 +1335,7 @@ app.get('/report_satisfaction' , (req, res) => {
             console.log("CSV file sent to client.");
         }
     );
-});
+});*/
 
 
 app.listen(port, () => {
