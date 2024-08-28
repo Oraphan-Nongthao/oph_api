@@ -1075,12 +1075,31 @@ app.get('/results/:id', async (req, res) => {
 })*/
 
 //program score max
-app.get('/result_max/:id', async (req, res) => {
+/*
+app.get('/register_user/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1');
-        [id]
+        const [results] = await sequelize.query('SELECT * FROM register_user WHERE register_id = ?', {
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
+        });
         res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+*/
+
+app.get('/result_max/:id', async (req, res) => {
+    var id = req.params.id;
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        var [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1',{
+        replacements: [id],
+        type: sequelize.QueryTypes.SELECT
+        })
+        res.json(results)
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
