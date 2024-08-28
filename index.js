@@ -969,14 +969,20 @@ app.get('/report_register' , async (req, res) => {
 
             //CSV
             //Write data in folder Report 
-            const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
-            fastcsv.write(jsonResults,{ headers : true})
-            .on("finish", function(){
-                console.log("Write to transactionRegister.csv successfully!");
-            })
-            .pipe(ws);
+            const filename = `RegisterReport_${date}${month}${year}_${Date.now()}.csv`;
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
-            //Export data to excel
+            // Stream the CSV data to the response
+            fastcsv
+                .write(jsonResults, { headers: true })
+                .on("finish", () => {
+                    console.log("CSV file sent to client.");
+                })
+                .pipe(res);
+
+
+            /*/Export data to excel
             // Set headers to prompt a file download
             res.setHeader('Content-Type', 'text/csv ');
             res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
@@ -991,7 +997,7 @@ app.get('/report_register' , async (req, res) => {
             // End the CSV stream
             csvStream.end();
 
-            console.log("CSV file sent to client.");
+            console.log("CSV file sent to client.");*/
 
     } catch (err) {
         res.status(500).json({ error: err.message });
