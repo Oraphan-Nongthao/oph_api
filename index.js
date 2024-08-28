@@ -984,42 +984,45 @@ app.get('/qa_transaction', async (req, res) => {
         }
 )
 })*/
-app.post('/qa_transaction', urlencodedParser, async function (req, res) {
-    var Answers = req.body;
+app.post('/qa_transaction', urlencodedParser, async function(req, res) {
+    const Answers = req.body;
     console.log(Answers);
     //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
     //console.table(Answers);
+
     try {
-        await checkConnection(); 
-        Answers.ans_list?.map((item) => {
+        await checkConnection();
             //qa_id: item.qa_id,
             //ans_id: item.ans_id,
             //length: item.ans_id.length
             //console.log(item.ans_id.length)
             //console.table(item.ans_id)
-            item.ans_id.map(async (a_id, index) => {
-                var score = 0
-                
-                if(item.ans_id.length === 1){
-                    score = 1
-                }
-                else if (index === 0 ){
-                    score = 3 
-                } 
-                else if (index === 1){
-                    score = 2
-                }
-                else if(index === 2){
-                    score = 1
+        for (const item of Answers.ans_list || []) {
+            for (const [index, a_id] of item.ans_id.entries()) {
+                let score = 0;
+
+                if (item.ans_id.length === 1) {
+                    score = 1;
+                } else if (index === 0) {
+                    score = 3;
+                } else if (index === 1) {
+                    score = 2;
+                } else if (index === 2) {
+                    score = 1;
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                const [results] = sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
-                    replacements: [Answers.user_id, item.qa_id, a_id, score],  // Replace variables
-                    type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
+
+                // Insert into the qa_transaction table using Sequelize
+                await QATransaction.create({
+                    user_id: Answers.user_id,
+                    qa_id: item.qa_id,
+                    ans_id: a_id,
+                    score: score
                 });
             }
-        )});
+        }
+
         // Send a success response after all insertions are complete
         res.json({ message: "All transactions have been processed successfully." });
         
@@ -1029,7 +1032,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 
 
