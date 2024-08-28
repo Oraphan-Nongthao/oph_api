@@ -1021,7 +1021,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
                     'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?,?,?,?)',
                     {
                         replacements: [Answers.user_id, item.qa_id, a_id, score]
-                        .cookie(user_id)
                     }
                 );
             }));
