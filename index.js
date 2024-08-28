@@ -534,6 +534,7 @@ app.post('/qa_question' , (req, res) => {
 })
 
 //Endpoint to get qa_question id 
+//ยังไม่ connect
 app.get('/qa_question/:id', async (req, res) => {
     id = req.params.id;
     let question_list = [];
@@ -667,7 +668,22 @@ app.post('/qa_answers' , (req, res) => {
 
 
 //Endpoint to get qa_answers id 
-app.get('/qa_answers/:id' , (req, res) => {
+app.get('/qa_answers/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_answers WHERE ans_id = ?', {
+            replacements: [id], 
+            type: sequelize.QueryTypes.SELECT
+        });
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+/*app.get('/qa_answers/:id' , (req, res) => {
     id = req.params.id
     connection.query(
         'SELECT * FROM qa_answers WHERE ans_id=?',
@@ -676,7 +692,7 @@ app.get('/qa_answers/:id' , (req, res) => {
             res.json({'answer' : 'not found'})
         }
     )
-})
+})*/
 
 
 
@@ -800,7 +816,22 @@ app.post('/satisfaction_ans' , (req, res) => {
 
 
 //Endpoint to get satisfaction_ans id 
-app.get('/satisfaction_ans/:id' , (req, res) => {
+app.get('/satisfaction_ans/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM satisfaction_ans WHERE ans_id = ?', {
+            replacements: [id], 
+            type: sequelize.QueryTypes.SELECT
+        });
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+/*app.get('/satisfaction_ans/:id' , (req, res) => {
     id = req.params.id
     connection.query(
         'SELECT * FROM satisfaction_ans WHERE ans_id=?',
@@ -813,7 +844,7 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 //-------------------------------------transition_register_user-------------------------------------//
 //Endpoint to get all register_user
@@ -884,7 +915,22 @@ app.post('/register_user', urlencodedParser,function(req, res){
 });
 //register_user
 //Endpoint to get register_user id 
-app.get('/register_user/:id' , (req, res) => {
+app.get('/register_user/:id', async (req, res) => {
+    const id = req.params.id; // Get the id from the request parameters
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_user WHERE register_id = ?', {
+            replacements: [id], 
+            type: sequelize.QueryTypes.SELECT
+        });
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+/*app.get('/register_user/:id' , (req, res) => {
     id = req.params.id
     connection.query(
         'SELECT * FROM register_user WHERE register_id=?',
@@ -900,7 +946,7 @@ app.get('/register_user/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 //-------------------------------------qa_transaction-------------------------------------//
 //Endpoint to get all qa_transaction
