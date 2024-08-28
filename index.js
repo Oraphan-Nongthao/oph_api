@@ -132,8 +132,19 @@ app.put('/register_status' , (req, res) => {
 
 })*/
 
-//Endpoint to get status id 
-app.get('/register_status/:id' , (req, res) => {
+//Endpoint to get status id
+app.get('/register_status/:id', async (req, res) => {
+    id = req.params.id
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_status WHERE status_id=?')[id];
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/register_status/:id' , (req, res) => {
     id = req.params.id
     connection.query(
         'SELECT * FROM register_status WHERE status_id=?',
@@ -146,7 +157,7 @@ app.get('/register_status/:id' , (req, res) => {
             }
         }
     )
-})
+})*/
 
 /*/Endpoint to delete status id 
 app.delete('/register_status/:id' , (req, res) => {
@@ -940,6 +951,7 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
+//ยังไม่ connect
 app.get('/report_register' , async (req, res) => {
     let date_time = new Date();
     console.log(date_time)
@@ -998,7 +1010,6 @@ app.get('/report_register' , async (req, res) => {
         res.status(500).json({ error: err.message });
     }
     
-
 });    
 
 //report_qa
