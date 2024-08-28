@@ -15,6 +15,8 @@ const swaggerDocument = YAML.parse(file)
 var qa = require('./QA.json')
 
 const fastcsv=require("fast-csv")
+const { Writable } = require('stream');
+
 //const cookieParser = require("cookie-parser");
 
 const app = express()
@@ -952,71 +954,52 @@ app.get('/report_register' , async (req, res) => {
     let year = date_time.getFullYear();
 
     try {
-        await checkConnection(); // Check DB connection
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
+            if(err){
+                return res.status(500).json({error: err.message});
+            }
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
 
-        const [results] = await sequelize.query(
-            `SELECT 
-                register_id, email_name, age_name, gender_name, status_name, 
-                degree_name, field_study_name, province_name, registered_date,
-                (SELECT program_id 
-                 FROM qa_transaction 
-                 LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id 
-                 WHERE user_id = register_id 
-                 GROUP BY program_id 
-                 ORDER BY SUM(score) DESC 
-                 LIMIT 1) AS result 
-             FROM register_user 
-             LEFT JOIN register_age ON register_user.age_id = register_age.age_id 
-             LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id 
-             LEFT JOIN register_status ON register_user.status_id = register_status.status_id 
-             LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id 
-             LEFT JOIN register_province ON register_user.province_id = register_province.province_id`
-        );
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
 
-        const jsonResults = JSON.parse(JSON.stringify(results));
-        console.log("JsonResults", jsonResults);
-
-        if (jsonResults.length === 0) {
-            console.log("No data retrieved from the database.");
-            return res.status(404).send("No data found.");
-        }
-
-        // Ensure the Report directory exists
-        const reportDir = path.join(__dirname, 'Report');
-        if (!fs.existsSync(reportDir)) {
-            fs.mkdirSync(reportDir);
-        }
-
-        // Write CSV file to the Report directory
-        const filename = `RegisterReport_${date}${month}${year}_${Date.now()}.csv`;
-        const filepath = path.join(reportDir, filename);
-        const ws = fs.createWriteStream(filepath);
-
-        fastcsv
-            .write(jsonResults, { headers: true })
-            .on("finish", () => {
-                console.log(`Write to ${filepath} successfully!`);
+            //CSV
+            //Write data in folder Report 
+            const ws=fs.createWriteStream("./Report/RegisterReport_"+date+month+year+"_"+Date.now()+".csv");
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transactionRegister.csv successfully!");
             })
             .pipe(ws);
 
-        // Prepare CSV file for download
-        res.setHeader('Content-Type', 'text/csv');
-        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv ');
+            res.setHeader('Content-Disposition', 'attachment; filename="RegisterReport_' + date + month + year + '_' + Date.now() + '.csv"');
 
-        // Stream the CSV data to the response
-        fastcsv
-            .write(jsonResults, { headers: true })
-            .on("finish", () => {
-                console.log("CSV file sent to client.");
-            })
-            .pipe(res);
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
 
     } catch (err) {
-        console.error("Error:", err.message);
         res.status(500).json({ error: err.message });
     }
-});
+    
 
+});    
 
 //report_qa
 app.get('/report_qa' , (req, res) => {
