@@ -1014,13 +1014,10 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                await sequelize.query(
-                    'INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)',
-                    {
-                        replacements: [Answers.user_id, item.qa_id, a_id, score],
-                        type: sequelize.QueryTypes.INSERT
-                    }
-                );
+                const [results] = sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
+                    replacements: [Answers.user_id, item.qa_id, a_id, score],  // Replace variables
+                    type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
+                });
             }
         )});
         // Send a success response after all insertions are complete
