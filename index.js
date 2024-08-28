@@ -315,15 +315,25 @@ app.get('/register_gender/:id' , (req, res) => {
 })
 
 //-------------------------------------province-------------------------------------//
-//Endpoint to get all register_province 
-app.get('/register_province' , (req, res) => {
+//Endpoint to get all register_province
+app.get('/register_province', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_province');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/register_province' , (req, res) => {
     connection.query(
         'SELECT * FROM register_province',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new register_province
 app.post('/register_province' , (req, res) => {
@@ -357,14 +367,23 @@ app.get('/register_province/:id' , (req, res) => {
 
 //-------------------------------------qa_program-------------------------------------//
 //Endpoint to get all qa_program 
-app.get('/qa_program' , (req, res) => {
+app.get('/qa_program', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_program');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+/*app.get('/qa_program' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_program',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new qa_program
 app.post('/qa_program' , (req, res) => {
@@ -396,15 +415,25 @@ app.get('/qa_program/:id' , (req, res) => {
 })
 
 //-------------------------------------qa_question-------------------------------------//
-//Endpoint to get all qa_question 
-app.get('/qa_questions' , (req, res) => {
+//Endpoint to get all qa_question
+app.get('/qa_question', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_question');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/qa_questions' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_question',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new qa_question
 app.post('/qa_question' , (req, res) => {
@@ -472,14 +501,24 @@ app.get('/qa_question/:id' , (req, res) => {
 
 //-------------------------------------qa_answers-------------------------------------//
 //Endpoint to get all qa_answers 
-app.get('/qa_answers' , (req, res) => {
+app.get('/qa_answers', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_answers');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/qa_answers' , (req, res) => {
     connection.query(
         'SELECT * FROM qa_answers',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new qa_answers
 app.post('/qa_answers' , (req, res) => {
@@ -509,15 +548,25 @@ app.get('/qa_answers/:id' , (req, res) => {
 
 
 //-------------------------------------satisfaction_q-------------------------------------//
-//Endpoint to get all satisfaction_q 
-app.get('/satisfaction_q' , (req, res) => {
+//Endpoint to get all satisfaction_q
+app.get('/satisfaction_q', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM satisfaction_q');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/satisfaction_q' , (req, res) => {
     connection.query(
         'SELECT * FROM satisfaction_q',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new satisfaction_q
 app.post('/satisfaction_q' , (req, res) => {
@@ -585,14 +634,24 @@ app.get('/satisfaction_q/:id' , (req, res) => {
 
 //-------------------------------------satisfaction_ans-------------------------------------//
 //Endpoint to get all satisfaction_ans
-app.get('/satisfaction_ans' , (req, res) => {
+app.get('/satisfaction_ans', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM satisfaction_ans');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/satisfaction_ans' , (req, res) => {
     connection.query(
         'SELECT * FROM satisfaction_ans',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new satisfaction_ans
 app.post('/satisfaction_ans' , (req, res) => {
@@ -624,15 +683,25 @@ app.get('/satisfaction_ans/:id' , (req, res) => {
 })
 
 //-------------------------------------transition_register_user-------------------------------------//
-//Endpoint to get all register_user 
-app.get('/register_user' , (req, res) => {
+//Endpoint to get all register_user
+app.get('/register_user', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_user');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/register_user' , (req, res) => {
     connection.query(
         'SELECT * FROM register_user',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 /*/Preview
 
@@ -701,20 +770,30 @@ app.get('/register_user/:id' , (req, res) => {
 })
 
 //-------------------------------------qa_transaction-------------------------------------//
-//Endpoint to get all qa_transaction 
-app.get('/qa_transaction' , (req, res) => {
+//Endpoint to get all qa_transaction
+app.get('/qa_transaction', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM qa_transaction');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/qa_transaction' , (req, res) => {*/
     /*console.log(qa);
     const numbers = [3, 2, 1,];
     const result = numbers.map((number) => {
         console.log(number*2)
         return number*2*/
-    connection.query(
+    /*connection.query(
         'SELECT * FROM qa_transaction',
         function(err, results){
             res.json(results)
         }
 )
-})
+})*/
 
 app.post('/qa_transaction' , urlencodedParser,async function  (req, res){
     var Answers = req.body
@@ -803,14 +882,24 @@ app.get('/result_max/:id' , (req, res) => {
 
 //-------------------------------------transaction_satisfaction-------------------------------------//
 //Endpoint to get all transaction_satisfaction 
-app.get('/satisfaction_transaction' , (req, res) => {
+app.get('/satisfaction_transaction', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM satisfaction_transaction');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/satisfaction_transaction' , (req, res) => {
     connection.query(
         'SELECT * FROM satisfaction_transaction',
         function(err, results){
             res.json(results)
         }
     )
-})
+})*/
 
 //Endpoint to add a new satisfaction_transaction
 app.post('/satisfaction_transaction', urlencodedParser,function(req, res){
