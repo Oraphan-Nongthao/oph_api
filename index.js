@@ -1020,21 +1020,20 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                await QATransaction.create({
-                    user_id: Answers.user_id,
-                    qa_id: item.qa_id,
-                    ans_id: a_id,
-                    score: score
-                });
-            }
-        )});
-        // Send a success response after all insertions are complete
-        res.json({ message: "All transactions have been processed successfully." });
-        
+                await sequelize.query(
+                    'INSERT INTO register_user (user_id, q_id, a_id, score) VALUES (?,?,?,?)',
+                    {
+                        replacements: [Answers.user_id, item.qa_id, a_id, score]
+                    }
+                )
+            })
+        })
+        res.status(200).json({ message: 'Transaction recorded successfully' });
+
     } catch (err) {
         // Handle any errors that occurred during processing
-        console.error(err);
-        res.status(500).json({ error: err.message });
+        console.error('Error processing transaction:', err);
+        res.status(500).json({ error: 'An error occurred while processing the transaction' });
     }
 });
 
