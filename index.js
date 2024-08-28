@@ -891,30 +891,28 @@ app.post('/register_user', jsonParser, function (req,res){
 })*/
 
 //Endpoint to add a new register_user
-app.post('/register_user', urlencodedParser,async function(req, res){
-    //var cookie = cookie(req);
-    console.log(req.body)
-    let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
+app.post('/register_user', urlencodedParser, async function(req, res) {
+    console.log(req.body);
+    let { email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id } = req.body;
+    
+    // Simple validation checks
+    if (!email_name || typeof email_name !== 'string') {
+        return res.status(400).json({ error: 'Invalid email_name' });
+    }
+
+    // Assign default values if undefined
+    age_id = age_id || 0;
+    gender_id = gender_id || 0;
+    status_id = status_id || 0;
+    degree_id = degree_id || 0;
+    province_id = province_id || 0;
+
     try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        //datatype ที่ทำให้ database เข้าใจ ถ้าค่าว่างเรากำหนดให้มันเป็น 0 
-        if(!age_id){
-            age_id = 0
-        }
-        if(!gender_id){
-            gender_id = 0
-        }
-        if(!status_id){
-            status_id = 0
-        }
-        if(!degree_id){
-            degree_id = 0
-        }
-        if(!province_id){
-            province_id = 0
-        }
+        await checkConnection(); // Function to check database connection
+
+        // Use parameterized queries to prevent SQL injection
         await sequelize.query(
-            'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?,?,?,?,?,?,?)', 
+            'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?, ?, ?, ?, ?, ?, ?)', 
             {
                 replacements: [email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id]
             }
@@ -925,8 +923,8 @@ app.post('/register_user', urlencodedParser,async function(req, res){
 
     } catch (err) {
         // Handle any errors that occurred during processing
-        console.error(err);
-        res.status(500).json({ error: err.message });
+        console.error('Error registering user:', err);
+        res.status(500).json({ error: 'An error occurred while registering the user' });
     }
 });
 //register_user
@@ -992,42 +990,41 @@ app.get('/qa_transaction', async (req, res) => {
 app.post('/qa_transaction', urlencodedParser, async function (req, res) {
     var Answers = req.body;
     console.log(Answers);
-
+    //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
+    //console.table(Answers);
     try {
         await checkConnection(); 
-
-        // Process each answer
-        const insertions = Answers.ans_list?.map(async (item) => {
-            // Iterate over each answer ID in the list
-            return Promise.all(item.ans_id.map(async (a_id, index) => {
-                let score = 0;
+        Answers.ans_list?.map((item) => {
+            //qa_id: item.qa_id,
+            //ans_id: item.ans_id,
+            //length: item.ans_id.length
+            //console.log(item.ans_id.length)
+            //console.table(item.ans_id)
+            item.ans_id.map(async (a_id, index) => {
+                var score = 0
                 
-                // Determine the score based on the position in the list
-                if(item.ans_id.length === 1) {
-                    score = 1;
-                } else if (index === 0) {
-                    score = 3;
-                } else if (index === 1) {
-                    score = 2;
-                } else if (index === 2) {
-                    score = 1;
+                if(item.ans_id.length === 1){
+                    score = 1
+                }
+                else if (index === 0 ){
+                    score = 3 
+                } 
+                else if (index === 1){
+                    score = 2
+                }
+                else if(index === 2){
+                    score = 1
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-
-                // Assuming you are storing this in the database, you might do something like:
-                await sequelize.query(
-                    'INSERT INTO qa_transactions (user_id, qa_id, ans_id, score) VALUES (?,?,?,?)', 
-                    {
-                        replacements: [Answers.user_id, item.qa_id, a_id, score]
-                    }
-                );
-            }));
-        });
-
-        // Wait for all asynchronous operations to complete
-        await Promise.all(insertions);
-
+                await QATransaction.create({
+                    user_id: Answers.user_id,
+                    qa_id: item.qa_id,
+                    ans_id: a_id,
+                    score: score
+                });
+            }
+        )});
         // Send a success response after all insertions are complete
         res.json({ message: "All transactions have been processed successfully." });
         
@@ -1037,7 +1034,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 
 
