@@ -537,11 +537,11 @@ app.post('/qa_question' , (req, res) => {
 //ยังไม่ connect
 app.get('/qa_question/:id', async (req, res) => {
     id = req.params.id;
-    let question_list = [];
-    let answers_list = [];
+    var question_list = [];
+    var answers_list = [];
 
     try {
-        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        await checkConnection(); 
         var [questionResults] = await sequelize.query(
             'SELECT qa_id, q_student, q_parent FROM qa_question WHERE qa_id=?',
             {
@@ -1075,8 +1075,17 @@ app.get('/results/:id', async (req, res) => {
 })*/
 
 //program score max
-//ไม่ขึ้น data
 app.get('/result_max/:id', async (req, res) => {
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT * FROM register_status');
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/*app.get('/result_max/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
@@ -1088,7 +1097,7 @@ app.get('/result_max/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
 /*app.get('/result_max/:id' , (req, res) => {
     id = req.params.id
