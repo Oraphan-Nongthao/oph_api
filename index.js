@@ -673,7 +673,7 @@ app.post('/register_user', urlencodedParser,function(req, res){
                 res.status(500).json({ error: err.message });
             } else {
                 // ถ้าไม่มีข้อผิดพลาด ให้ส่ง user_id (register_id) กลับไป
-                res.cookie('user_id: ', results.insertId )
+                //res.cookie('user_id: ', results.insertId )
                 res.json({user_id : results.insertId });  
                 
             }
