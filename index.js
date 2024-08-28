@@ -1272,11 +1272,11 @@ app.get('/report_qa' , async(req, res) => {
 
             console.log("CSV file sent to client.");
     
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 
-    });
+});
 
 
 
