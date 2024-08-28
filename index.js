@@ -31,12 +31,12 @@ const port = process.env.PORT|5000
 
 const { Sequelize } = require('sequelize');
 
-/*const connection = mysql.createConnection ({
+const connection = mysql.createConnection ({
     host: 'mariadb',
     user: 'oph',
     password: 'buopen@dm1n2024',
     database: 'oph'
-})*/
+})
 //console.log(process.env.USER)
 //up to server
 const sequelize = new Sequelize('oph', 'oph', 'buopen@dm1n2024', {
