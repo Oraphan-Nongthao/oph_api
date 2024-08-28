@@ -891,40 +891,43 @@ app.post('/register_user', jsonParser, function (req,res){
 })*/
 
 //Endpoint to add a new register_user
-app.post('/register_user', urlencodedParser, async function(req, res) {
-    console.log(req.body);
-    let { email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id } = req.body;
-    
-    // Simple validation checks
-    if (!email_name || typeof email_name !== 'string') {
-        return res.status(400).json({ error: 'Invalid email_name' });
-    }
-
-    // Assign default values if undefined
-    age_id = age_id || 0;
-    gender_id = gender_id || 0;
-    status_id = status_id || 0;
-    degree_id = degree_id || 0;
-    province_id = province_id || 0;
-
+app.post('/register_user', urlencodedParser,async function(req, res){
+    //var cookie = cookie(req);
+    console.log(req.body)
+    let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
     try {
-        await checkConnection(); // Function to check database connection
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        //datatype ที่ทำให้ database เข้าใจ ถ้าค่าว่างเรากำหนดให้มันเป็น 0 
+        if(!age_id){
+            age_id = 0
+        }
+        if(!gender_id){
+            gender_id = 0
+        }
+        if(!status_id){
+            status_id = 0
+        }
+        if(!degree_id){
+            degree_id = 0
+        }
+        if(!province_id){
+            province_id = 0
+        }
 
-        // Use parameterized queries to prevent SQL injection
         await sequelize.query(
-            'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+            'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?,?,?,?,?,?,?)', 
             {
                 replacements: [email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id]
             }
-        );
+        )
 
         // Send a successful response back to the client
         res.status(200).json({ message: 'User registered successfully' });
 
     } catch (err) {
         // Handle any errors that occurred during processing
-        console.error('Error registering user:', err);
-        res.status(500).json({ error: 'An error occurred while registering the user' });
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
 });
 //register_user
