@@ -1078,7 +1078,7 @@ app.get('/results/:id', async (req, res) => {
 app.get('/result_max/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-        const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1')
+        const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1');
         [id]
         res.json(results);
     } catch (err) {
