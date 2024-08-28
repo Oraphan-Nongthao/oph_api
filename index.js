@@ -922,7 +922,7 @@ app.post('/register_user', urlencodedParser,async function(req, res){
         );
 
         // Send a successful response back to the client
-        res.status(200).json({ message: 'User registered successfully', user_id : new_user_id});
+        res.status(200).json({ message: 'User registered successfully', user_id : new_user_id[0]});
 
     } catch (err) {
         // Handle any errors that occurred during processing
