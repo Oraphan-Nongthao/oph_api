@@ -17,14 +17,14 @@ var qa = require('./QA.json')
 const fastcsv=require("fast-csv")
 const { Writable } = require('stream');
 
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
 const { error } = require('console')
 app.use(cors())
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
