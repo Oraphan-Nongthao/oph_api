@@ -1035,6 +1035,7 @@ app.post('/qa_transaction' , urlencodedParser,function (req, res){
 //-------------------------------------result-------------------------------------//
 
 //score data 4 program
+//ไม่ขึ้น data
 app.get('/results/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
@@ -1061,6 +1062,7 @@ app.get('/results/:id', async (req, res) => {
 })*/
 
 //program score max
+//ไม่ขึ้น data
 app.get('/result_max/:id', async (req, res) => {
     const id = req.params.id; // Get the id from the request parameters
     try {
