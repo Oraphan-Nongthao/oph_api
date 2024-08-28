@@ -940,7 +940,7 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-app.get('/report_register' , (req, res) => {
+app.get('/report_register' , async (req, res) => {
     let date_time = new Date();
     console.log(date_time)
 
@@ -953,9 +953,9 @@ app.get('/report_register' , (req, res) => {
     // get current year
     let year = date_time.getFullYear();
 
-    connection.query(
-        'SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id',
-        function(err, results){
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+        const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
             if(err){
                 return res.status(500).json({error: err.message});
             }
@@ -977,6 +977,10 @@ app.get('/report_register' , (req, res) => {
             })
             .pipe(ws);
 
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+
             //Export data to excel
             // Set headers to prompt a file download
             res.setHeader('Content-Type', 'text/csv ');
@@ -993,9 +997,9 @@ app.get('/report_register' , (req, res) => {
             csvStream.end();
 
             console.log("CSV file sent to client.");
+    
         }
-    );
-});
+    )
 
 //report_qa
 app.get('/report_qa' , (req, res) => {
