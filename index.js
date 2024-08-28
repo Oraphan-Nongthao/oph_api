@@ -543,6 +543,8 @@ app.get('/qa_question/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
 
+        console.log(`Fetching question with qa_id: ${id}`);
+
         // Fetch the question details
         const [questionResults] = await sequelize.query(
             'SELECT qa_id, q_student, q_parent FROM qa_question WHERE qa_id=?',
@@ -557,6 +559,8 @@ app.get('/qa_question/:id', async (req, res) => {
         } else {
             return res.json({ 'qa_question': 'not found' });
         }
+
+        console.log(`Fetching answers for qa_id: ${id}`);
 
         // Fetch the answers related to the question
         const [answerResults] = await sequelize.query(
@@ -583,6 +587,7 @@ app.get('/qa_question/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 /*app.get('/qa_question/:id' , (req, res) => {
