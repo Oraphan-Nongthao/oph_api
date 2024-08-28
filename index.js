@@ -891,7 +891,7 @@ app.post('/register_user', jsonParser, function (req,res){
 })*/
 
 //Endpoint to add a new register_user
-/*app.post('/register_user', urlencodedParser,function(req, res){
+app.post('/register_user', urlencodedParser,async function(req, res){
     //var cookie = cookie(req);
     console.log(req.body)
     let {email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id} = req.body
@@ -913,15 +913,22 @@ app.post('/register_user', jsonParser, function (req,res){
         if(!province_id){
             province_id = 0
         }
-
         await sequelize.query(
-            'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)', {
-                replacements: [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id], 
-                
-        
-        )
+            'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?,?,?,?,?,?,?)', 
+            {
+                replacements: [email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id]
+            }
+        );
+
+        // Send a successful response back to the client
+        res.status(200).json({ message: 'User registered successfully' });
+
+    } catch (err) {
+        // Handle any errors that occurred during processing
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
-});*/
+});
 //register_user
 //Endpoint to get register_user id 
 app.get('/register_user/:id', async (req, res) => {
@@ -985,41 +992,42 @@ app.get('/qa_transaction', async (req, res) => {
 app.post('/qa_transaction', urlencodedParser, async function (req, res) {
     var Answers = req.body;
     console.log(Answers);
-    //const {qa_id,ans_id} = req.body //ประกาศค่าที่เป็น qa_id , ans_id ให้เท่ากับ req.body = การส่งข้อมูลที่เราต้องการส่งให้ Server
-    //console.table(Answers);
+
     try {
         await checkConnection(); 
-        Answers.ans_list?.map((item) => {
-            //qa_id: item.qa_id,
-            //ans_id: item.ans_id,
-            //length: item.ans_id.length
-            //console.log(item.ans_id.length)
-            //console.table(item.ans_id)
-            item.ans_id.map(async (a_id, index) => {
-                var score = 0
+
+        // Process each answer
+        const insertions = Answers.ans_list?.map(async (item) => {
+            // Iterate over each answer ID in the list
+            return Promise.all(item.ans_id.map(async (a_id, index) => {
+                let score = 0;
                 
-                if(item.ans_id.length === 1){
-                    score = 1
-                }
-                else if (index === 0 ){
-                    score = 3 
-                } 
-                else if (index === 1){
-                    score = 2
-                }
-                else if(index === 2){
-                    score = 1
+                // Determine the score based on the position in the list
+                if(item.ans_id.length === 1) {
+                    score = 1;
+                } else if (index === 0) {
+                    score = 3;
+                } else if (index === 1) {
+                    score = 2;
+                } else if (index === 2) {
+                    score = 1;
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                await QATransaction.create({
-                    user_id: Answers.user_id,
-                    qa_id: item.qa_id,
-                    ans_id: a_id,
-                    score: score
-                });
-            }
-        )});
+
+                // Assuming you are storing this in the database, you might do something like:
+                await sequelize.query(
+                    'INSERT INTO qa_transactions (user_id, qa_id, ans_id, score) VALUES (?,?,?,?)', 
+                    {
+                        replacements: [Answers.user_id, item.qa_id, a_id, score]
+                    }
+                );
+            }));
+        });
+
+        // Wait for all asynchronous operations to complete
+        await Promise.all(insertions);
+
         // Send a success response after all insertions are complete
         res.json({ message: "All transactions have been processed successfully." });
         
@@ -1029,6 +1037,7 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 
