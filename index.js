@@ -1014,9 +1014,9 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
                 }
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
-                const [results] = sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
+                const [results] = await sequelize.query('INSERT INTO qa_transaction (user_id, qa_id, ans_id, score) VALUES (?, ?, ?, ?)', {
                     replacements: [Answers.user_id, item.qa_id, a_id, score],  // Replace variables
-                    type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
+                    //type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
                 });
             }
         )});
@@ -1029,8 +1029,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: err.message });
     }
 });
-
-
 
 /*/Endpoint to add a new qa_transaction
 app.post('/qa_transaction' , urlencodedParser,function (req, res){
