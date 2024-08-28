@@ -1021,7 +1021,7 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
 
                 console.log(`user_id: ${Answers.user_id}, question: ${item.qa_id}, answers: ${a_id}, score: ${score}`);
                 await sequelize.query(
-                    'INSERT INTO register_user (user_id, q_id, a_id, score) VALUES (?,?,?,?)',
+                    'INSERT INTO qa_transaction (user_id, q_id, a_id, score) VALUES (?,?,?,?)',
                     {
                         replacements: [Answers.user_id, item.qa_id, a_id, score]
                     }
@@ -1036,9 +1036,6 @@ app.post('/qa_transaction', urlencodedParser, async function (req, res) {
         res.status(500).json({ error: 'An error occurred while processing the transaction' });
     }
 });
-
-
-
 
 
 /*/Endpoint to add a new qa_transaction
