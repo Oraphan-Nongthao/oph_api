@@ -542,11 +542,7 @@ app.get('/qa_question/:id', async (req, res) => {
 
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-
-        console.log(`Fetching question with qa_id: ${id}`);
-
-        // Fetch the question details
-        const [questionResults] = await sequelize.query(
+        var [questionResults] = await sequelize.query(
             'SELECT qa_id, q_student, q_parent FROM qa_question WHERE qa_id=?',
             {
                 replacements: [id],
@@ -555,15 +551,13 @@ app.get('/qa_question/:id', async (req, res) => {
         );
 
         if (questionResults.length > 0) {
-            question_list = questionResults;
+            question_list.push(questionResults[0]);
+                console.log(question_list)
         } else {
             return res.json({ 'qa_question': 'not found' });
         }
 
-        console.log(`Fetching answers for qa_id: ${id}`);
-
-        // Fetch the answers related to the question
-        const [answerResults] = await sequelize.query(
+        var [answerResults] = await sequelize.query(
             'SELECT ans_id, answer FROM qa_answers WHERE qa_id=?',
             {
                 replacements: [id],
@@ -572,7 +566,8 @@ app.get('/qa_question/:id', async (req, res) => {
         );
 
         if (answerResults.length > 0) {
-            answers_list = answerResults;
+            answers_list.push(answerResults);
+            console.log(answers_list)
         } else {
             return res.json({ 'qa_answers': 'not found' });
         }
