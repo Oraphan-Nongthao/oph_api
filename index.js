@@ -17,14 +17,14 @@ var qa = require('./QA.json')
 const fastcsv=require("fast-csv")
 const { Writable } = require('stream');
 
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
 const { error } = require('console')
 app.use(cors())
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
@@ -917,7 +917,6 @@ app.post('/register_user', urlencodedParser,async function(req, res){
             'INSERT INTO register_user (email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id) VALUES (?,?,?,?,?,?,?)', 
             {
                 replacements: [email_name, age_id, gender_id, status_id, degree_id, field_study_name, province_id]
-
             }
         );
 
