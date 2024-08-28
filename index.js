@@ -913,14 +913,12 @@ app.post('/register_user', jsonParser, function (req,res){
         if(!province_id){
             province_id = 0
         }
+
         await sequelize.query(
             'INSERT INTO register_user (email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id) VALUES (?,?,?,?,?,?,?)', {
                 replacements: [email_name,age_id,gender_id,status_id,degree_id,field_study_name,province_id], 
                 
-            }
-            if {
-                res.json({user_id : results.insertId })
-            } 
+        
         )
     }
 });*/
@@ -1164,7 +1162,6 @@ app.get('/satisfaction_transaction/:id' , (req, res) => {
 
 
 //report_register
-//ยังไม่ connect
 app.get('/report_register' , async (req, res) => {
     let date_time = new Date();
     console.log(date_time)
@@ -1224,7 +1221,7 @@ app.get('/report_register' , async (req, res) => {
 });    
 
 //report_qa
-app.get('/report_qa' , (req, res) => {
+app.get('/report_qa' , async(req, res) => {
     let date_time = new Date();
     console.log(date_time)
 
@@ -1237,12 +1234,9 @@ app.get('/report_qa' , (req, res) => {
     // get current year
     let year = date_time.getFullYear();
 
-    connection.query(
-        'SELECT user_id, email_name,q_student,q_parent,answer,score,time FROM qa_transaction LEFT JOIN register_user ON qa_transaction.user_id = register_user.register_id LEFT JOIN qa_question ON qa_transaction.qa_id = qa_question.qa_id LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id',
-        function(err, results){
-            if(err){
-                return res.status(500).json({error: err.message});
-            }
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+            const [results] = await sequelize.query('SELECT user_id, email_name,q_student,q_parent,answer,score,time FROM qa_transaction LEFT JOIN register_user ON qa_transaction.user_id = register_user.register_id LEFT JOIN qa_question ON qa_transaction.qa_id = qa_question.qa_id LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id');
             //JSON
             const jsonResults = JSON.parse(JSON.stringify(results));
             console.log("JsonResults", jsonResults);
@@ -1277,67 +1271,13 @@ app.get('/report_qa' , (req, res) => {
             csvStream.end();
 
             console.log("CSV file sent to client.");
+    
+        } catch (err) {
+            res.status(500).json({ error: err.message });
         }
-    );
-});
 
-/*/report_satisfaction
-app.get('/report_satisfaction' , (req, res) => {
-    let date_time = new Date();
-    console.log(date_time)
+    });
 
-    // get current date
-    let date = ("0" + date_time.getDate()).slice(-2);
-
-    // get current month
-    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
-
-    // get current year
-    let year = date_time.getFullYear();
-
-    connection.query(
-        'SELECT id,user_id, q_text,a_text,date_time FROM satisfaction_transaction LEFT JOIN satisfaction_q ON satisfaction_transaction.q_id = satisfaction_q.q_id LEFT JOIN satisfaction_ans ON satisfaction_transaction.a_id = satisfaction_ans.a_id LEFT JOIN register_user ON satisfaction_transaction.user_id = register_user.register_id',
-        function(err, results){
-            if(err){
-                return res.status(500).json({error: err.message});
-            }
-            //JSON
-            const jsonResults = JSON.parse(JSON.stringify(results));
-            console.log("JsonResults", jsonResults);
-
-            if (jsonResults.length === 0) {
-                console.log("No data retrieved from the database.");
-                return res.status(404).send("No data found.");
-            }
-
-            //CSV
-            //Write data in folder Report 
-            const ws=fs.createWriteStream("./Report/SatisfactionReport_"+date+month+year+"_"+Date.now()+".csv");
-            fastcsv.write(jsonResults,{ headers : true})
-            .on("finish", function(){
-                console.log("Write to transaction_Satisfaction.csv successfully!");
-            })
-            .pipe(ws);
-
-            //Export data to excel
-            // Set headers to prompt a file download
-            res.setHeader('Content-Type', 'text/csv ');
-            res.setHeader('Content-Disposition', 'attachment; filename="SatisfactionReport_' + date + month + year + '_' + Date.now() + '.csv"');
-
-            // Create a writable stream that pipes directly to the response
-            const csvStream = fastcsv.format({ headers: true });
-            csvStream.pipe(res);
-
-            // Write the rows to the CSV stream
-            jsonResults.forEach(row => csvStream.write(row));
-
-            // End the CSV stream
-            csvStream.end();
-
-            console.log("CSV file sent to client.");
-        }
-    );
-});*/
 
 
 app.listen(port, () => {
