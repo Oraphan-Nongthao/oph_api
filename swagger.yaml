@@ -594,22 +594,22 @@ paths:
           #description: Created
 
 
-  #/satisfaction_ans/{id}:
-    #get:
-      #summary: Returns a satisfaction_ans by ID.
-      #tags: [satisfaction_ans]
-      #parameters:
-       # - name: id
-         # in: path
-         # required: true
-          #description: Parameter description in CommonMark or HTML.
-         # schema:
-           # type : integer
-            #format: int64
-           # minimum: 1
-      #responses: 
-        #'200':
-         # description: OK
+  /satisfaction_ans/{id}:
+    get:
+      summary: Returns a satisfaction_ans by ID.
+      tags: [satisfaction_ans]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: OK
 
 #-------------------------transition_register_user-------------------------#
 
