@@ -138,8 +138,8 @@ app.get('/register_status/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_status WHERE status_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -215,8 +215,8 @@ app.get('/register_age/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_age WHERE age_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -281,8 +281,8 @@ app.get('/register_degree/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_degree WHERE degree_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -346,8 +346,8 @@ app.get('/register_gender/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_gender WHERE gender_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -476,8 +476,8 @@ app.get('/qa_program/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM qa_program WHERE program_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -673,8 +673,8 @@ app.get('/qa_answers/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM qa_answers WHERE ans_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -821,8 +821,8 @@ app.get('/satisfaction_ans/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM satisfaction_ans WHERE ans_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -933,8 +933,8 @@ app.get('/register_user/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT * FROM register_user WHERE register_id = ?', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -1054,8 +1054,8 @@ app.get('/results/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
@@ -1066,7 +1066,7 @@ app.get('/results/:id', async (req, res) => {
 /*app.get('/results/:id' , (req, res) => {
     id = req.params.id
     connection.query(
-        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id   ',
+        'SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id',
         [id],
         function(err, results){
             res.json(results)
@@ -1081,8 +1081,8 @@ app.get('/result_max/:id', async (req, res) => {
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
         const [results] = await sequelize.query('SELECT SUM(score),program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=? GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1', {
-            replacements: [id], 
-            type: sequelize.QueryTypes.SELECT
+            replacements: [id],  //ใช้เพื่อแทนที่ตัวแปร ?
+            type: sequelize.QueryTypes.SELECT //ระบุประเภทเพื่อให้ Sequelize รู้ว่าผลลัพธ์ต้องเป็น Array
         });
         res.json(results);
     } catch (err) {
