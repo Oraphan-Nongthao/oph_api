@@ -1282,6 +1282,63 @@ app.get('/report_qa' , async(req, res) => {
 
 });
 
+//report_qa
+app.get('/report_results' , async(req, res) => {
+    let date_time = new Date();
+    console.log(date_time)
+
+    // get current date
+    let date = ("0" + date_time.getDate()).slice(-2);
+
+    // get current month
+    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+
+    // get current year
+    let year = date_time.getFullYear();
+
+    try {
+        await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
+            const [results] = await sequelize.query('SELECT qt.user_id, GROUP_CONCAT(CASE WHEN qt.qa_id = 1 THEN qa.answer END) AS question_1, MAX(CASE WHEN qt.qa_id = 2 THEN qa.answer END) AS question_2, MAX(CASE WHEN qt.qa_id = 3 THEN qa.answer END) AS question_3, MAX(CASE WHEN qt.qa_id = 4 THEN qa.answer END) AS question_4, GROUP_CONCAT(CASE WHEN qt.qa_id = 5 THEN qa.answer END) AS question_5, program_name, MAX(qt.time) AS registered_time FROM qa_transaction qt JOIN qa_answers qa ON qt.ans_id = qa.ans_id LEFT JOIN qa_program pr ON pr.program_id = ( SELECT program_id FROM qa_transaction qt2 LEFT JOIN qa_answers qa2 ON qt2.ans_id = qa2.ans_id WHERE qt2.user_id = qt.user_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1 ) GROUP BY qt.user_id');
+            //JSON
+            const jsonResults = JSON.parse(JSON.stringify(results));
+            console.log("JsonResults", jsonResults);
+
+            if (jsonResults.length === 0) {
+                console.log("No data retrieved from the database.");
+                return res.status(404).send("No data found.");
+            }
+
+            //CSV
+            //Write data in folder Report 
+            const ws=fs.createWriteStream("./Report/ResultsReport_"+date+month+year+"_"+Date.now()+".csv");
+            fastcsv.write(jsonResults,{ headers : true})
+            .on("finish", function(){
+                console.log("Write to transactionResults.csv successfully!");
+            })
+            .pipe(ws);
+
+            //Export data to excel
+            // Set headers to prompt a file download
+            res.setHeader('Content-Type', 'text/csv ');
+            res.setHeader('Content-Disposition', 'attachment; filename="ResultsReport_' + date + month + year + '_' + Date.now() + '.csv"');
+
+            // Create a writable stream that pipes directly to the response
+            const csvStream = fastcsv.format({ headers: true });
+            csvStream.pipe(res);
+
+            // Write the rows to the CSV stream
+            jsonResults.forEach(row => csvStream.write(row));
+
+            // End the CSV stream
+            csvStream.end();
+
+            console.log("CSV file sent to client.");
+    
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+
+});
 
 
 app.listen(port, () => {
