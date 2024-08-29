@@ -23,8 +23,13 @@
     margin: 10px; 
 }
 
-.button_1, .button_2 :hover {
-    background-color: #FFFFFF;
+/*เมื่อเอาเม้ามาวางบน button*/
+.button_1:hover {
+    background: linear-gradient(90deg, #028391 20%, #134B70 45%, #1E2A5E 120%);
+}
+
+.button_2:hover {
+    background: linear-gradient(90deg, #028391 20%, #134B70 45%, #1E2A5E 120%);
 }
 
 /* กำหนดตำแหน่งของข้อความและปุ่ม */
