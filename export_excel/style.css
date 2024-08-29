@@ -1,63 +1,34 @@
-.background{
-    align-items: center;
-    margin-top: 20rem;
-}
-.header{
-    font-size: 30px;
-    text-align: center;
-    color: #FFFFFF;
-}
-
-.text_1{
-    font-size: 20px;
-    text-align: center;
-    color: #FFFFFF;
+/* ใช้ Flexbox ในการจัดกลาง */
+.background {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    justify-content: center; 
+    height: 100vh; 
+    margin-top: 0; 
 }
 
-.button_1{
-
+/* แก้ไขการจัดกลางปุ่ม */
+.button_1, .button_2 {
     font-size: 15px;
-    background: linear-gradient(90deg, #FF0000 30%, #FF00A6 55%, #00A6FF 120%);;
-    color: white;
-    padding: 8px 8px;
+    background: linear-gradient(90deg, #FF0000 30%, #FF00A6 55%, #00A6FF 120%);
+    color: #FFFFFF;
+    padding: 8px 16px; 
     text-align: center;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     display: inline-block;
     border-radius: 0.5rem;
-    top: 49%;
-    margin-left: rem;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-
+    margin: 10px; 
 }
 
-.text_2{
-    font-size: 20px;
-    text-align: center;
+/* กำหนดตำแหน่งของข้อความและปุ่ม */
+.header, .text_1, .text_2 {
     color: #FFFFFF;
-    margin-top: 5rem;
+    margin: 10px; 
 }
 
-.button_2{
-    font-size: 15px;
-    background: linear-gradient(90deg, #FF0000 30%, #FF00A6 55%, #00A6FF 120%);;
-    color: white;
-    padding: 8px 8px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 0.5rem;
-    top: 60.5%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    
-
-}
 
 .noto-sans-thai-looped-regular {
     font-family: "Noto Sans Thai Looped", sans-serif;
