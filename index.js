@@ -1181,7 +1181,7 @@ app.get('/report_register' , async (req, res) => {
 
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-            const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,CONVERT_TZ(registered_date,\'+00:00\',\'+07:00\'),(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
+            const [results] = await sequelize.query('SELECT register_id,email_name,age_name,gender_name,status_name,degree_name,field_study_name,province_name,registered_date,(SELECT program_id FROM `qa_transaction` LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id WHERE user_id=register_id GROUP BY program_id ORDER BY SUM(score) DESC LIMIT 1) AS result FROM register_user LEFT JOIN register_age ON register_user.age_id = register_age.age_id LEFT JOIN register_gender ON register_user.gender_id = register_gender.gender_id LEFT JOIN register_status ON register_user.status_id= register_status.status_id LEFT JOIN register_degree ON register_user.degree_id = register_degree.degree_id LEFT JOIN register_province ON register_user.province_id = register_province.province_id');
             
             //JSON
             const jsonResults = JSON.parse(JSON.stringify(results));
@@ -1240,7 +1240,7 @@ app.get('/report_qa' , async(req, res) => {
 
     try {
         await checkConnection(); // ตรวจสอบการเชื่อมต่อก่อน
-            const [results] = await sequelize.query('SELECT user_id, email_name,q_student,q_parent,answer,score,CONVERT_TZ(time,\'+00:00\',\'+07:00\') FROM qa_transaction LEFT JOIN register_user ON qa_transaction.user_id = register_user.register_id LEFT JOIN qa_question ON qa_transaction.qa_id = qa_question.qa_id LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id;');
+            const [results] = await sequelize.query('SELECT user_id, email_name,q_student,q_parent,answer,score,time FROM qa_transaction LEFT JOIN register_user ON qa_transaction.user_id = register_user.register_id LEFT JOIN qa_question ON qa_transaction.qa_id = qa_question.qa_id LEFT JOIN qa_answers ON qa_transaction.ans_id = qa_answers.ans_id;');
             //JSON
             const jsonResults = JSON.parse(JSON.stringify(results));
             console.log("JsonResults", jsonResults);
