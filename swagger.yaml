@@ -6,11 +6,9 @@ info:
 servers:
   #- url: http://localhost:5000
   - url: https://deepseaoph2024.bu.ac.th/api
-
+paths:  
 
 #-------------------------Status-------------------------#
-
-paths:
   /register_status:
     get:
       tags: [Status]

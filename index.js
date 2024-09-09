@@ -1,5 +1,4 @@
 const mysql = require('mysql2')
-
 const express = require('express')
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
@@ -17,18 +16,15 @@ var qa = require('./QA.json')
 const fastcsv=require("fast-csv")
 const { Writable } = require('stream');
 
-//const cookieParser = require("cookie-parser");
-
 const app = express()
 const cors = require('cors')
 const json = require('body-parser/lib/types/json')
 const { error } = require('console')
 app.use(cors())
-//app.use(cookieParser());
 app.use(express.json())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 const port = process.env.PORT|5000
-
+  
 const { Sequelize } = require('sequelize');
 
 /*const connection = mysql.createConnection ({
@@ -534,7 +530,6 @@ app.post('/qa_question' , (req, res) => {
 })
 
 //Endpoint to get qa_question id 
-//ยังไม่ connect
 app.get('/qa_question/:id', async (req, res) => {
     id = req.params.id;
     var question_list = [];
@@ -546,7 +541,6 @@ app.get('/qa_question/:id', async (req, res) => {
             'SELECT qa_id, q_student, q_parent FROM qa_question WHERE qa_id=?',
             {
                 replacements: [id],
-                //type: sequelize.QueryTypes.SELECT
             }
         )
 
@@ -561,7 +555,6 @@ app.get('/qa_question/:id', async (req, res) => {
             'SELECT ans_id, answer FROM qa_answers WHERE qa_id=?',
             {
                 replacements: [id],
-                //type: sequelize.QueryTypes.SELECT
             }
         )
 
@@ -574,7 +567,7 @@ app.get('/qa_question/:id', async (req, res) => {
 
         // Send the combined response
         res.json({
-            question_list,
+            question_list, 
             answers_list
         })
 
